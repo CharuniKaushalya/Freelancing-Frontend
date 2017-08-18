@@ -27,7 +27,8 @@ export const routes: Routes = [
       { path: 'forms', loadChildren: './forms/forms.module#FormsModule' },
       { path: 'tables', loadChildren: './tables/tables.module#TablesModule' },
       { path: 'maps', loadChildren: './maps/maps.module#MapsModule' },
-       { path: 'admin', loadChildren: './admin/admin.module#AdminModule' }
+      { path: 'admin', loadChildren: './admin/admin.module#AdminModule' },
+      { path: 'users', loadChildren: './users/users.module#UsersModule' },
     ]
   }
 ];

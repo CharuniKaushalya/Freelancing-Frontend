@@ -59,6 +59,28 @@ export const PAGES_MENU = [
         ]
       },
       {
+        path: 'users',
+        data: {
+          menu: {
+            title: 'general.menu.users',
+            icon: 'fa fa-user',
+            selected: false,
+            expanded: false,
+            order: 250,
+          }
+        },
+        children: [
+          {
+            path: 'profile',
+            data: {
+              menu: {
+                title: 'general.menu.profile',
+              }
+            }
+          }
+        ]
+      },
+      {
         path: '',
         data: {
           menu: {

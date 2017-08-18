@@ -51,7 +51,9 @@
       "menu_level_1_2_1": "Menu Level 1.2.1",
       "external_link": "External Link",
       "admin": "Admin",
-      "skill": "Skill"
+      "skill": "Skill",
+      "users": "Users",
+      "profile": "Profile"
     },
     "created_with": "Created with"
   },
