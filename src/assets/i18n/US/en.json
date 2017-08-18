@@ -49,7 +49,9 @@
       "menu_level_1_1": "Menu Level 1.1",
       "menu_level_1_2": "Menu Level 1.2",
       "menu_level_1_2_1": "Menu Level 1.2.1",
-      "external_link": "External Link"
+      "external_link": "External Link",
+      "admin": "Admin",
+      "skill": "Skill"
     },
     "created_with": "Created with"
   },

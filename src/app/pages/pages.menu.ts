@@ -37,6 +37,28 @@ export const PAGES_MENU = [
         ]
       },
       {
+        path: 'admin',
+        data: {
+          menu: {
+            title: 'general.menu.admin',
+            icon: 'ion-gear-a',
+            selected: false,
+            expanded: false,
+            order: 250,
+          }
+        },
+        children: [
+          {
+            path: 'skill',
+            data: {
+              menu: {
+                title: 'general.menu.skill',
+              }
+            }
+          }
+        ]
+      },
+      {
         path: '',
         data: {
           menu: {
