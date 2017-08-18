@@ -1,0 +1,144 @@
+<div class="container">
+  <div class="row">
+
+    <div class="col-sm-12">
+      <h1>Create Contract</h1>
+      <hr>
+      <form class="form-horizontal">
+
+        <div class="form-group">
+          <label for="name" class="col-sm-2 control-label">Project Name</label>
+          <div class="col-sm-9">
+            <select class="form-control" name="name" id="name">
+            </select>
+          </div>
+        </div>
+        <div class="form-group">
+          <label for="contract_type" class="col-sm-2 control-label">Contract type</label>
+          <div class="col-sm-9">
+            <select class="form-control" name="contract_type" id="contract_type">
+              <option value="Developer">Developer</option>
+              <option value="QA">QA</option>
+              <option value="Consultant">Consultant</option>
+            </select>
+          </div>
+        </div>
+        <div class="form-group">
+          <label for="freelancer" class="col-sm-2 control-label">Freelancer</label>
+          <div class="col-sm-9">
+            <select class="form-control" name="freelancer" id="freelancer">
+              <option *ngFor="let address of toAddresses">
+                {{address.address}}
+              </option>
+            </select>
+          </div>
+        </div>
+        <div class="form-group">
+          <label for="qty" class="col-sm-2 control-label">Deadline</label>
+          <div class="col-sm-9">
+            <input class="form-control" type="date" name="deadline" id="deadline">
+          </div>
+        </div>
+        <div class="form-group">
+          <label for="qty" class="col-sm-2 control-label">Amount</label>
+          <div class="col-sm-6">
+            <input class="form-control" name="qty" id="qty" placeholder="100.0">
+          </div>
+          <div class="col-sm-3">
+            <select class="form-control" name="asset" id="asset">
+              <option *ngFor="let balance of balances">
+                {{balance?.name}}
+              </option>
+            </select>
+          </div>
+        </div>
+        <div class="form-group">
+          <label for="milestones" class="col-sm-2 control-label">Milestones</label>
+          <div class="col-sm-9">
+            <select class="form-control" name="milestones" id="milestones">
+              <option value="1">1</option>
+              <option value="2">2</option>
+              <option value="3">3</option>
+              <option value="4">4</option>
+              <option value="5">5</option>
+            </select>
+          </div>
+        </div>
+        <div class="form-group">
+          <div id="div1">
+            <div class="col-sm-2"></div>
+            <label for="milestone1" class="col-sm-1 control-label">Milestone_1 </label>
+            <div class="col-sm-8">
+              <select class="form-control" name="milestone1" id="milestone1">
+                <option value="1">25%</option>
+                <option value="2">30%</option>
+                <option value="3">35%</option>
+              </select>
+            </div>
+          </div>
+          <div id="div2" style="display: none">
+            <br><br>
+            <div class="col-sm-2"></div>
+            <label for="milestone2" class="col-sm-1 control-label">Milestone_2 </label>
+            <div class="col-sm-8">
+              <select class="form-control" name="milestone2" id="milestone2">
+                <option value="1">25%</option>
+                <option value="2">30%</option>
+                <option value="3">35%</option>
+              </select>
+            </div>
+          </div>
+          <div id="div3" style="display: none">
+            <br><br>
+            <div class="col-sm-2"></div>
+            <label for="milestone3" class="col-sm-1 control-label">Milestone_3 </label>
+            <div class="col-sm-8">
+              <select class="form-control" name="milestone3" id="milestone3">
+                <option value="1">25%</option>
+                <option value="2">30%</option>
+                <option value="3">35%</option>
+              </select>
+            </div>
+          </div>
+          <div id="div4" style="display: none">
+            <br><br>
+            <div class="col-sm-2"></div>
+            <label for="milestone4" class="col-sm-1 control-label">Milestone_4 </label>
+            <div class="col-sm-8">
+              <select class="form-control" name="milestone4" id="milestone4">
+                <option value="1">25%</option>
+                <option value="2">30%</option>
+                <option value="3">35%</option>
+              </select>
+            </div>
+          </div>
+          <div id="div5" style="display: none">
+            <br><br>
+            <div class="col-sm-2"></div>
+            <label for="milestone5" class="col-sm-1 control-label">Milestone_5 </label>
+            <div class="col-sm-8">
+              <select class="form-control" name="milestone5" id="milestone5">
+                <option value="1">25%</option>
+                <option value="2">30%</option>
+                <option value="3">35%</option>
+              </select>
+            </div>
+          </div>
+        </div>
+        <div class="form-group">
+          <label for="description" class="col-sm-2 control-label">Project description</label>
+          <div class="col-sm-9">
+            <textarea class="form-control" rows="4" name="description" id="description"></textarea>
+          </div>
+        </div>
+        <div class="form-group">
+          <div class="col-sm-offset-2 col-sm-9">
+            <input class="btn btn-primary" type="submit" name="publish" value="Publish Contract">
+          </div>
+        </div>
+      </form>
+    </div>
+  </div>
+</div>
+
+

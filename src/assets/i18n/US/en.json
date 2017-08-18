@@ -53,7 +53,9 @@
       "admin": "Admin",
       "skill": "Skill",
       "users": "Users",
-      "profile": "Profile"
+      "profile": "Profile",
+      "mycontract": "Create Contract",
+      "contract_view": "My Contracts"
     },
     "created_with": "Created with"
   },
