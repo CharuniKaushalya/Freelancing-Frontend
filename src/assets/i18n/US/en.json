@@ -55,7 +55,10 @@
       "users": "Users",
       "profile": "Profile",
       "mycontract": "Create Contract",
-      "contract_view": "My Contracts"
+      "contract_view": "My Contracts",
+      "my_projects": "My Projects",
+      "project_new": "Post a Project",
+      "project_details": "project Details"
     },
     "created_with": "Created with"
   },

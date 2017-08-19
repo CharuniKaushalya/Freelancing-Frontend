@@ -1,1 +1,1 @@
-export * from './components.component';
+export * from './contract.component';

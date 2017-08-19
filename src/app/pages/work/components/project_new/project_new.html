@@ -1,0 +1,87 @@
+<div class="container">
+    <div class="row">
+
+        <div class="col-sm-8">
+            <h1>Post a Project</h1>
+            <hr>
+            <form class="form-horizontal">
+                <h3><span class="label btn_6 label-info">1</span><span class="text-success">    Project Description</span> </h3>
+                <br>
+                <div class="form-group">
+                    <label class="col-sm-12">Project Name</label>
+                    <div class="col-sm-12">
+                        <input class="form-control" name="name" id="name" placeholder="E.g. Website for Greeting Card Shop">
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label class="col-sm-12">Project description</label>
+                    <div class="col-sm-12">
+                        <textarea class="form-control" rows="4" name="description" id="description" placeholder="Describe your project here..."></textarea>
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label class="col-sm-12">Additional Files</label>
+                    <div class="col-sm-12">
+                        <input type="file" name="files" multiple>
+                        <input class="btn btn-default btn-sm" type="submit">
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label class="col-sm-12">Required Skills</label>
+                    <div class="col-sm-12">
+                        <input class="form-control" name="skills" id="skills" placeholder="Enter a character to search skills">
+                    </div>
+                </div>
+
+                <br><br>
+                <h3><span class="label btn_6 label-info">2</span><span class="text-success">    Project Time Period</span> </h3>
+                <br>
+                <div class="form-group">
+                    <label class="col-sm-12">Expected Time Period for the Project</label>
+                    <div class="col-sm-3">
+                        <div class="input-group input-group1">
+                            <input type="number" class="form-control" id="time_period_month" min=0 max=12>
+                            <span class="input-group-addon">Months</span>
+                        </div>
+                    </div>
+                    <div class="col-sm-3">
+                        <div class="input-group input-group1">
+                            <input type="number" class="form-control" id="time_period_week" min=0 max=4>
+                            <span class="input-group-addon">Weeks</span>
+                        </div>
+                    </div>
+                </div>
+
+                <br><br>
+                <h3><span class="label btn_6 label-info">3</span><span class="text-success">    Project Budget</span> </h3>
+                <br>
+                <div class="form-group">
+                    <label for="min_qty" class="col-sm-5">Minimum Amount</label>
+                    <label for="max_qty" class="col-sm-5">Maximum Amount</label>
+                    <div class="col-sm-5">
+                        <input class="form-control" name="min_qty" id="min_qty" min=0 type="number">
+                    </div>
+
+                    <div class="col-sm-5">
+                        <input class="form-control" name="max_qty" id="max_qty" min=0 type="number">
+                    </div>
+                    <div class="col-sm-2">
+                        <select class="form-control" name="cur_type" id="cur_type">
+                            <option value="USD">USD</option>
+                            <option value="BTC">BTC</option>
+                        </select>
+                    </div>
+                </div>
+                <br><br>
+                <div class="form-group">
+                    <div class="col-sm-9">
+                        <input class="btn btn_5 btn-lg btn-primary" type="submit" name="publish" value="Post Project">
+                    </div>
+                </div>
+            </form>
+        </div>
+
+        <div class="col-sm-4">
+        </div>
+    </div>
+</div>

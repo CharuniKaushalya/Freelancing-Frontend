@@ -3,10 +3,10 @@ import {Http, Response, URLSearchParams, Headers} from "@angular/http";
 
 import { Observable } from 'rxjs/Rx';
 
-import { Payload } from "../models/payload";
+import { Payload } from "../../models/payload";
 
 import 'rxjs/add/operator/toPromise';
-import {environment} from "../../environments/environment";
+import {environment} from "../../../../environments/environment";
 
 @Injectable()
 export class MyService {

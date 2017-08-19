@@ -30,7 +30,7 @@ export const routes: Routes = [
       { path: 'admin', loadChildren: './admin/admin.module#AdminModule' },
       { path: 'users', loadChildren: './users/users.module#UsersModule' },
       { path: 'contract', loadChildren: './contract/contract.module#ContractModule' },
-
+      { path: 'work', loadChildren: './work/work.module#WorkModule' },
     ]
   }
 ];

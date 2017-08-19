@@ -1,1 +1,1 @@
-export * from './skill.component';
+export * from './contract_view.component';

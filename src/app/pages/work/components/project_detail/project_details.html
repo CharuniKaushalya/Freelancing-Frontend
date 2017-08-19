@@ -1,0 +1,26 @@
+<div class="container">
+    <div class="row">
+
+        <div class="col-sm-8">
+            <h1>{{project?.projectName}}</h1>
+            <hr>
+            <div class="panel panel-info" data-widget="{&quot;draggable&quot;: &quot;false&quot;}" data-widget-static="">
+                <div class="panel-heading">
+                    <h2>
+                        dsds{{project?.projectName}}
+                        <span class="label label-info">15 Bids</span>
+                        <span class="label label-success">AVG BID - 155$</span>
+                    </h2>
+
+                    <div class="panel-ctrls" data-actions-container="" data-action-collapse="{&quot;target&quot;: &quot;.panel-body&quot;}"><span class="button-icon has-bg"><i class="ti ti-angle-down"></i></span></div>
+                </div>
+                <div class="panel-body no-padding" style="display: block;">
+                    <p>{{project?.description}} </p>
+                    <h2>
+                        <span class="label label-default">
+                            {{project?.budget?.min}}-{{project?.budget?.max}} {{project?.budget?.type}}
+                        </span>
+                    </h2>
+                </div>
+            </div>
+        </div>
