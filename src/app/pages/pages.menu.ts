@@ -137,7 +137,7 @@ export const PAGES_MENU = [
         data: {
           menu: {
             title: 'Work',
-            icon: 'fa fa-user',
+            icon: 'fa fa-pencil',
             selected: false,
             expanded: false,
             order: 250,
