@@ -1,7 +1,4 @@
-# Admin panel framework based on Angular, Bootstrap 4 and Angular CLI
-
-## Angular 1.x version
-Here you can find Angular 1.x based version: [Blur Admin](http://akveo.github.io/blur-admin/)
+# Freelancing Platform based on Angular, Bootstrap 4 and Angular CLI
  
 ## Installation
 
