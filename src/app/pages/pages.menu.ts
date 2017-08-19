@@ -15,28 +15,6 @@ export const PAGES_MENU = [
         }
       },
       {
-        path: 'editors',
-        data: {
-          menu: {
-            title: 'general.menu.editors',
-            icon: 'ion-edit',
-            selected: false,
-            expanded: false,
-            order: 100,
-          }
-        },
-        children: [
-          {
-            path: 'ckeditor',
-            data: {
-              menu: {
-                title: 'general.menu.ck_editor',
-              }
-            }
-          }
-        ]
-      },
-      {
         path: 'components',
         data: {
           menu: {
@@ -107,7 +85,7 @@ export const PAGES_MENU = [
         data: {
           menu: {
             title: 'Contract',
-            icon: 'fa fa-user',
+            icon: 'fa fa-balance-scale',
             selected: false,
             expanded: false,
             order: 250,
@@ -137,7 +115,7 @@ export const PAGES_MENU = [
         data: {
           menu: {
             title: 'Work',
-            icon: 'fa fa-pencil',
+            icon: 'fa fa-bars',
             selected: false,
             expanded: false,
             order: 250,
@@ -167,7 +145,15 @@ export const PAGES_MENU = [
                 title: 'general.menu.project_details',
               }
             }
-          }
+          },
+          {
+            path: 'my_work',
+            data: {
+              menu: {
+                title: 'general.menu.my_work',
+              }
+            }
+          },
         ]
       },
       {

@@ -15,7 +15,8 @@ const routes: Routes = [
     children: [
       { path: 'my_projects', component: MyProjects },
       { path: 'project_new', component: ProjectNew },
-      { path: 'project_details/:project_id', component: ProjectDetails }
+      { path: 'project_details/:project_id', component: ProjectDetails },
+      { path: 'my_work', component: MyWork },
     ]
   }
 ];
