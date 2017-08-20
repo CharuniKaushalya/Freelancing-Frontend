@@ -6,6 +6,7 @@ import { NgaModule } from '../../theme/nga.module';
 import { routing }       from './users.routing';
 import { Users } from './users.component';
 import { Profile } from './components/profile/profile.component';
+import { PopularApp } from './components/popularApp/popularApp.component';
 
 @NgModule({
   imports: [
@@ -17,6 +18,7 @@ import { Profile } from './components/profile/profile.component';
   declarations: [
     Users,
     Profile,
+    PopularApp,
   ]
 })
 export class UsersModule {}
