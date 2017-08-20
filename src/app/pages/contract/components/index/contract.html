@@ -55,7 +55,7 @@
         <div class="form-group">
           <label for="milestones" class="col-sm-2 control-label">Milestones</label>
           <div class="col-sm-9">
-            <select class="form-control" name="milestones" id="milestones">
+            <select class="form-control" name="milestones" id="milestones" [ngModel]="selectedObject | json" (ngModelChange)="updateSelectedValue($event)">
               <option value="1">1</option>
               <option value="2">2</option>
               <option value="3">3</option>
@@ -64,67 +64,19 @@
             </select>
           </div>
         </div>
-        <div class="form-group">
-          <div id="div1">
+        <div class="form-group" *ngFor="let obj of listOfObjects">
+        <div *ngIf="obj.edit">
             <div class="col-sm-2"></div>
-            <label for="milestone1" class="col-sm-1 control-label">Milestone_1 </label>
+            <label for="{{obj.name}}" class="col-sm-1 control-label">{{obj.name}} </label>
             <div class="col-sm-8">
-              <select class="form-control" name="milestone1" id="milestone1">
+              <select class="form-control" name="{{obj.name}}" id="{{obj.name}}">
                 <option value="1">25%</option>
                 <option value="2">30%</option>
                 <option value="3">35%</option>
               </select>
             </div>
-          </div>
-          <div id="div2" style="display: none">
-            <br><br>
-            <div class="col-sm-2"></div>
-            <label for="milestone2" class="col-sm-1 control-label">Milestone_2 </label>
-            <div class="col-sm-8">
-              <select class="form-control" name="milestone2" id="milestone2">
-                <option value="1">25%</option>
-                <option value="2">30%</option>
-                <option value="3">35%</option>
-              </select>
-            </div>
-          </div>
-          <div id="div3" style="display: none">
-            <br><br>
-            <div class="col-sm-2"></div>
-            <label for="milestone3" class="col-sm-1 control-label">Milestone_3 </label>
-            <div class="col-sm-8">
-              <select class="form-control" name="milestone3" id="milestone3">
-                <option value="1">25%</option>
-                <option value="2">30%</option>
-                <option value="3">35%</option>
-              </select>
-            </div>
-          </div>
-          <div id="div4" style="display: none">
-            <br><br>
-            <div class="col-sm-2"></div>
-            <label for="milestone4" class="col-sm-1 control-label">Milestone_4 </label>
-            <div class="col-sm-8">
-              <select class="form-control" name="milestone4" id="milestone4">
-                <option value="1">25%</option>
-                <option value="2">30%</option>
-                <option value="3">35%</option>
-              </select>
-            </div>
-          </div>
-          <div id="div5" style="display: none">
-            <br><br>
-            <div class="col-sm-2"></div>
-            <label for="milestone5" class="col-sm-1 control-label">Milestone_5 </label>
-            <div class="col-sm-8">
-              <select class="form-control" name="milestone5" id="milestone5">
-                <option value="1">25%</option>
-                <option value="2">30%</option>
-                <option value="3">35%</option>
-              </select>
-            </div>
-          </div>
         </div>
+      </div>
         <div class="form-group">
           <label for="description" class="col-sm-2 control-label">Project description</label>
           <div class="col-sm-9">
@@ -140,5 +92,7 @@
     </div>
   </div>
 </div>
+
+
 
 

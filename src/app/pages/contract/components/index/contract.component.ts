@@ -36,4 +36,43 @@ export class MyContract {
         });
     }
 
+    public listOfObjects = [
+    {
+       name : 'Milestone_1',
+       edit : false
+    },
+    {
+       name : 'Milestone_2',
+       edit : false
+    },
+    {
+       name : 'Milestone_3',
+       edit : false
+    },
+    {
+       name : 'Milestone_4',
+       edit : false
+    },
+    {
+       name : 'Milestone_5',
+       edit : false
+    } 
+  ];
+
+    updateSelectedValue(event:string): void{
+
+        var num = 0;
+        var val = JSON.parse(event);
+
+        for (num = 0; num < 5; num++) {
+            if (num >= val) {
+                this.listOfObjects[num].edit = false;
+            }
+            else {
+                this.listOfObjects[num].edit = true;
+            }
+            console.log(num);
+        }
+
+    }
 }
