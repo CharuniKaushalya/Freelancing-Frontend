@@ -55,6 +55,14 @@ export const PAGES_MENU = [
                 title: 'general.menu.skill',
               }
             }
+          },
+          {
+            path: 'users',
+            data: {
+              menu: {
+                title: 'Users',
+              }
+            }
           }
         ]
       },
