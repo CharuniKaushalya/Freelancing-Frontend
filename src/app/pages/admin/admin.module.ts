@@ -10,8 +10,6 @@ import { routing }       from './admin.routing';
 import { Admin } from './admin.component';
 import { Skill } from './components/skill/skill.component';
 import { Users } from './components/users/users.component';
-import { SmartTables } from './components/smartTables/smartTables.component';
-import { SmartTablesService } from './components/smartTables/smartTables.service';
 
 @NgModule({
   imports: [
@@ -27,10 +25,8 @@ import { SmartTablesService } from './components/smartTables/smartTables.service
     Admin,
     Skill,
     Users,
-    SmartTables,
   ],
   providers: [
-    SmartTablesService
   ]
 })
 export class AdminModule {}
