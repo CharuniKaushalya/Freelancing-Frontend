@@ -1,3 +1,31 @@
 :host /deep/.status-button {
   width: 60px;
 }
+
+@import "../../../../theme/sass/conf/conf";
+
+/deep/.card.popular-app {
+  &>.card-body {
+    padding: 0;
+  }
+
+  .social .fa{
+    line-height: 80px;
+    font-size: 2em;
+  height: 185px;
+  }
+
+  .list-inline {
+    margin:1em 0 0 0;
+  }
+
+  .list-inline>li a{
+     font-size:0.85em;  
+  }
+
+
+}
+
+/deep/.blur .card.popular-app .popular-app-img-container {
+  background: rgba(0, 0, 0, 0.5);
+}
