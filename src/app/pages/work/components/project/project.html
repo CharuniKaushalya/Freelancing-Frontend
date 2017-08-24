@@ -5,105 +5,75 @@
             <h1>Browse Projects</h1>
             <hr>
             <form class="form-horizontal">
-                <div class="input-group input-group-ind">
-                    <input type="text" name="search" class="form-control1 input-search" placeholder="Search for Projects">
+                <div class="input-group">
+                    <input type="text" class="form-control with-primary-addon" placeholder="Search for...">
                     <span class="input-group-btn">
-                        <button class="btn btn-success" type="submit"><i class="fa fa-search icon-ser"></i></button>
+                        <button class="btn btn-primary" type="button">Go!</button>
                     </span>
                 </div>
 
-                <a *ngIf="!custom_search" (click)="custom_search=true" class="btn btn-link pull-right"> More Options <span class="lnr lnr-chevron-down"></span></a>
+                <a *ngIf="!custom_search" (click)="custom_search=true" class="btn btn-sm btn-default pull-right"> More Search Options <span class="lnr lnr-chevron-down"></span></a>
 
-                <a *ngIf="custom_search" (click)="custom_search=false" class="btn btn-link pull-right"> Less Options <span class="lnr lnr-chevron-up"></span></a>
+                <a *ngIf="custom_search" (click)="custom_search=false" class="btn btn-sm btn-default pull-right"> Less Search Options <span class="lnr lnr-chevron-up"></span></a>
                 <br>
 
                 <div *ngIf="custom_search">
-                    <div class="input-group input-group-ind">
+                    <div class="form-group">
                         <label class="col-sm-12">Skills</label>
-                        <input class="form-control1" name="skills" id="skills" placeholder="Enter a character to search skills">
+                        <input class="form-control form-control-rounded" name="skills" id="skills" placeholder="Enter a character to search skills">
                     </div>
-                    <br>
-                    <div class="input-group input-group-ind">
+                    <div class="form-group">
                         <label class="col-sm-12">Location</label>
-                        <input class="form-control1" name="skills" id="skills" placeholder="Enter location">
+                        <input class="form-control form-control-rounded" name="skills" id="skills" placeholder="Enter location">
                     </div>
-
-                    <br>
-                    <button class="btn btn-info pull-right">Search</button>
+                    <button class="btn btn-primary pull-right">Search</button>
                     <button class="btn btn-default pull-right">Reset</button>
                     <br>
-                   
+                    <br>
+
                 </div>
             </form>
 
             <br><br>
 
-            <div class="panel panel-info" data-widget="{&quot;draggable&quot;: &quot;false&quot;}" data-widget-static="">
-                <div class="panel-heading">
-                    <h2 class="col-sm-5">Project</h2>
-                    <h2 class="col-sm-2">Bids</h2>
-                    <h2 class="col-sm-2">Status</h2>
-                    <h2 class="col-sm-2">Price</h2>
-                    <div class="panel-ctrls" data-actions-container="" data-action-collapse="{&quot;target&quot;: &quot;.panel-body&quot;}"><span class="button-icon has-bg"><i class="ti ti-angle-down"></i></span></div>
-                </div>
-                <div class="panel-body no-padding" style="display: block;">
-                    <table class="table table-striped">
-                        <tbody>
-                            <tr>
-                                <td class="col-sm-5">
-                                    <a href="#">
-                                        <h3 class="text-primary"><i class="lnr lnr-enter"></i> Project Title</h3>
-                                    </a>
-                                    <p>Description Description Description Description </p>
-                                    <br>
-                                    <h5>
-                                        <span class="label label-default">Java</span>
-                                        <span class="label label-default">HTML</span>
-                                        <span class="label label-default">CSS</span>
-                                        <span class="label label-default">PHP</span>
-                                        <span class="label label-default">MySQL</span>
-                                    </h5>
-                                </td>
-                                <td class="col-sm-2">1</td>
-                                <td class="col-sm-2">
-                                    <h4>
-                                        <span class="label label-success">Started</span>
-                                    </h4>
-                                </td>
-                                <td class="col-sm-2">10-25 USD</td>
-                                <td class="col-sm-1">
-                                    <button class="btn btn-xs btn-warning">Bid Now</button>
-                                </td>
-                            </tr>
-                            <tr>
-                                <td class="col-sm-5">
-                                    <a href="#">
-                                        <h3 class="text-primary"><i class="lnr lnr-enter"></i> Project Title</h3>
-                                    </a>
-                                    <p>Description Description Description Description </p>
-                                    <br>
-                                    <h5>
-                                        <span class="label label-default">Java</span>
-                                        <span class="label label-default">HTML</span>
-                                        <span class="label label-default">CSS</span>
-                                        <span class="label label-default">PHP</span>
-                                        <span class="label label-default">MySQL</span>
-                                    </h5>
-                                </td>
-                                <td class="col-sm-2">1</td>
-                                <td class="col-sm-2">
-                                    <h4>
-                                        <span class="label label-success">Started</span>
-                                    </h4>
-                                </td>
-                                <td class="col-sm-2">10-25 USD</td>
-                                <td class="col-sm-1">
-                                    <button class="btn btn-xs btn-warning">Bid Now</button>
-                                </td>
-                            </tr>
-                        </tbody>
-                    </table>
-                </div>
+            <div class="col-sm-12">
+                <ba-card cardTitle="My Projects" baCardClass="with-scroll table-panel">
+                    <div>
+                        <table class="table table-condensed">
+                            <thead>
+                                <tr>
+                                    <th></th>
+                                    <th>Project</th>
+                                    <th>Bids</th>
+                                    <th>Status</th>
+                                    <th>Price</th>
+                                    <th>Actions</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr>
+                                    <th>#</th>
+                                    <td>
+                                        <a href="#">Project Title</a>
+                                        <p>Description Description Description Description </p>
+                                        <button type="button" class="btn btn-warning  btn-sm">Java</button>
+                                        <button type="button" class="btn btn-danger  btn-sm">MySQL</button>
+                                        <button type="button" class="btn btn-info  btn-sm">Spring</button>
+                                    </td>
+                                    <td>1</td>
+                                    <td>
+                                        Started
+                                    </td>
+                                    <td>10-25 USD</td>
+                                    <td>
+                                        <button type="button" class="btn btn-primary  btn-sm">Bid Now</button>
+                                    </td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+
+                </ba-card>
             </div>
 
         </div>

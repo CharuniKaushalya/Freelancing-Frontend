@@ -3,140 +3,149 @@
 
         <div class="col-sm-12">
 
-        <ul class="nav nav-tabs">
-          <li class="nav-item">
-            <a class="nav-link active" data-toggle="tab" href="#active_bids">Active Bids</a>
-            </li>
-            <li class="nav-item">
-                <a class="nav-link" data-toggle="tab" href="#cur_work">Current Work</a>
-            </li>
-            <li class="nav-item">
-                <a class="nav-link" data-toggle="tab" href="#past_work">Past Work</a>
-            </li>
-
-        </ul>
-
+            <ul class="nav nav-tabs">
+                <li class="nav-item">
+                    <a class="nav-link active" data-toggle="tab" href="#active_bids">Active Bids</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" data-toggle="tab" href="#cur_work">Current Work</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" data-toggle="tab" href="#past_work">Past Work</a>
+                </li>
+            </ul>
+            <br>
             <div class="tab-content">
                 <div id="active_bids" class="tab-pane active">
-                    <br>
-                    <div class="panel panel-info" data-widget="{&quot;draggable&quot;: &quot;false&quot;}" data-widget-static="">
-                        <div class="panel-heading">
-                            <h2 class="col-sm-5">Project Name</h2>
-                            <h2 class="col-sm-2">Bids</h2>
-                            <h2 class="col-sm-2">My Bid</h2>
-                            <h2 class="col-sm-2">Avg Bid</h2>
-                            <div class="panel-ctrls" data-actions-container="" data-action-collapse="{&quot;target&quot;: &quot;.panel-body&quot;}"><span class="button-icon has-bg"><i class="ti ti-angle-down"></i></span></div>
-                        </div>
-                        <div class="panel-body no-padding" style="display: block;">
-                            <table class="table table-striped">
-                                <tbody>
-                                    <tr>
-                                        <td class="col-sm-5">
-                                            <a href="#">
-                                                <h3 class="text-primary"><i class="lnr lnr-enter"></i> Project Title</h3>
-                                            </a>
-                                            <p>Description Description Description Description </p>
-                                        </td>
-                                        <td class="col-sm-2">5</td>
-                                        <td class="col-sm-2">10 USD</td>
-                                        <td class="col-sm-2">25 USD</td>
-                                        <td class="col-sm-1">
-                                            <h3>
+                    <div class="col-sm-12">
+                        <ba-card cardTitle="Active Bids Details" baCardClass="with-scroll table-panel">
+                            <div>
+                                <table class="table table-condensed">
+                                    <thead>
+                                        <tr>
+                                            <th></th>
+                                            <th>Project Name</th>
+                                            <th>Bids</th>
+                                            <th>My Bid</th>
+                                            <th>Average Bid</th>
+                                            <th>Actions</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        <tr>
+                                            <td></td>
+                                            <td>
+                                                <a href="#">Project Title</a>
+                                                <p>Description Description Description Description </p>
+                                            </td>
+                                            <td>5</td>
+                                            <td>10 USD</td>
+                                            <td>25 USD</td>
+                                            <td>
+
                                                 <a href="#"><i class="lnr lnr-pencil"></i></a>
                                                 <a href="#"><i class="lnr lnr-cross"></i></a>
-                                            </h3>
-                                        </td>
-                                    </tr>
-                                </tbody>
-                            </table>
-                        </div>
+
+                                            </td>
+                                        </tr>
+                                    </tbody>
+                                </table>
+                            </div>
+
+                        </ba-card>
                     </div>
                 </div>
                 <div id="cur_work" class="tab-pane fade">
-                    <br>
-                    <div class="panel panel-info" data-widget="{&quot;draggable&quot;: &quot;false&quot;}" data-widget-static="">
-                        <div class="panel-heading">
-                            <h2 class="col-sm-4">Project Name</h2>
-                            <h2 class="col-sm-2">Client/Freelancer</h2>
-                            <h2 class="col-sm-2">Status</h2>
-                            <h2 class="col-sm-2">Deadline</h2>
-                            <div class="panel-ctrls" data-actions-container="" data-action-collapse="{&quot;target&quot;: &quot;.panel-body&quot;}"><span class="button-icon has-bg"><i class="ti ti-angle-down"></i></span></div>
-                        </div>
-                        <div class="panel-body no-padding" style="display: block;">
-                            <table class="table table-striped">
-                                <tbody>
-                                    <tr>
-                                        <td class="col-sm-4">
-                                            <a href="#">
-                                                <h3 class="text-primary"><i class="lnr lnr-enter"></i> Project Title</h3>
-                                            </a>
-                                            <p>Description Description Description Description </p>
-                                        </td>
-                                        <td class="col-sm-2">
-                                            <div class="profile_img">
-                                                <span style="background:url(assets/images/1.jpg) no-repeat center"> </span>
-                                                <div class="user-name">
-                                                    <p>Kanchana<span>Web Developer</span></p>
+                    <div class="col-sm-12">
+                        <ba-card cardTitle="Active Bids Details" baCardClass="with-scroll table-panel">
+                            <div>
+                                <table class="table table-condensed">
+                                    <thead>
+                                        <tr>
+                                            <th></th>
+                                            <th>Project Name</th>
+                                            <th>Client/Freelancer</th>
+                                            <th>Status</th>
+                                            <th>Deadline</th>
+                                            <th>Actions</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        <tr>
+                                            <td></td>
+                                            <td>
+                                                <a href="#">Project Title</a>
+                                                <p>Description Description Description Description </p>
+                                            </td>
+                                            <td>
+                                                <div class="profile_img">
+                                                    <span style="background:url(assets/images/1.jpg) no-repeat center"> </span>
+                                                    <div class="user-name">
+                                                        <p>Kanchana<span>Web Developer</span></p>
+                                                    </div>
                                                 </div>
-                                            </div>
-                                        </td>
-                                        <td class="col-sm-2">Milestone 1</td>
-                                        <td class="col-sm-2">12/12/2017</td>
-                                        <td class="col-sm-2">
-                                            <h3>
+                                            </td>
+                                            <td>Milestone 1</td>
+                                            <td>12/12/2017</td>
+                                            <td>
                                                 <a href="#"><i class="lnr lnr-users"></i></a>
                                                 <a href="#"><i class="lnr lnr-pencil"></i></a>
                                                 <a href="#"><i class="lnr lnr-cross"></i></a>
-                                            </h3>
-                                        </td>
-                                    </tr>
-                                </tbody>
-                            </table>
-                        </div>
+                                            </td>
+                                        </tr>
+                                    </tbody>
+                                </table>
+                            </div>
+
+                        </ba-card>
                     </div>
                 </div>
                 <div id="past_work" class="tab-pane fade">
-                    <br>
-                    <div class="panel panel-info" data-widget="{&quot;draggable&quot;: &quot;false&quot;}" data-widget-static="">
-                        <div class="panel-heading">
-                            <h2 class="col-sm-4">Project Name</h2>
-                            <h2 class="col-sm-2">Client/Freelancer</h2>
-                            <h2 class="col-sm-2">Payments</h2>
-                            <h2 class="col-sm-2">Rating</h2>
-                            <h2 class="col-sm-2">Time Period</h2>
-                            <div class="panel-ctrls" data-actions-container="" data-action-collapse="{&quot;target&quot;: &quot;.panel-body&quot;}"><span class="button-icon has-bg"><i class="ti ti-angle-down"></i></span></div>
-                        </div>
-                        <div class="panel-body no-padding" style="display: block;">
-                            <table class="table table-striped">
-                                <tbody>
-                                    <tr>
-                                        <td class="col-sm-4">
-                                            <a href="#">
-                                                <h3 class="text-primary"><i class="lnr lnr-enter"></i> Project Title</h3>
-                                            </a>
-                                            <p>Description Description Description Description </p>
-                                        </td>
-                                        <td class="col-sm-2">
-                                            <div class="profile_img">
-                                                <span style="background:url(assets/images/1.jpg) no-repeat center"> </span>
-                                                <div class="user-name">
-                                                    <p>Kanchana<span>Web Developer</span></p>
+                    <div class="col-sm-12">
+                        <ba-card cardTitle="Active Bids Details" baCardClass="with-scroll table-panel">
+                            <div>
+                                <table class="table table-condensed">
+                                    <thead>
+                                        <tr>
+                                            <th></th>
+                                            <th>Project Name</th>
+                                            <th>Client/Freelancer</th>
+                                            <th>Payments</th>
+                                            <th>Rating</th>
+                                            <th>Time Period</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        <tr>
+                                            <td></td>
+                                            <td>
+                                                <a href="#">Project Title</a>
+                                                <p>Description Description Description Description </p>
+                                            </td>
+                                            <td>
+                                                <div class="profile_img">
+                                                    <span style="background:url(assets/images/1.jpg) no-repeat center"> </span>
+                                                    <div class="user-name">
+                                                        <p>Kanchana<span>Web Developer</span></p>
+                                                    </div>
                                                 </div>
-                                            </div>
-                                        </td>
-                                        <td class="col-sm-2">35 USD</td>
-                                        <td class="col-sm-2">
-                                            <i class="lnr lnr-star"></i>
-                                            <i class="lnr lnr-star"></i>
-                                            <i class="lnr lnr-star"></i>
-                                            <i class="lnr lnr-star"></i>
-                                            <i class="lnr lnr-star"></i>
-                                        </td>
-                                        <td class="col-sm-2">08/08/2015 to 12/12/2015</td>
-                                    </tr>
-                                </tbody>
-                            </table>
-                        </div>
+                                            </td>
+                                            <td>35 USD</td>
+                                            <td>
+                                                <!--<ngb-rating  max="5" class="rating">
+                                                    <ng-template let-fill="fill">
+                                                        <i class="ion-android-star"></i>
+                                                        <i class="ion-android-star-outline"></i>
+                                                    </ng-template>
+                                                </ngb-rating>-->
+                                            </td>
+                                            <td>08/08/2015 to 12/12/2015</td>
+                                        </tr>
+                                    </tbody>
+                                </table>
+                            </div>
+
+                        </ba-card>
                     </div>
                 </div>
             </div>
