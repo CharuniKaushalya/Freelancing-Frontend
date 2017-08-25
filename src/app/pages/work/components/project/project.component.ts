@@ -1,4 +1,4 @@
-import { Component } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
 import { MyService } from "../../../../theme/services/backend/service";
 import { TreeModel } from 'ng2-tree';
 import { Router } from '@angular/router';
@@ -12,10 +12,7 @@ import { Project } from "../../../../theme/models/project";
     providers: [MyService],
 })
 
-export class MyProjects {
-
-
-
+export class MyProjects implements OnInit{
     custom_search = false;
     projctsStream: string = "projects";
     projects: Project[] = [];
@@ -33,7 +30,8 @@ export class MyProjects {
         });
     }
 
-
+    ngOnInit() {
+    }
 
     Hex2String(hex_str: string) {
         let j;
@@ -50,5 +48,4 @@ export class MyProjects {
         let link = ['/project', id];
         this._router.navigate(link);
     }
-
 }

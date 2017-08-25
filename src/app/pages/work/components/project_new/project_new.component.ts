@@ -1,23 +1,21 @@
 import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
-import { MyService } from  "../../../../theme/services/backend/service";
-import {TreeModel} from 'ng2-tree';
-import { Router} from '@angular/router';
+import { MyService } from "../../../../theme/services/backend/service";
+import { TreeModel } from 'ng2-tree';
+import { Router } from '@angular/router';
 
 import { Project } from "../../../../theme/models/project";
 import { TimePeriod } from "../../../../theme/models/timeperiod";
 import { Budget } from "../../../../theme/models/budget";
 
 @Component({
-  selector: 'project_new',
-  templateUrl: './project_new.html',
-  providers :[MyService],
+    selector: 'project_new',
+    templateUrl: './project_new.html',
+    providers: [MyService],
 })
 
-export class ProjectNew {
+export class ProjectNew implements OnInit{
 
- 
-
-  	@Input() project: Project;
+    @Input() project: Project;
     @Input() time_period: TimePeriod;
     @Input() budget: Budget;
 
@@ -34,6 +32,9 @@ export class ProjectNew {
         this.project.time_period = this.time_period;
         this.project.budget = this.budget;
 
+    }
+
+    ngOnInit() {
     }
 
     changeFiles(input: any) {
