@@ -45,7 +45,7 @@ export class MyProjects implements OnInit{
     }
 
     goToProject(id: string) {
-        let link = ['/project', id];
+        let link = ['/project_details', id];
         this._router.navigate(link);
     }
 }
