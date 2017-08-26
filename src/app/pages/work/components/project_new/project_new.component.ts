@@ -9,6 +9,7 @@ import 'rxjs/add/operator/map';
 import { Project } from "../../../../theme/models/project";
 import { TimePeriod } from "../../../../theme/models/timeperiod";
 import { Budget } from "../../../../theme/models/budget";
+import { DownloadFile } from "../../../../theme/models/downloadFile";
 
 @Component({
     selector: 'project_new',
@@ -26,7 +27,7 @@ export class ProjectNew implements OnInit {
 
     @Output() close = new EventEmitter();
     addtionalFiles: FileList;
-    encodedFiles: string[] = [];
+    encodedFiles: DownloadFile[] = [];
     projctsStream: string = "projects";
 
     myitems = ['mysql', 'Java', 'erlang','Python','JS'];
@@ -48,12 +49,16 @@ export class ProjectNew implements OnInit {
         this.addtionalFiles = input.files;
 
         Array.from(this.addtionalFiles).forEach(file => {
+            let dFile = new DownloadFile();
+            dFile.name = file.name;
+
             let reader: any,
                 target: EventTarget;
             reader = new FileReader();
 
             reader.onloadend = (e) => {
-                this.encodedFiles.push(reader.result);
+                dFile.data = reader.result;
+                this.encodedFiles.push(dFile);
             }
             reader.readAsDataURL(file);
         });
@@ -78,7 +83,7 @@ export class ProjectNew implements OnInit {
             console.log("saved");
             // console.log(data);
 
-            this._router.navigate(['/pages/work/projects'])
+            this._router.navigate(['/pages/work/my_projects'])
         });
     }
 

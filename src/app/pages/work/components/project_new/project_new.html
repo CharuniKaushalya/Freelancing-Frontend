@@ -93,7 +93,7 @@
                 <font color="#209e91"> Skills Required</font>
             </h3>
             <br><br>
-            <tag-input [ngModel]="skills" [onlyFromAutocomplete]="true" (onAdd)="onItemAdded($event)" theme='dark'>
+            <tag-input [ngModel]="skills" [secondaryPlaceholder]="'Type here to find'" [onlyFromAutocomplete]="true" (onAdd)="onItemAdded($event)" theme='dark'>
                 <tag-input-dropdown [appendToBody]="false" [autocompleteItems]="myitems">
                 </tag-input-dropdown>
             </tag-input>
