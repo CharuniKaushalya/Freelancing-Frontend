@@ -1,9 +1,17 @@
 import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
+
 import { MyService } from  "../../../../theme/services/backend/service";
-import {TreeModel} from 'ng2-tree';
 import { User } from "../../../../theme/models/user";
 import { Router, Params, ActivatedRoute } from '@angular/router';
 declare var require: any;
+import 'rxjs/add/operator/filter';
+import 'rxjs/add/operator/debounceTime';
+import 'rxjs/add/operator/map';
+
+import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
+import { SkillModal } from '../skill-modal/skill-modal.component';
+
+
 
 @Component({
   selector: 'profile',
@@ -18,8 +26,10 @@ export class Profile  implements OnInit {
     PeerInfo = null;
     user: User;
     userStream: string = "Users";
+    items = ['Pizza', 'Pasta', 'Parmesan'];
+    
 
-    constructor(private _service: MyService, private _route: ActivatedRoute, private _router: Router) {
+    constructor(private _service: MyService, private _route: ActivatedRoute, private _router: Router,  private modalService: NgbModal) {
         _service.getinfo().then(data => {
             console.log(data);
             this.ChainInfo = data;
@@ -29,6 +39,7 @@ export class Profile  implements OnInit {
             console.log(data);
             this.PeerInfo = data;
         });
+         console.log(this.items);
     }
 
 
@@ -58,5 +69,20 @@ export class Profile  implements OnInit {
 
         return result_back;
     }
+
+    valuechange() {
+      
+      
+    }
+    onItemAdded(item) {
+        this.items.push(item.value);
+        console.log(this.items);
+    }
+
+    smModalShow(): void {
+        const activeModal = this.modalService.open(SkillModal, {size: 'sm'});
+        activeModal.componentInstance.modalHeader = 'Add Skill';
+    }
+
 
 }
