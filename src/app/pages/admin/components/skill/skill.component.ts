@@ -1,9 +1,9 @@
 import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
-import { MyService } from  "../../../../theme/services/backend/service";
-import {FormGroup, AbstractControl, FormBuilder, Validators} from '@angular/forms';
+import { MyService } from "../../../../theme/services/backend/service";
+import { FormGroup, AbstractControl, FormBuilder, Validators } from '@angular/forms';
 import { SkillModel } from "../../../../theme/models/skillmodel";
 import { LocalDataSource } from 'ng2-smart-table';
-import { Router} from '@angular/router';
+import { Router } from '@angular/router';
 
 
 @Component({
@@ -15,17 +15,17 @@ import { Router} from '@angular/router';
 
 export class Skill {
 
-   public submitted:boolean = false;
-   public form:FormGroup;
-   public name:AbstractControl;
+  public submitted: boolean = false;
+  public form: FormGroup;
+  public name: AbstractControl;
 
-   @Input() skill: SkillModel;
-   skillsStream: string = "skills";
+  @Input() skill: SkillModel;
+  skillsStream: string = "skills";
 
-   query: string = '';
+  query: string = '';
 
   settings = {
-  	actions: false,
+    actions: false,
     columns: {
       skill_id: {
         title: 'ID',
@@ -40,55 +40,55 @@ export class Skill {
 
   source: LocalDataSource = new LocalDataSource();
 
-  	custom_search= false;
-    skills : SkillModel[] = []; 
+  custom_search = false;
+  skills: SkillModel[] = [];
 
 
-  constructor(fb:FormBuilder,private _service: MyService, private _router: Router) {
-  	this.skill = new SkillModel();
-  	this.form = fb.group({
+  constructor(fb: FormBuilder, private _service: MyService, private _router: Router) {
+    this.skill = new SkillModel();
+    this.form = fb.group({
       'name': ['', Validators.compose([Validators.required, Validators.minLength(1)])]
     });
 
     this.name = this.form.controls['name'];
     this.LoadSkills();
-     
+
   }
 
-  public onSkillSubmit(values:Object):void {
+  public onSkillSubmit(values: Object): void {
     this.submitted = true;
-     console.log(values);
-     console.log(this.skill);
+    console.log(values);
+    console.log(this.skill);
 
     if (this.form.valid) {
       // your code goes here
       console.log(values);
       let key = this.skill.name;
       let skillJSON = JSON.stringify(this.skill);
-         console.log(skillJSON);
+      console.log(skillJSON);
 
-        let data_hex = this.String2Hex(skillJSON);
-         console.log(data_hex);
-        // console.log(this.Hex2String(data_hex));  
+      let data_hex = this.String2Hex(skillJSON);
+      console.log(data_hex);
+      // console.log(this.Hex2String(data_hex));  
 
-        this._service.publishToStream(this.skillsStream,key,data_hex).then(data => {
-            console.log(data);
-        });
+      this._service.publishToStream(this.skillsStream, key, data_hex).then(data => {
+        console.log(data);
+      });
 
-        //this._router.navigate(['pages/admin/skill']);
-   		this.LoadSkills();
+      //this._router.navigate(['pages/admin/skill']);
+      this.LoadSkills();
     }
   }
 
   LoadSkills() {
-  	this._service.listStreamItems(this.skillsStream).then(data => {
-            data.forEach(element => {
-                let skill : SkillModel = JSON.parse(this.Hex2String(element.data.toString()));
-                skill.skill_id = element.txid;
-                this.skills.push(skill);
-            });
-            console.log(this.skills);
-        });
+    this._service.listStreamItems(this.skillsStream).then(data => {
+      data.forEach(element => {
+        let skill: SkillModel = JSON.parse(this.Hex2String(element.data.toString()));
+        skill.skill_id = element.txid;
+        this.skills.push(skill);
+      });
+      console.log(this.skills);
+    });
     this.source.load(this.skills);
   }
 
@@ -100,26 +100,26 @@ export class Skill {
     }
   }
 
-  String2Hex(str:string) {
-        let hex, i;
+  String2Hex(str: string) {
+    let hex, i;
 
-        let result = "";
-        for (i = 0; i < str.length; i++) {
-            hex = str.charCodeAt(i).toString(16);
-            result += ("000"+hex).slice(-4);
-        }
-        return result;
+    let result = "";
+    for (i = 0; i < str.length; i++) {
+      hex = str.charCodeAt(i).toString(16);
+      result += ("000" + hex).slice(-4);
+    }
+    return result;
+  }
+
+  Hex2String(hex_str: string) {
+    let j;
+    let hexes = hex_str.match(/.{1,4}/g) || [];
+    let result_back = "";
+    for (j = 0; j < hexes.length; j++) {
+      result_back += String.fromCharCode(parseInt(hexes[j], 16));
     }
 
-    Hex2String(hex_str:string) {
-        let j;
-        let hexes = hex_str.match(/.{1,4}/g) || [];
-        let result_back = "";
-        for (j = 0; j < hexes.length; j++) {
-            result_back += String.fromCharCode(parseInt(hexes[j], 16));
-        }
-
-        return result_back;
-    }
+    return result_back;
+  }
 
 }

@@ -1,17 +1,17 @@
 import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
 import { MyService } from "../../../../theme/services/backend/service";
 import { Project } from "../../../../theme/models/project";
-import {TreeModel} from 'ng2-tree';
+import { TreeModel } from 'ng2-tree';
 import { Router, Params, ActivatedRoute } from '@angular/router';
 
 @Component({
-  selector: 'project_details',
-  templateUrl: './project_details.html',
-  providers :[MyService],
+    selector: 'project_details',
+    templateUrl: './project_details.html',
+    providers: [MyService],
 })
 
 export class ProjectDetails implements OnInit {
-project: Project;
+    project: Project;
     projctsStream: string = "projects";
 
     constructor(private _service: MyService, private _route: ActivatedRoute, private _router: Router) {

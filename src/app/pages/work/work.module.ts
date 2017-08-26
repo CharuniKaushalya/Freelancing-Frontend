@@ -11,13 +11,16 @@ import { MyProjects } from './components/project/project.component';
 import { ProjectNew } from './components/project_new/project_new.component';
 import { ProjectDetails } from './components/project_detail/project_details.component';
 
+import { AngularMultiSelectModule } from 'angular2-multiselect-dropdown/angular2-multiselect-dropdown';
+
 @NgModule({
   imports: [
     CommonModule,
     FormsModule,
     NgaModule,
     TreeModule,
-    routing
+    routing,
+    AngularMultiSelectModule
   ],
   declarations: [
     Work,
