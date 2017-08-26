@@ -49,16 +49,16 @@
                                 </tr>
                             </thead>
                             <tbody>
-                                <tr>
+                                <tr *ngFor="let project of projects">
                                     <td>
                                         <font size="5" color="#209e91"><i class="fa fa-product-hunt"></i></font>
                                     </td>
                                     <td>
-                                        <a href="#">
-                                            <h3>Project Title</h3>
+                                        <a style="cursor:pointer" (click)="goToProject(project.project_id)">
+                                            <h3>{{project.projectName}}</h3>
                                         </a>
 
-                                        <p>Description Description Description Description </p>
+                                        <p>{{project.description}} </p>
                                         <button type="button" class="btn btn-warning  btn-sm">Java</button>
                                         <button type="button" class="btn btn-danger  btn-sm">MySQL</button>
                                         <button type="button" class="btn btn-info  btn-sm">Spring</button>
@@ -67,7 +67,7 @@
                                     <td>
                                         Started
                                     </td>
-                                    <td>10-25 USD</td>
+                                    <td>{{project.budget.min}}-{{project.budget.max}} {{project.budget.type}}</td>
                                     <td>
                                         <button type="button" class="btn btn-primary  btn-sm">Bid Now</button>
                                     </td>

@@ -1,10 +1,10 @@
-import { NgModule }      from '@angular/core';
-import { CommonModule }  from '@angular/common';
+import { NgModule } from '@angular/core';
+import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 import { NgaModule } from '../../theme/nga.module';
 import { TreeModule } from 'ng2-tree';
 
-import { routing }       from './work.routing';
+import { routing } from './work.routing';
 import { Work } from './work.component';
 import { MyWork } from './components/work/work.component';
 import { MyProjects } from './components/project/project.component';
@@ -27,4 +27,4 @@ import { ProjectDetails } from './components/project_detail/project_details.comp
     ProjectDetails
   ]
 })
-export class WorkModule {}
+export class WorkModule { }

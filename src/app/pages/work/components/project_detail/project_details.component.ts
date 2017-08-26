@@ -1,5 +1,5 @@
 import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
-import { MyService } from  "../../../../theme/services/backend/service";
+import { MyService } from "../../../../theme/services/backend/service";
 import { Project } from "../../../../theme/models/project";
 import {TreeModel} from 'ng2-tree';
 import { Router, Params, ActivatedRoute } from '@angular/router';
@@ -11,10 +11,8 @@ import { Router, Params, ActivatedRoute } from '@angular/router';
 })
 
 export class ProjectDetails implements OnInit {
-
- 
-	project: Project;
-   	projctsStream: string = "projects";
+project: Project;
+    projctsStream: string = "projects";
 
     constructor(private _service: MyService, private _route: ActivatedRoute, private _router: Router) {
 
@@ -46,5 +44,4 @@ export class ProjectDetails implements OnInit {
 
         return result_back;
     }
-
 }
