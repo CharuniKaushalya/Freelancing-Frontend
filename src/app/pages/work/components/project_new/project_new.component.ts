@@ -2,15 +2,18 @@ import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
 import { MyService } from "../../../../theme/services/backend/service";
 import { TreeModel } from 'ng2-tree';
 import { Router } from '@angular/router';
+import 'rxjs/add/operator/filter';
+import 'rxjs/add/operator/debounceTime';
+import 'rxjs/add/operator/map';
 
 import { Project } from "../../../../theme/models/project";
 import { TimePeriod } from "../../../../theme/models/timeperiod";
 import { Budget } from "../../../../theme/models/budget";
-// import { Skill } from "../../../../theme/models/skill";
 
 @Component({
     selector: 'project_new',
     templateUrl: './project_new.html',
+    styleUrls: ['./project_new.scss'],
     providers: [MyService],
 })
 
@@ -19,16 +22,14 @@ export class ProjectNew implements OnInit {
     @Input() project: Project;
     @Input() time_period: TimePeriod;
     @Input() budget: Budget;
-    @Input() skills = [];
+    skills = [];
 
     @Output() close = new EventEmitter();
     addtionalFiles: FileList;
     encodedFiles: string[] = [];
     projctsStream: string = "projects";
 
-    selectedItems = [];
-    dropdownList = [];
-    dropdownSettings = {};
+    myitems = ['mysql', 'Java', 'erlang','Python','JS'];
 
     constructor(private _router: Router, private _service: MyService) {
 
@@ -41,44 +42,6 @@ export class ProjectNew implements OnInit {
     }
 
     ngOnInit() {
-        this.dropdownList = [
-            { "id": 1, "itemName": "Java" },
-            { "id": 2, "itemName": "Maven" },
-            { "id": 3, "itemName": "JavaSript" },
-            { "id": 4, "itemName": "Angular2" },
-            { "id": 5, "itemName": "Spring" },
-            { "id": 6, "itemName": "JQuery" },
-            { "id": 7, "itemName": "MySQL" },
-            { "id": 8, "itemName": "MongoDB" },
-            { "id": 9, "itemName": "ElasticSearch" },
-            { "id": 10, "itemName": "Blockchain" },
-            { "id": 11, "itemName": "C" },
-            { "id": 12, "itemName": "C++" },
-            { "id": 13, "itemName": "C#" },
-            { "id": 14, "itemName": "Bootstrap" },
-            { "id": 15, "itemName": "HTML5" },
-            { "id": 16, "itemName": "CSS" },
-            { "id": 17, "itemName": "PHP" },
-            { "id": 18, "itemName": "Wordpress" },
-            { "id": 19, "itemName": "Symfony2" },
-            { "id": 20, "itemName": "XNA" }
-        ];
-        this.selectedItems  = [
-            { "id": 3, "itemName": "C#" },
-            { "id": 4, "itemName": "Angular2" },
-            { "id": 5, "itemName": "Spring" },
-            { "id": 14, "itemName": "Bootstrap" },
-            { "id": 15, "itemName": "HTML5" }
-        ];
-        this.dropdownSettings = {
-            singleSelection: false,
-            text: "Select Skills",
-            selectAllText: 'Select All',
-            unSelectAllText: 'UnSelect All',
-            enableSearchFilter: true,
-            classes: "myclass custom-class",
-            searchPlaceholderText: "Enter a character to search skills"
-        };
     }
 
     changeFiles(input: any) {
@@ -102,7 +65,7 @@ export class ProjectNew implements OnInit {
 
     save() {
         this.project.files = this.encodedFiles;
-        this.project.skills = this.selectedItems ;
+        this.project.skills = this.skills ;
         let key = this.project.projectName;
         let projectJSON = JSON.stringify(this.project)
         // console.log(projectJSON);
@@ -141,19 +104,9 @@ export class ProjectNew implements OnInit {
         return result_back;
     }
 
-    onItemSelect(item: any) {
-        console.log(item);
+    onItemAdded(item) {
+        this.skills.push(item.value);
         console.log(this.skills);
-    }
-    OnItemDeSelect(item: any) {
-        console.log(item);
-        console.log(this.skills);
-    }
-    onSelectAll(items: any) {
-        console.log(items);
-    }
-    onDeSelectAll(items: any) {
-        console.log(items);
     }
 }
 

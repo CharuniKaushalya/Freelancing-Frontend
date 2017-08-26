@@ -8,7 +8,7 @@
   <div class="modal-body">
 
     <tag-input [ngModel]="items"
-           [onlyFromAutocomplete]="false"  
+           [onlyFromAutocomplete]="true"  
            (onAdd)="onItemAdded($event)" theme='dark'>
     <tag-input-dropdown [appendToBody]="false"
                         [autocompleteItems]="myitems">

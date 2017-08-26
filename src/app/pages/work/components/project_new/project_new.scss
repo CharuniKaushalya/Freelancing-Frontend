@@ -1,0 +1,33 @@
+
+
+$foundation-primary: #209e91;
+
+$foundation-primary-dark: darken($foundation-primary, 10%);
+
+// this is the container's theme
+$foundation-theme: (
+    container-border-bottom: 1px solid $foundation-primary
+);
+
+// this is the tag's theme
+$foundation-tag-theme: (
+    background: $foundation-primary,
+    background-focused: $foundation-primary-dark,
+    background-active: $foundation-primary-dark,
+    background-hover: $foundation-primary-dark,
+    color: #fff,
+    color-hover: #fff,
+    border-radius: 2px
+);
+
+// this is the delete icon's theme
+$foundation-icon-theme: (
+    fill: #fff,
+    fill-focus: #eee,
+    transition: all 0.35s
+);
+
+:host /deep/ ng2-dropdown-menu div{
+	left: inherit !important;
+	top: inherit !important;
+} 
