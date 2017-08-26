@@ -1,6 +1,6 @@
 import { NgModule }      from '@angular/core';
 import { CommonModule }  from '@angular/common';
-import { FormsModule } from '@angular/forms';
+import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { NgaModule } from '../../theme/nga.module';
 import { TreeModule } from 'ng2-tree';
 import { Ng2SmartTableModule } from 'ng2-smart-table';
@@ -14,6 +14,7 @@ import { Users } from './components/users/users.component';
 @NgModule({
   imports: [
     CommonModule,
+    ReactiveFormsModule,
     FormsModule,
     NgaModule,
     TreeModule,
