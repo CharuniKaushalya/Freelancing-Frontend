@@ -1,96 +1,105 @@
 <div class="container">
-  <div class="row">
-
-    <div class="col-sm-12">
-      <h1>Create Contract</h1>
-      <hr>
-      <form class="form-horizontal">
-
-        <div class="form-group">
-          <label for="name" class="col-sm-2 control-label">Project Name</label>
-          <div class="col-sm-9">
-            <select class="form-control" name="name" id="name">
-            </select>
-          </div>
+    <div class="row">
+        <div class="col-sm-12">
+            <form [formGroup]="form" (ngSubmit)="onSubmit(form.value)" class="form-horizontal">
+                <div class="form-group">
+                    <label for="name" class="col-sm-2 control-label">Project Name</label>
+                    <!--<div class="col-sm-9">-->
+                    <!--<select class="form-control" name="name" id="name">-->
+                    <!--</select>-->
+                    <!--</div>-->
+                    <div class="col-sm-9">
+                        <input [formControl]="projectName" [(ngModel)]="contract.projectName" class="form-control"
+                               type="text"
+                               name="name" id="name">
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label for="contract_type" class="col-sm-2 control-label">Contract type</label>
+                    <div class="col-sm-9">
+                        <select [formControl]="type" [(ngModel)]="contract.type" class="form-control"
+                                name="contract_type" id="contract_type">
+                            <option *ngFor="let contract_type of contract_types" [ngValue]="contract_type">
+                                {{contract_type}}
+                            </option>
+                        </select>
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label for="freelancer" class="col-sm-2 control-label">Freelancer</label>
+                    <div class="col-sm-9">
+                        <select [formControl]="freelancer" [(ngModel)]="contract.freelancer" class="form-control"
+                                name="freelancer" id="freelancer">
+                            <option *ngFor="let address of toAddresses">
+                                {{address.address}}
+                            </option>
+                        </select>
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label for="deadline" class="col-sm-2 control-label">Deadline</label>
+                    <div class="col-sm-9">
+                        <input [formControl]="deadline" [(ngModel)]="contract.deadline" class="form-control"
+                               type="date" name="deadline" id="deadline">
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label for="amount" class="col-sm-12 control-label">Amount</label>
+                    <div class="d-inline-block col-sm-6">
+                        <input [formControl]="amount" [(ngModel)]="contract.amount" class="form-control"
+                               name="amount" id="amount" type="number" placeholder="100.0">
+                    </div>
+                    <div class="d-inline-block col-sm-3">
+                        <select [formControl]="asset" [(ngModel)]="contract.asset" class="form-control" name="asset"
+                                id="asset">
+                            <option *ngFor="let asset of assets" [ngValue]="asset">{{asset}}</option>
+                        </select>
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label for="milestones" class="col-sm-2 control-label">Milestones</label>
+                    <div class="col-sm-9">
+                        <select [formControl]="milestones" [(ngModel)]="contract.milestones" class="form-control"
+                                name="milestones" id="milestones" [ngModel]="selectedObject | json"
+                                (ngModelChange)="updateSelectedValue($event)">
+                            <option *ngFor="let milestone of no_of_milestone" [ngValue]="milestone">{{milestone}}
+                            </option>
+                        </select>
+                    </div>
+                </div>
+                <div class="form-group" *ngFor="let obj of listOfObjects">
+                    <div *ngIf="obj.edit">
+                        <label for="{{obj.name}}" class="col-sm-1 control-label">{{obj.name}} </label>
+                        <div class="d-inline-block col-sm-8">
+                            <select class="form-control" name="{{obj.name}}" id="{{obj.name}}" [(ngModel)]="obj.value"
+                                    (ngModelChange)="updateFinalPayment($event)">
+                                <option *ngFor="let value of milestone_values" [ngValue]="value">{{value}}%</option>
+                            </select>
+                        </div>
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label for="finalPayment" class="col-sm-1 control-label">Final_Payment</label>
+                    <div class="d-inline-block col-sm-8">
+                        <input class="form-control text-muted" type="text" name="finalPayment" id="finalPayment"
+                               value="{{final_payment}}" readonly>
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label for="description" class="col-sm-2 control-label">Project description</label>
+                    <div class="col-sm-9">
+                        <textarea [formControl]="description" [(ngModel)]="contract.description" class="form-control"
+                                  rows="4" name="description" id="description"></textarea>
+                    </div>
+                </div>
+                <div class="form-group">
+                    <div class="col-sm-offset-2 col-sm-9">
+                        <input class="btn btn-primary" type="submit" name="publish" value="Publish Contract">
+                    </div>
+                </div>
+            </form>
         </div>
-        <div class="form-group">
-          <label for="contract_type" class="col-sm-2 control-label">Contract type</label>
-          <div class="col-sm-9">
-            <select class="form-control" name="contract_type" id="contract_type">
-              <option value="Developer">Developer</option>
-              <option value="QA">QA</option>
-              <option value="Consultant">Consultant</option>
-            </select>
-          </div>
-        </div>
-        <div class="form-group">
-          <label for="freelancer" class="col-sm-2 control-label">Freelancer</label>
-          <div class="col-sm-9">
-            <select class="form-control" name="freelancer" id="freelancer">
-              <option *ngFor="let address of toAddresses">
-                {{address.address}}
-              </option>
-            </select>
-          </div>
-        </div>
-        <div class="form-group">
-          <label for="qty" class="col-sm-2 control-label">Deadline</label>
-          <div class="col-sm-9">
-            <input class="form-control" type="date" name="deadline" id="deadline">
-          </div>
-        </div>
-        <div class="form-group">
-          <label for="qty" class="col-sm-2 control-label">Amount</label>
-          <div class="col-sm-6">
-            <input class="form-control" name="qty" id="qty" placeholder="100.0">
-          </div>
-          <div class="col-sm-3">
-            <select class="form-control" name="asset" id="asset">
-              <option *ngFor="let balance of balances">
-                {{balance?.name}}
-              </option>
-            </select>
-          </div>
-        </div>
-        <div class="form-group">
-          <label for="milestones" class="col-sm-2 control-label">Milestones</label>
-          <div class="col-sm-9">
-            <select class="form-control" name="milestones" id="milestones" [ngModel]="selectedObject | json" (ngModelChange)="updateSelectedValue($event)">
-              <option value="1">1</option>
-              <option value="2">2</option>
-              <option value="3">3</option>
-              <option value="4">4</option>
-              <option value="5">5</option>
-            </select>
-          </div>
-        </div>
-        <div class="form-group" *ngFor="let obj of listOfObjects">
-        <div *ngIf="obj.edit">
-            <div class="col-sm-2"></div>
-            <label for="{{obj.name}}" class="col-sm-1 control-label">{{obj.name}} </label>
-            <div class="col-sm-8">
-              <select class="form-control" name="{{obj.name}}" id="{{obj.name}}">
-                <option value="1">25%</option>
-                <option value="2">30%</option>
-                <option value="3">35%</option>
-              </select>
-            </div>
-        </div>
-      </div>
-        <div class="form-group">
-          <label for="description" class="col-sm-2 control-label">Project description</label>
-          <div class="col-sm-9">
-            <textarea class="form-control" rows="4" name="description" id="description"></textarea>
-          </div>
-        </div>
-        <div class="form-group">
-          <div class="col-sm-offset-2 col-sm-9">
-            <input class="btn btn-primary" type="submit" name="publish" value="Publish Contract">
-          </div>
-        </div>
-      </form>
     </div>
-  </div>
 </div>
 
 
