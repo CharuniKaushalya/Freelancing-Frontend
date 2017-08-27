@@ -11,8 +11,10 @@ import { Router, Params, ActivatedRoute } from '@angular/router';
 })
 
 export class ProjectDetails implements OnInit {
+
     project: Project;
     projctsStream: string = "projects";
+    decodedFiles = [];
 
     constructor(private _service: MyService, private _route: ActivatedRoute, private _router: Router) {
 
@@ -22,11 +24,10 @@ export class ProjectDetails implements OnInit {
         this._route.params.forEach((params: Params) => {
             if (params['project_id'] !== undefined) {
                 let project_id = params['project_id'];
-                this._service.getstreamitem(this.projctsStream, project_id.toString())
+                this._service.gettxoutdata( project_id.toString())
                     .then(data => {
-                        this.project = JSON.parse(this.Hex2String(data.data.toString()));
-                        this.project.project_id = data.txid;
-                        this.project.client = data.publishers[0];
+                        this.project = JSON.parse(this.Hex2String(data.toString()));
+                        this.project.project_id = project_id;
                     });
             } else {
 
@@ -43,5 +44,14 @@ export class ProjectDetails implements OnInit {
         }
 
         return result_back;
+    }
+
+    downloadURI(uri,name) {
+        var link = document.createElement("a");
+        link.download = name;
+        link.href = uri;
+        document.body.appendChild(link);
+        link.click();
+        document.body.removeChild(link);
     }
 }

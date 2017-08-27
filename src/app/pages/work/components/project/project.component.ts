@@ -12,7 +12,7 @@ import { Project } from "../../../../theme/models/project";
     providers: [MyService],
 })
 
-export class MyProjects implements OnInit{
+export class MyProjects implements OnInit {
     custom_search = false;
     projctsStream: string = "projects";
     projects: Project[] = [];
@@ -20,11 +20,21 @@ export class MyProjects implements OnInit{
     constructor(private _router: Router, private _service: MyService) {
         _service.listStreamItems(this.projctsStream).then(data => {
             data.forEach(element => {
-                // console.log(this.Hex2String(element.data.toString()))
-                let project: Project = JSON.parse(this.Hex2String(element.data.toString()));
-                project.project_id = element.txid;
-                project.client = element.publishers[0];
-                this.projects.push(project);
+                let project: Project;
+                if (element.data.txid == null) {
+                    project = JSON.parse(this.Hex2String(element.data.toString()));
+                    project.project_id = element.txid;
+                    project.client = element.publishers[0];
+                    this.projects.push(project);
+                } else {
+                    _service.gettxoutdata(element.data.txid).then(largedata => {
+                        project = JSON.parse(this.Hex2String(largedata.toString()));
+                        project.project_id = element.txid;
+                        project.client = element.publishers[0];
+                        this.projects.push(project);
+                    })
+                }
+
             });
             console.log(this.projects);
         });

@@ -11,7 +11,8 @@ import { MyProjects } from './components/project/project.component';
 import { ProjectNew } from './components/project_new/project_new.component';
 import { ProjectDetails } from './components/project_detail/project_details.component';
 
-import { AngularMultiSelectModule } from 'angular2-multiselect-dropdown/angular2-multiselect-dropdown';
+import { TagInputModule } from 'ngx-chips';
+import { NgbDropdownModule, NgbModalModule } from '@ng-bootstrap/ng-bootstrap';
 
 @NgModule({
   imports: [
@@ -20,7 +21,9 @@ import { AngularMultiSelectModule } from 'angular2-multiselect-dropdown/angular2
     NgaModule,
     TreeModule,
     routing,
-    AngularMultiSelectModule
+    NgbDropdownModule,
+    NgbModalModule,
+    TagInputModule
   ],
   declarations: [
     Work,

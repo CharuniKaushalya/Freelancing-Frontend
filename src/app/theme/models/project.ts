@@ -3,6 +3,7 @@
  */
 import {TimePeriod} from "./timeperiod";
 import {Budget} from "./budget";
+import {DownloadFile} from "./downloadFile";
 // import {Skill} from "./skill";
 
 export class Project {
@@ -10,7 +11,7 @@ export class Project {
 	public client: string;
     public projectName: string;
     public description :string;
-	public files :string[] ;
+	public files :DownloadFile[] ;
     public skills: any;
 	public time_period: TimePeriod;
     public budget: Budget;
