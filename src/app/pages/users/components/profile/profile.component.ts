@@ -12,6 +12,7 @@ import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
 import { SkillModal } from '../skill-modal/skill-modal.component';
 import { EducationModal } from '../edu-modal/edu-modal.component';
 import { SkillModel } from "../../../../theme/models/skillmodel";
+import { Education } from "../../../../theme/models/education";
 
 @Component({
     selector: 'profile',
@@ -29,7 +30,9 @@ export class Profile implements OnInit {
     items = ['Pizza', 'Pasta', 'Parmesan'];
     userkey = "";
     skillsStream = "user-skill";
+    eduStream = "user-edu";
     skills =  [];
+    educations: Education[] = [];
 
 
     constructor(private _service: MyService,
@@ -65,9 +68,21 @@ export class Profile implements OnInit {
                           });
                           
                         });
+                        this._service.listStreamKeyItems(this.eduStream,data.key).then(data => {
+                          data.forEach(element => {
+                            console.log(element);
+                            console.log(element.key);
+                            let edu: Education = JSON.parse(this.Hex2String(element.data.toString()));
+                            console.log(edu);
+                            edu.edu_id = element.txid;
+                            this.educations.push(edu);
+                          });
+                          
+                        });
                         console.log("loaded  user skills");
                           console.log(this.skills);
                         this.userkey = data.key;
+                         console.log(this.userkey);
                         this.user = JSON.parse(this.Hex2String(data.data.toString()));
                     });
             } else {
@@ -102,8 +117,9 @@ export class Profile implements OnInit {
     }
 
     eduModalShow(): void {
-        const activeModal = this.modalService.open(EducationModal, { size: 'sm' });
+        const activeModal = this.modalService.open(EducationModal, { size: 'lg' });
         activeModal.componentInstance.modalHeader = 'Add Education';
+        activeModal.componentInstance.userkey = this.userkey;
     }
 
 

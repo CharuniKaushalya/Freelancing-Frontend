@@ -4,7 +4,7 @@
         <img class="profile-image border-radius: 50%;img-responsive pull-left" style="margin-left: 50px; width: 200px;height: 200px;border-radius: 50%;" src="assets/img/app/profile/Nasta.png" alt="James Lee" />
     </div>
     <div class="col-md-8"> 
-        <h1>Charuni Kaushalya {{user?.name}}</h1>
+        <h1>Charuni Kaushalya</h1>
         <h2>Web App Developer</h2>  
         <p>Member since September, 2015</p>
         <p>0 Recommendations</p> 
@@ -115,10 +115,13 @@
                 
                 <ul class="list-unstyled">
                     <li>EDUCATION<div class="text-primary pull-right"><a  (click)="eduModalShow()"><i class="fa fa-cog"></i> Add New</a></div></li><hr>
+                    <div *ngFor="let education of educations">
+                        <li><h5 class="title"><i class="lnr lnr-graduation-hat"></i><a href="#"> {{education.title}} {{education.degree}}</a></h5>
+                        <h6 class="university">{{education.university_name}} - <span class="year">({{education.grad_year}})</span></h6></li><hr>
+                    </div>
+
                     <li><h5 class="title"><i class="lnr lnr-graduation-hat"></i><a href="#"> MSc Psychology and Computer Science</a></h5>
-                    <h6 class="university">University College London <span class="year">(2011-2012)</span></h6></li><hr>
-                    <li><h5 class="title"><i class="lnr lnr-graduation-hat"></i><a href="#"> BSc Computer Science</a></h5>
-                    <h6 class="university">University of Moratuwa <span class="year">(2008-2011)</span></h6></li>
+                    <h6 class="university">University College London <span class="year">(2011-2012)</span></h6></li>
                 </ul>
             </ba-card>
             </aside><!--//aside-->

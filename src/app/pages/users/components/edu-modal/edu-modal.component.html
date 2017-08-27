@@ -6,8 +6,58 @@
     </button>
   </div>
   <div class="modal-body">
-  </div>
-  <div class="modal-footer">
-    <button class="btn btn-primary confirm-btn" (click)="closeModal()">Save changes</button>
+
+
+
+
+
+    <form [formGroup]="form" (ngSubmit)="onSubmit(form.value)" class="form-horizontal">
+      <div class="form-group row">
+        <label  class="col-sm-2 control-label">Country</label>
+
+        <div class="col-sm-10">
+            <myCountryPicker></myCountryPicker>
+        </div>
+      </div>
+      <div class="form-group row" [ngClass]="{'has-error': (!uniname.valid && uniname.touched), 'has-success': (uniname.valid && uniname.touched)}">
+        <label for="inputuniName3" class="col-sm-2 control-label">Collage/ University Name</label>
+
+        <div class="col-sm-10">
+          <input [formControl]="uniname"  [(ngModel)]="education.university_name" type="text" class="form-control" id="inputuniName3" placeholder="University Name">
+        </div>
+      </div>
+      <div class="form-group row">
+        <label  class="col-sm-2 control-label">Tittle</label>
+
+        <div class="col-sm-10">
+             <select [(ngModel)]="education.title" [ngModelOptions]="{standalone: true}" class="form-control" id="cur_type" >
+                <option *ngFor="let title of titles" [ngValue]="title" >{{title}}</option>
+              </select>
+        </div>
+      </div>
+      <div class="form-group row" [ngClass]="{'has-error': (!degree.valid && degree.touched), 'has-success': (degree.valid && degree.touched)}">
+        <label for="inputName3" class="col-sm-2 control-label">Degree</label>
+
+        <div class="col-sm-10">
+          <input [formControl]="degree"  [(ngModel)]="education.degree"  type="text" class="form-control" id="inputName3" placeholder="Degree">
+        </div>
+      </div>
+      <div class="form-group row">
+        <label  class="col-sm-2 control-label">Graduation Year</label>
+
+        <div class="col-sm-10">
+              <select [(ngModel)]="education.grad_year" [ngModelOptions]="{standalone: true}" class="form-control" id="cur_type" >
+                <option *ngFor="let year of years" [ngValue]="year" >{{year}}</option>
+              </select>
+        </div>
+      </div>
+      <div class="form-group row">
+        <div class="offset-sm-2 col-sm-10">
+          <button type="submit" class="btn btn-primary pull-right">Save changes</button>
+        </div>
+      </div>
+    </form>
+
+
   </div>
 </div>
