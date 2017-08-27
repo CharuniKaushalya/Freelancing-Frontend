@@ -35,6 +35,10 @@ export class Skill {
         title: 'Full Name',
         type: 'string'
       }
+    },
+    pager : {
+        display : true,
+        perPage:5
     }
   };
 

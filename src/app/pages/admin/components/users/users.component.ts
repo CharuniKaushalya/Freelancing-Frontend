@@ -16,20 +16,7 @@ export class Users {
   query: string = '';
 
   settings = {
-    add: {
-      addButtonContent: '<i class="ion-ios-plus-outline"></i>',
-      createButtonContent: '<i class="ion-checkmark"></i>',
-      cancelButtonContent: '<i class="ion-close"></i>',
-    },
-    edit: {
-      editButtonContent: '<i class="ion-edit"></i>',
-      saveButtonContent: '<i class="ion-checkmark"></i>',
-      cancelButtonContent: '<i class="ion-close"></i>',
-    },
-    delete: {
-      deleteButtonContent: '<i class="ion-trash-a"></i>',
-      confirmDelete: true
-    },
+    actions: false,
     columns: {
       user_id: {
         title: 'ID',
@@ -47,6 +34,10 @@ export class Users {
         title: 'E-mail',
         type: 'string'
       }
+    },
+    pager : {
+        display : true,
+        perPage:20
     }
   };
 

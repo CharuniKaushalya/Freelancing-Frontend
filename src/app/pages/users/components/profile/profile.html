@@ -103,13 +103,9 @@
                
                 <ul class="list-unstyled">
                     <li>SKILLS<div class="text-primary pull-right"><a  (click)="smModalShow()"><i class="fa fa-cog"></i> Add New</a></div></li><hr>
-                    <li>Java<div class="text-success pull-right">12%<i class="fa fa-level-up"></i></div></li><hr>
-                    <li>Python<div class="text-success pull-right">15%<i class="fa fa-level-up"></i></div></li><hr>
-                    <li>Java Script<div class="text-success pull-right">18%<i class="fa fa-level-up"></i></div></li><hr>
-                    <li>C++<div class="text-danger pull-right">17%<i class="fa fa-level-down"></i></div></li><hr>
-                    <li>Microsoft Office<div class="text-danger pull-right">10%<i class="fa fa-level-down"></i></div></li><hr>
-                    <li>Visual &amp; Studio<div class="text-success pull-right">14%<i class="fa fa-level-up"></i></div></li><hr>
-                    <li class="last">Erlang<div class="text-success pull-right">5%<i class="fa fa-level-up"></i></div></li> 
+                    <div *ngFor="let skill of skills">
+                        <li>{{skill}}<div class="text-success pull-right">32%<i class="fa fa-level-up"></i></div></li><hr>
+                    </div>
                 </ul>
             </ba-card>
             </aside><!--//aside-->
