@@ -1,7 +1,8 @@
 <div class="container">
     <div class="row">
         <div class="col-sm-9">
-            
+            <h3><button class="btn btn-primary">1</button><font color="#209e91">    Post a Skill</font> </h3>
+                <br>
 
             <form  [formGroup]="form"  (ngSubmit)="onSkillSubmit(form.value)" class="form-horizontal">
                 <div class="form-group" [ngClass]="{'has-error': (!name.valid && name.touched), 'has-success': (name.valid && name.touched)}">
@@ -21,39 +22,14 @@
     <div class="widgets">
 
   <div class="row">
+    <h3><button class="btn btn-primary">2</button><font color="#209e91">    View Data</font> </h3>
+                <br>
     <ba-card cardTitle="Skill Details" baCardClass="with-scroll" class="smart-table-container">
       <ng2-smart-table [settings]="settings" [source]="source"></ng2-smart-table>
     </ba-card>
   </div>
 
 </div>
-    <div class=" row ">
-        <div class="col-sm-8 table-responsive">
-        <h3><button class="btn btn-primary">2</button><font color="#209e91">    View Data</font> </h3>
-                <br>
-          <table class="table table-bordered">
-            <thead>
-              <tr class="info">
-                <th>#</th>
-                <th>Skill</th>
-            </thead>
-            <tbody>
-              <tr>
-                <th scope="row">1</th>
-                <td>Table cell</td>
-              </tr>
-              <tr>
-                <th scope="row">2</th>
-                <td>Table cell</td>
-              </tr>
-              <tr>
-                <th scope="row">3</th>
-                <td>Table cell</td>
-              </tr>
-            </tbody>
-          </table>
-        </div><!-- /.table-responsive -->
-    </div>
 </div>
 
 

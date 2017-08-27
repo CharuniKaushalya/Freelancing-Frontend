@@ -10,6 +10,7 @@ import 'rxjs/add/operator/map';
 
 import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
 import { SkillModal } from '../skill-modal/skill-modal.component';
+import { EducationModal } from '../edu-modal/edu-modal.component';
 
 @Component({
     selector: 'profile',
@@ -81,6 +82,11 @@ export class Profile implements OnInit {
     smModalShow(): void {
         const activeModal = this.modalService.open(SkillModal, { size: 'sm' });
         activeModal.componentInstance.modalHeader = 'Add Skill';
+    }
+
+    eduModalShow(): void {
+        const activeModal = this.modalService.open(EducationModal, { size: 'sm' });
+        activeModal.componentInstance.modalHeader = 'Add Education';
     }
 
 
