@@ -1,11 +1,13 @@
 import {Component, EventEmitter, Input, OnInit, Output} from '@angular/core';
-import {FormControl, FormGroup, AbstractControl, FormBuilder, Validators} from '@angular/forms';
 import {MyService} from  "../../../../theme/services/backend/service";
-
-import {TreeModel} from 'ng2-tree';
 import {Router} from '@angular/router';
 
+import 'rxjs/add/operator/filter';
+import 'rxjs/add/operator/debounceTime';
+import 'rxjs/add/operator/map';
+
 import {Contract} from "../../../../theme/models/contract";
+import {Project} from "../../../../theme/models/project";
 
 @Component({
     selector: 'my-contract',
@@ -13,29 +15,19 @@ import {Contract} from "../../../../theme/models/contract";
     providers: [MyService],
 })
 
-export class MyContract {
-
-    public form: FormGroup;
-    public projectName: AbstractControl;
-    public type: AbstractControl;
-    // public client: AbstractControl;
-    // public freelancer: AbstractControl;
-    public deadline: AbstractControl;
-    public amount: AbstractControl;
-    public asset: AbstractControl;
-    // public milestones: AbstractControl;
-    public description: AbstractControl;
-
-    public submitted: boolean = false;
+export class MyContract implements OnInit {
 
     @Input() contract: Contract;
-    contractStream: string = "contracts";
+    @Output() close = new EventEmitter();
+    contractStream: string = "Contracts";
+    projctsStream: string = "projects";
 
     fromAddresses = null;
     toAddresses = null;
     selectedFromAddress = null;
     balances = null;
     permissions = "receive";
+    projects: Project[] = [];
 
     assets = ['USD', 'BTC'];
     contract_types = ['Developer', 'QA', 'Consultant'];
@@ -72,7 +64,7 @@ export class MyContract {
         }
     ];
 
-    constructor(fb: FormBuilder, private _service: MyService) {
+    constructor(private _router: Router, private _service: MyService) {
 
         _service.getaddresses().then(data => {
             console.log(data);
@@ -81,37 +73,37 @@ export class MyContract {
                 this.balances = data;
             });
         });
+
         _service.listpermissions(this.permissions, null).then(data => {
             console.log(data);
             this.toAddresses = data;
         });
 
+        _service.listStreamItems(this.projctsStream).then(data => {
+            data.forEach(element => {
+                let project: Project;
+                if (element.data.txid == null) {
+                    project = JSON.parse(this.Hex2String(element.data.toString()));
+                    project.project_id = element.txid;
+                    project.client = element.publishers[0];
+                    this.projects.push(project);
+                } else {
+                    _service.gettxoutdata(element.data.txid).then(largedata => {
+                        project = JSON.parse(this.Hex2String(largedata.toString()));
+                        project.project_id = element.txid;
+                        project.client = element.publishers[0];
+                        this.projects.push(project);
+                    })
+                }
+
+            });
+            console.log(this.projects);
+        });
+
         this.contract = new Contract();
+    }
 
-        this.form = new FormGroup({
-            milestones: new FormControl()
-        });
-
-        this.form = fb.group({
-            'projectName': ['', Validators.compose([Validators.required])],
-            'type': ['', Validators.compose([Validators.required])],
-            // 'freelancer': ['', Validators.compose([Validators.required])],
-            'deadline': ['', Validators.compose([Validators.required])],
-            'amount': ['', Validators.compose([Validators.required])],
-            'asset': ['', Validators.compose([Validators.required])],
-            // 'milestones': ['', Validators.compose([Validators.required])],
-            'description': ['', Validators.compose([Validators.required])]
-        });
-
-        this.projectName = this.form.controls['projectName'];
-        this.type = this.form.controls['type'];
-        // this.client = this.form.controls['freelancer'];
-        // this.freelancer = this.form.controls['freelancer'];
-        this.deadline = this.form.controls['deadline'];
-        this.amount = this.form.controls['amount'];
-        this.asset = this.form.controls['asset'];
-        // this.milestones = this.form.controls['milestones'];
-        this.description = this.form.controls['description'];
+    ngOnInit() {
     }
 
     onClickFromAddress(address: string) {
@@ -160,25 +152,22 @@ export class MyContract {
         this.final_payment = String(sum + '%');
     }
 
-    public onSubmit(values: Object): void {
-        this.submitted = true;
-        console.log(values);
+    saveContract() {
 
         let key = this.contract.projectName;
-        let contractJSON = JSON.stringify(this.contract);
-        console.log(contractJSON);
+        let projectJSON = JSON.stringify(this.contract);
+        // console.log(projectJSON);
 
-        let data_hex = this.String2Hex(contractJSON);
-        console.log(data_hex);
-        console.log(this.Hex2String(data_hex));
+        let data_hex = this.String2Hex(projectJSON);
+        // console.log(data_hex);
+        // console.log(this.Hex2String(data_hex));
 
         this._service.publishToStream(this.contractStream, key, data_hex).then(data => {
             console.log("saved");
             console.log(data);
 
-            // this._router.navigate(['projects'])
+            this._router.navigate(['/pages/contract/contract_view'])
         });
-
     }
 
     String2Hex(str: string) {

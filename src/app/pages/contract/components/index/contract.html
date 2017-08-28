@@ -1,23 +1,22 @@
 <div class="container">
     <div class="row">
         <div class="col-sm-12">
-            <form [formGroup]="form" (ngSubmit)="onSubmit(form.value)" class="form-horizontal">
+            <form class="form-horizontal">
                 <div class="form-group">
-                    <label for="name" class="col-sm-2 control-label">Project Name</label>
-                    <!--<div class="col-sm-9">-->
-                    <!--<select class="form-control" name="name" id="name">-->
-                    <!--</select>-->
-                    <!--</div>-->
+                    <label for="projectName" class="col-sm-2 control-label">Project Name</label>
                     <div class="col-sm-9">
-                        <input [formControl]="projectName" [(ngModel)]="contract.projectName" class="form-control"
-                               type="text"
-                               name="name" id="name">
+                        <select [(ngModel)]="contract.projectName" [ngModelOptions]="{standalone: true}"
+                                class="form-control" type="text" name="projectName" id="projectName">
+                            <option *ngFor="let project of projects" value="{{project.projectName}}">
+                                {{project.projectName}}
+                            </option>
+                        </select>
                     </div>
                 </div>
                 <div class="form-group">
                     <label for="contract_type" class="col-sm-2 control-label">Contract type</label>
                     <div class="col-sm-9">
-                        <select [formControl]="type" [(ngModel)]="contract.type" class="form-control"
+                        <select [(ngModel)]="contract.type" [ngModelOptions]="{standalone: true}" class="form-control"
                                 name="contract_type" id="contract_type">
                             <option *ngFor="let contract_type of contract_types" [ngValue]="contract_type">
                                 {{contract_type}}
@@ -28,9 +27,9 @@
                 <div class="form-group">
                     <label for="freelancer" class="col-sm-2 control-label">Freelancer</label>
                     <div class="col-sm-9">
-                        <select [formControl]="freelancer" [(ngModel)]="contract.freelancer" class="form-control"
-                                name="freelancer" id="freelancer">
-                            <option *ngFor="let address of toAddresses">
+                        <select [(ngModel)]="contract.freelancer" [ngModelOptions]="{standalone: true}"
+                                class="form-control" name="freelancer" id="freelancer">
+                            <option *ngFor="let address of toAddresses" value="{{address.address}}">
                                 {{address.address}}
                             </option>
                         </select>
@@ -39,19 +38,19 @@
                 <div class="form-group">
                     <label for="deadline" class="col-sm-2 control-label">Deadline</label>
                     <div class="col-sm-9">
-                        <input [formControl]="deadline" [(ngModel)]="contract.deadline" class="form-control"
-                               type="date" name="deadline" id="deadline">
+                        <input [(ngModel)]="contract.deadline" [ngModelOptions]="{standalone: true}"
+                               class="form-control" type="date" name="deadline" id="deadline">
                     </div>
                 </div>
                 <div class="form-group">
                     <label for="amount" class="col-sm-12 control-label">Amount</label>
                     <div class="d-inline-block col-sm-6">
-                        <input [formControl]="amount" [(ngModel)]="contract.amount" class="form-control"
+                        <input [(ngModel)]="contract.amount" [ngModelOptions]="{standalone: true}" class="form-control"
                                name="amount" id="amount" type="number" placeholder="100.0">
                     </div>
                     <div class="d-inline-block col-sm-3">
-                        <select [formControl]="asset" [(ngModel)]="contract.asset" class="form-control" name="asset"
-                                id="asset">
+                        <select [(ngModel)]="contract.asset" [ngModelOptions]="{standalone: true}" class="form-control"
+                                name="asset" id="asset">
                             <option *ngFor="let asset of assets" [ngValue]="asset">{{asset}}</option>
                         </select>
                     </div>
@@ -59,8 +58,7 @@
                 <div class="form-group">
                     <label for="milestones" class="col-sm-2 control-label">Milestones</label>
                     <div class="col-sm-9">
-                        <select [formControl]="milestones" [(ngModel)]="contract.milestones" class="form-control"
-                                name="milestones" id="milestones" [ngModel]="selectedObject | json"
+                        <select class="form-control" name="milestones" id="milestones" [ngModel]="selectedObject | json"
                                 (ngModelChange)="updateSelectedValue($event)">
                             <option *ngFor="let milestone of no_of_milestone" [ngValue]="milestone">{{milestone}}
                             </option>
@@ -88,16 +86,17 @@
                 <div class="form-group">
                     <label for="description" class="col-sm-2 control-label">Project description</label>
                     <div class="col-sm-9">
-                        <textarea [formControl]="description" [(ngModel)]="contract.description" class="form-control"
-                                  rows="4" name="description" id="description"></textarea>
+                        <textarea [(ngModel)]="contract.description" [ngModelOptions]="{standalone: true}"
+                                  class="form-control" rows="4" name="description" id="description"></textarea>
                     </div>
                 </div>
                 <div class="form-group">
                     <div class="col-sm-offset-2 col-sm-9">
-                        <input class="btn btn-primary" type="submit" name="publish" value="Publish Contract">
+                        <button class="btn btn-primary" (click)="saveContract()">Publish Contract</button>
                     </div>
                 </div>
             </form>
+            <br><br><br><br>
         </div>
     </div>
 </div>

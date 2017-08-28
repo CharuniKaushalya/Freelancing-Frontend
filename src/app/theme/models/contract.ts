@@ -2,6 +2,7 @@
  * Contract
  */
 export class Contract {
+	public contract_id : string;
     public projectName: string;
 	public type: string;
 	public client: string;

@@ -8,7 +8,9 @@ import { routing }       from './contract.routing';
 import { Contract } from './contract.component';
 import { MyContract } from './components/index/contract.component';
 import { ContractView } from './components/view/contract_view.component';
+import { ContractDetails } from './components/detail/contract_details.component';
 
+import { DataService } from "../../theme/services/data/data.service";
 
 @NgModule({
   imports: [
@@ -22,7 +24,11 @@ import { ContractView } from './components/view/contract_view.component';
   declarations: [
     Contract,
     MyContract,
-    ContractView
+    ContractView,
+    ContractDetails
+  ],
+  providers: [
+    DataService
   ]
 })
 export class ContractModule {}
