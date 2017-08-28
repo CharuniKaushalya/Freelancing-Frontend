@@ -19,6 +19,7 @@ export class Register {
   public username:AbstractControl;
   public name:AbstractControl;
   public email:AbstractControl;
+  public type:AbstractControl;
   public password:AbstractControl;
   public repeatPassword:AbstractControl;
   public passwords:FormGroup;
@@ -27,6 +28,8 @@ export class Register {
 
     @Input() user: User;
     projctsStream: string = "Users";
+
+    userTypes = ['Freelancer','Client', 'QA', 'Consultant'];
 
   constructor(fb:FormBuilder,private _service: MyService) {
 
