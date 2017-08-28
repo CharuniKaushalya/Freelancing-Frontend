@@ -101,10 +101,10 @@ export class MyContract implements OnInit {
         });
 
         this.contract = new Contract();
+        this.contract.milestones = 0;
     }
 
-    ngOnInit() {
-    }
+    ngOnInit() {}
 
     onClickFromAddress(address: string) {
         this._service.getaddressbalances(address).then(data => {
@@ -120,6 +120,7 @@ export class MyContract implements OnInit {
         let percentage2 = String(this.milestone_init_values[val - 1]);
         let percentage3 = String(Number(this.milestone_init_values[val - 1]) + 5);
         this.milestone_values = [percentage1, percentage2, percentage3];
+        this.contract.milestones = val;
 
         for (let num = 0; num < 5; num++) {
             if (num >= val) {
@@ -134,7 +135,6 @@ export class MyContract implements OnInit {
                 this.listOfObjects[num].edit = true;
             }
             sum += Number(this.listOfObjects[num].value);
-            console.log(num);
         }
         sum = 100 - sum;
         this.final_payment = String(sum + '%');
@@ -155,12 +155,11 @@ export class MyContract implements OnInit {
     saveContract() {
 
         let key = this.contract.projectName;
+        this.contract.milestoneValues = this.listOfObjects.map(function(a) {return a.value;});
         let projectJSON = JSON.stringify(this.contract);
-        // console.log(projectJSON);
+        console.log(projectJSON);
 
         let data_hex = this.String2Hex(projectJSON);
-        // console.log(data_hex);
-        // console.log(this.Hex2String(data_hex));
 
         this._service.publishToStream(this.contractStream, key, data_hex).then(data => {
             console.log("saved");

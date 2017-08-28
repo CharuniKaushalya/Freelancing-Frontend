@@ -2,7 +2,6 @@
     <div class="row">
 
         <div class="col-sm-12">
-
             <ul class="nav nav-tabs">
                 <li class="nav-item">
                     <a class="nav-link active" data-toggle="tab" href="#active_contracts">Active Contracts</a>
@@ -51,23 +50,35 @@
                                             <br>{{contract.amount}} {{contract.asset}}
                                         </td>
                                         <td>
-                                            <br>Started
+                                            <br>
+                                            <div style="padding-top: 10px">
+                                                <div class="progress">
+                                                    <div class="progress-bar" role="progressbar"
+                                                         [style.width]="contract.status + '%'"
+                                                         style="background-color: #23a99c"
+                                                         aria-valuemin="0" aria-valuemax="100">{{contract.status}}%
+                                                    </div>
+                                                </div>
+                                            </div>
                                         </td>
                                         <td>
                                             <br>
-                                            <button type="button" class="btn btn-primary  btn-sm">Advance</button>
+                                            <button type="button" class="btn btn-primary  btn-sm float-sm-right"
+                                                    (click)="updateStatus(contract.contract_id)">
+                                                Advance
+                                            </button>
                                         </td>
                                     </tr>
                                     </tbody>
                                 </table>
                             </div>
-
                         </ba-card>
                     </div>
                 </div>
                 <div id="completed_contracts" class="tab-pane fade">
                     <div class="col-sm-12">
-                        <ba-card cardTitle="Completed Contract Details" baCardClass="with-scroll table-panel">
+                        <ba-card cardTitle="Completed Contract Details"
+                                 baCardClass="with-scroll table-panel">
                             <div>
                                 <table class="table table-condensed">
                                     <thead>
@@ -84,11 +95,13 @@
                                     <tr *ngFor="let contract of contracts">
                                         <td>
                                             <br>
-                                            <font size="5" color="#209e91"><i class="fa fa-product-hunt"></i></font>
+                                            <font size="5" color="#209e91"><i
+                                                    class="fa fa-product-hunt"></i></font>
                                         </td>
                                         <td>
                                             <br>
-                                            <a style="cursor:pointer" (click)="goToContract(contract.contract_id)">
+                                            <a style="cursor:pointer"
+                                               (click)="goToContract(contract.contract_id)">
                                                 <h3>{{contract.projectName}}</h3>
                                             </a>
                                             <p>{{contract.description}}</p>

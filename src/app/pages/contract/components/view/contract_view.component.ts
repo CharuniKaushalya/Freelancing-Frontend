@@ -24,6 +24,7 @@ export class ContractView implements OnInit {
                     contract = JSON.parse(this.Hex2String(element.data.toString()));
                     contract.contract_id = element.txid;
                     contract.client = element.publishers[0];
+                    contract.status = 0;
                     this.contracts.push(contract);
                 } else {
                     _service.gettxoutdata(element.data.txid).then(largedata => {
@@ -31,6 +32,7 @@ export class ContractView implements OnInit {
                         contract = JSON.parse(this.Hex2String(largedata.toString()));
                         contract.contract_id = element.txid;
                         contract.client = element.publishers[0];
+                        contract.status = 0;
                         this.contracts.push(contract);
                     })
                 }
@@ -54,6 +56,12 @@ export class ContractView implements OnInit {
 
     getSelectedContract(id: string): Contract {
         return this.contracts.find(x => x.contract_id === id);
+    }
+
+    updateStatus(id: string): void {
+        let contract = this.getSelectedContract(id);
+        let milestones = contract.milestoneValues;
+        contract.status = Number(contract.status) + 10;
     }
 
     goToContract(id: string) {

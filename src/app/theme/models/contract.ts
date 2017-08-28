@@ -10,7 +10,8 @@ export class Contract {
 	public deadline : string;
 	public amount : any ;
     public asset: string;
-	public milestones: string;
+	public milestones: number;
+	public milestoneValues: any;
 	public description :string;
-
+	public status :number;
 }
