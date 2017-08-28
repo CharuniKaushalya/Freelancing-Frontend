@@ -1,0 +1,79 @@
+<div class="container">
+    <div class="row">
+
+        <div class="col-sm-12">
+            <ba-card cardTitle="My Contract" baCardClass="with-scroll table-panel">
+                <table class="table" style="font-size: 16px">
+                    <tbody>
+                    <tr>
+                        <td>
+                            <br><b>Project Name</b>
+                        </td>
+                        <td>
+                            <br>{{contract.projectName}}
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>
+                            <br><b>Type</b>
+                        </td>
+                        <td>
+                            <br>{{contract.type}}
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>
+                            <br><b>Client</b>
+                        </td>
+                        <td>
+                            <br>{{contract.client}}
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>
+                            <br><b>Freelancer</b>
+                        </td>
+                        <td>
+                            <br>{{contract.freelancer}}
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>
+                            <br><b>Deadline</b>
+                        </td>
+                        <td>
+                            <br>{{contract.deadline}}
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>
+                            <br><b>Amount</b>
+                        </td>
+                        <td>
+                            <br>{{contract.amount}} {{contract.asset}}
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>
+                            <br><b>Milestones</b>
+                        </td>
+                        <td>
+                            <br>{{contract.milestones}}
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>
+                            <br><b>Description</b>
+                        </td>
+                        <td>
+                            <br>{{contract.description}}
+                        </td>
+                    </tr>
+                    </tbody>
+                </table>
+            </ba-card>
+            <button class="btn btn-primary" (click)="goBack()">Back</button>
+            <br><br><br><br>
+        </div>
+    </div>
+</div>
