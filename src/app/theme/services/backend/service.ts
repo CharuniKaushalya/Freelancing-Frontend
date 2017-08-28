@@ -85,6 +85,13 @@ export class MyService {
         return this.callAPI('liststreamitems', 'get', params, null, null);
     }
 
+    listStreamKeyItems(stream: string,key: string): Promise<any> {
+        let params: URLSearchParams = new URLSearchParams();
+        params.set('stream', stream);
+        params.set('key', key);
+        return this.callAPI('liststreamkeyitems', 'get', params, null, null);
+    }
+
     gettxoutdata(txid:string){
         let params: URLSearchParams = new URLSearchParams();
         params.set('txid', txid);
