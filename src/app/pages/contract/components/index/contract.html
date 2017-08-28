@@ -67,12 +67,34 @@
                 </div>
                 <div class="form-group" *ngFor="let obj of listOfObjects">
                     <div *ngIf="obj.edit">
-                        <label for="{{obj.name}}" class="col-sm-1 control-label">{{obj.name}} </label>
-                        <div class="d-inline-block col-sm-8">
-                            <select class="form-control" name="{{obj.name}}" id="{{obj.name}}" [(ngModel)]="obj.value"
-                                    (ngModelChange)="updateFinalPayment($event)">
-                                <option *ngFor="let value of milestone_values" [ngValue]="value">{{value}}%</option>
-                            </select>
+                        <div class="col-sm-12">
+                            {{obj.name}}
+                        </div>
+                        <div>
+                            <div class="d-inline-block col-sm-1"></div>
+                            <label for="{{obj.name}}_value" class="col-sm-1 control-label">Payment</label>
+                            <div class="d-inline-block col-sm-7">
+                                <select class="form-control" name="{{obj.name}}_value" id="{{obj.name}}_value"
+                                        [(ngModel)]="obj.value" (ngModelChange)="updateFinalPayment($event)">
+                                    <option *ngFor="let value of milestone_values" [ngValue]="value">{{value}}%</option>
+                                </select>
+                            </div>
+                        </div>
+                        <div>
+                            <div class="d-inline-block col-sm-1"></div>
+                            <label for="{{obj.name}}_deadline" class="col-sm-1 control-label">Deadline</label>
+                            <div class="d-inline-block col-sm-7">
+                                <input [(ngModel)]="obj.deadline" class="form-control" name="{{obj.name}}_deadline"
+                                       id="{{obj.name}}_deadline" type="date">
+                            </div>
+                        </div>
+                        <div>
+                            <div class="d-inline-block col-sm-1"></div>
+                            <label for="{{obj.name}}_task" class="col-sm-1 control-label">Task</label>
+                            <div class="d-inline-block col-sm-7">
+                                <input [(ngModel)]="obj.task" class="form-control" type="text" name="{{obj.name}}_task"
+                                       id="{{obj.name}}_task">
+                            </div>
                         </div>
                     </div>
                 </div>

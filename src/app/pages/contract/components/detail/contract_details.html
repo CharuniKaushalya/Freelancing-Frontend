@@ -55,18 +55,45 @@
                     </tr>
                     <tr>
                         <td>
-                            <br><b>Milestones</b>
-                        </td>
-                        <td>
-                            <br>{{contract.milestones}}
-                        </td>
-                    </tr>
-                    <tr>
-                        <td>
                             <br><b>Description</b>
                         </td>
                         <td>
                             <br>{{contract.description}}
+                        </td>
+                    </tr>
+                    <tr *ngIf="hasMilestones">
+                        <td><br><b>Milestones</b></td>
+                        <td><br>
+                            <table class="table table-condensed" style="font-size: 16px">
+                                <thead>
+                                <th></th>
+                                <th>Payment</th>
+                                <th>Deadline</th>
+                                <th>Task</th>
+                                </thead>
+                                <tbody>
+                                <tr *ngFor="let milestone of listOfMilestones">
+                                    <td>
+                                        <br>{{milestone.name}}
+                                    </td>
+                                    <td>
+                                        <br>{{milestone.value}}%
+                                    </td>
+                                    <td>
+                                        <br>{{milestone.deadline}}
+                                    </td>
+                                    <td>
+                                        <br>{{milestone.task}}
+                                    </td>
+                                    <td>
+                                        <br>
+                                        <button type="button" class="btn btn-primary  btn-sm float-sm-right"
+                                                (click)="updateStatus(milestone.id)" onclick="this.disabled=true">Complete
+                                        </button>
+                                    </td>
+                                </tr>
+                                </tbody>
+                            </table>
                         </td>
                     </tr>
                     </tbody>

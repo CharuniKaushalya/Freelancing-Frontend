@@ -38,6 +38,7 @@ export class ContractView implements OnInit {
                 }
 
             });
+            this.contracts = this.contracts.reverse();
             console.log(this.contracts);
         });
     }
@@ -61,7 +62,7 @@ export class ContractView implements OnInit {
     updateStatus(id: string): void {
         let contract = this.getSelectedContract(id);
         let milestones = contract.milestoneValues;
-        contract.status = Number(contract.status) + 10;
+        contract.status = Number(contract.status) + 20;
     }
 
     goToContract(id: string) {

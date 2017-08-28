@@ -38,28 +38,43 @@ export class MyContract implements OnInit {
 
     public listOfObjects = [
         {
+            id: 1,
             name: 'Milestone_1',
             value: 0,
+            deadline: '',
+            task: '',
             edit: false
         },
         {
+            id: 2,
             name: 'Milestone_2',
             value: 0,
+            deadline: '',
+            task: '',
             edit: false
         },
         {
+            id: 3,
             name: 'Milestone_3',
             value: 0,
+            deadline: '',
+            task: '',
             edit: false
         },
         {
+            id: 4,
             name: 'Milestone_4',
             value: 0,
+            deadline: '',
+            task: '',
             edit: false
         },
         {
+            id: 5,
             name: 'Milestone_5',
             value: 0,
+            deadline: '',
+            task: '',
             edit: false
         }
     ];
@@ -144,9 +159,7 @@ export class MyContract implements OnInit {
         let sum = 0;
 
         for (let num = 0; num < 5; num++) {
-
             sum += Number(this.listOfObjects[num].value);
-            console.log(num);
         }
         sum = 100 - sum;
         this.final_payment = String(sum + '%');
@@ -155,7 +168,11 @@ export class MyContract implements OnInit {
     saveContract() {
 
         let key = this.contract.projectName;
-        this.contract.milestoneValues = this.listOfObjects.map(function(a) {return a.value;});
+        this.contract.milestoneValues =  this.listOfObjects.filter(function (attr) {
+            delete attr.edit;
+            return true;
+        }).slice(0, this.contract.milestones);
+
         let projectJSON = JSON.stringify(this.contract);
         console.log(projectJSON);
 
