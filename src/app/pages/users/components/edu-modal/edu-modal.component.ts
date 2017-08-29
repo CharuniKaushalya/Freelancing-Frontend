@@ -88,6 +88,7 @@ export class EducationModal implements OnInit {
       this._service.publishToStream(this.eduStream, key, data_hex).then(data => {
         console.log(data);
       });
+      location.reload();
   }
 
   String2Hex(str: string) {
