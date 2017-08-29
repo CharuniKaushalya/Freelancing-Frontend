@@ -6,7 +6,8 @@ import { CountryPickerService } from 'angular2-countrypicker';
 
 @Component({
   selector: 'myCountryPicker',
-  template: `<select class="form-control form-control-sm"  [(ngModel)]="modelName" [ngModelOptions]="{standalone: true}">
+  template: `
+  <select class="form-control form-control-sm"  [(ngModel)]="modelName" [ngModelOptions]="{standalone: true}">
                 <option *ngFor="let c of countries; let i = index;" [ngValue]="getName(c)">{{getName(c)}}</option>
             </select>`
 })
@@ -21,13 +22,13 @@ export class CountryPickerComponent {
   public baseUrl: string = '';
 
   constructor(private countryPickerService: CountryPickerService) {
-  console.log("model Name");
+    console.log("model Name");
     console.log(this.modelName);
 
     this.countryPickerService.getCountries().subscribe(countries => {
       this.countries = countries.sort((a: ICountry, b: ICountry) => {
         let na = this.getName(a);
-        let nb = this.getName(b); 
+        let nb = this.getName(b);
         if (na > nb) {
           return 1;
         }
