@@ -41,6 +41,7 @@ export class SkillModal implements OnInit {
     this._service.publishToStream(this.skillsStream, key, data_hex).then(data => {
       console.log(data);
     });
+    location.reload();
   }
 
   onItemAdded(item) {
