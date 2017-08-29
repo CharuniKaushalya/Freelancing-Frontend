@@ -1,7 +1,7 @@
 <div class="auth-main">
   <div class="auth-block">
     <h1>Sign up to BlockWork</h1>
-    <a routerLink="/login" class="auth-link">Already have an ng2-admin account? Sign in!</a>
+    <a routerLink="/login" class="auth-link">Already have an BlockWork account? Sign in!</a>
 
     <form [formGroup]="form" (ngSubmit)="onSubmit(form.value)" class="form-horizontal">
       <div class="form-group row" [ngClass]="{'has-error': (!username.valid && username.touched), 'has-success': (username.valid && username.touched)}">

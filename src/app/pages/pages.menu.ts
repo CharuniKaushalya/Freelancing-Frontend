@@ -15,28 +15,6 @@ export const PAGES_MENU = [
         }
       },
       {
-        path: 'components',
-        data: {
-          menu: {
-            title: 'general.menu.components',
-            icon: 'ion-gear-a',
-            selected: false,
-            expanded: false,
-            order: 250,
-          }
-        },
-        children: [
-          {
-            path: 'treeview',
-            data: {
-              menu: {
-                title: 'general.menu.tree_view',
-              }
-            }
-          }
-        ]
-      },
-      {
         path: 'admin',
         data: {
           menu: {
