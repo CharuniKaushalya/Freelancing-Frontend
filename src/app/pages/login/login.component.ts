@@ -36,7 +36,30 @@ export class Login {
         this.error = error.message;
         this.form.reset();
       })
-
     }
+  }
+
+  loginWithGoogle(){
+    this.authService.signInWithGoogle().then((data) => {
+        this._router.navigate(['']);
+      }).catch(error=>{
+        this.error = error.message;
+      })
+  }
+
+  loginWithFacebook(){
+    this.authService.signInWithFacebook().then((data) => {
+        this._router.navigate(['']);
+      }).catch(error=>{
+        // this.error = error.message;
+      })
+  }
+
+  loginWithTwitter(){
+    this.authService.signInWithTwitter().then((data) => {
+        this._router.navigate(['']);
+      }).catch(error=>{
+        // this.error = error.message;
+      })
   }
 }

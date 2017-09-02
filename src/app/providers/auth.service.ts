@@ -1,11 +1,8 @@
 import { Injectable } from '@angular/core';
 
 import { AngularFireAuthModule, AngularFireAuth, AngularFireAuthProvider } from 'angularfire2/auth';
-import {
-  FaAppModule,
-  FaDatabaseModule, Database, ListFactory,
-  FaAuthModule, Auth, AuthProviders
-} from 'firebase/auth';
+
+import * as firebase from 'firebase';
 
 @Injectable()
 export class AuthService {
@@ -25,6 +22,18 @@ export class AuthService {
 
   signIn(email:string,password:string) {
     return this.afAuth.auth.signInWithEmailAndPassword(email,password);
+  }
+
+  signInWithGoogle() {
+    return this.afAuth.auth.signInWithPopup(new firebase.auth.GoogleAuthProvider());
+  }
+
+  signInWithFacebook() {
+    return this.afAuth.auth.signInWithPopup(new firebase.auth.FacebookAuthProvider());
+  }
+
+  signInWithTwitter() {
+    return this.afAuth.auth.signInWithPopup(new firebase.auth.TwitterAuthProvider());
   }
 
   signUp(email:string,password:string) {
