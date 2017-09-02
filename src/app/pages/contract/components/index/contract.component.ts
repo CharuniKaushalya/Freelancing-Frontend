@@ -1,13 +1,13 @@
-import {Component, EventEmitter, Input, OnInit, Output} from '@angular/core';
-import {MyService} from  "../../../../theme/services/backend/service";
-import {Router} from '@angular/router';
+import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
+import { MyService } from "../../../../theme/services/backend/service";
+import { Router } from '@angular/router';
 
 import 'rxjs/add/operator/filter';
 import 'rxjs/add/operator/debounceTime';
 import 'rxjs/add/operator/map';
 
-import {Contract} from "../../../../theme/models/contract";
-import {Project} from "../../../../theme/models/project";
+import { Contract } from "../../../../theme/models/contract";
+import { Project } from "../../../../theme/models/project";
 
 @Component({
     selector: 'my-contract',
@@ -98,13 +98,13 @@ export class MyContract implements OnInit {
             data.forEach(element => {
                 let project: Project;
                 if (element.data.txid == null) {
-                    project = JSON.parse(this.Hex2String(element.data.toString()));
+                    project = JSON.parse(this._service.Hex2String(element.data.toString()));
                     project.project_id = element.txid;
                     project.client = element.publishers[0];
                     this.projects.push(project);
                 } else {
                     _service.gettxoutdata(element.data.txid).then(largedata => {
-                        project = JSON.parse(this.Hex2String(largedata.toString()));
+                        project = JSON.parse(this._service.Hex2String(largedata.toString()));
                         project.project_id = element.txid;
                         project.client = element.publishers[0];
                         this.projects.push(project);
@@ -119,7 +119,7 @@ export class MyContract implements OnInit {
         this.contract.milestones = 0;
     }
 
-    ngOnInit() {}
+    ngOnInit() { }
 
     onClickFromAddress(address: string) {
         this._service.getaddressbalances(address).then(data => {
@@ -168,7 +168,7 @@ export class MyContract implements OnInit {
     saveContract() {
 
         let key = this.contract.projectName;
-        this.contract.milestoneValues =  this.listOfObjects.filter(function (attr) {
+        this.contract.milestoneValues = this.listOfObjects.filter(function (attr) {
             delete attr.edit;
             return true;
         }).slice(0, this.contract.milestones);
@@ -176,7 +176,7 @@ export class MyContract implements OnInit {
         let projectJSON = JSON.stringify(this.contract);
         console.log(projectJSON);
 
-        let data_hex = this.String2Hex(projectJSON);
+        let data_hex = this._service.String2Hex(projectJSON);
 
         this._service.publishToStream(this.contractStream, key, data_hex).then(data => {
             console.log("saved");
@@ -184,25 +184,5 @@ export class MyContract implements OnInit {
 
             this._router.navigate(['/pages/contract/contract_view'])
         });
-    }
-
-    String2Hex(str: string) {
-        let hex, i;
-        let result = "";
-        for (i = 0; i < str.length; i++) {
-            hex = str.charCodeAt(i).toString(16);
-            result += ("000" + hex).slice(-4);
-        }
-        return result;
-    }
-
-    Hex2String(hex_str: string) {
-        let j;
-        let hexes = hex_str.match(/.{1,4}/g) || [];
-        let result_back = "";
-        for (j = 0; j < hexes.length; j++) {
-            result_back += String.fromCharCode(parseInt(hexes[j], 16));
-        }
-        return result_back;
     }
 }

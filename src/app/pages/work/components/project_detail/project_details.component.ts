@@ -26,24 +26,13 @@ export class ProjectDetails implements OnInit {
                 let project_id = params['project_id'];
                 this._service.gettxoutdata( project_id.toString())
                     .then(data => {
-                        this.project = JSON.parse(this.Hex2String(data.toString()));
+                        this.project = JSON.parse(this._service.Hex2String(data.toString()));
                         this.project.project_id = project_id;
                     });
             } else {
 
             }
         });
-    }
-
-    Hex2String(hex_str: string) {
-        let j;
-        let hexes = hex_str.match(/.{1,4}/g) || [];
-        let result_back = "";
-        for (j = 0; j < hexes.length; j++) {
-            result_back += String.fromCharCode(parseInt(hexes[j], 16));
-        }
-
-        return result_back;
     }
 
     downloadURI(uri,name) {

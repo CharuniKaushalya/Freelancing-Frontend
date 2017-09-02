@@ -21,7 +21,7 @@ export class ContractView implements OnInit {
             data.forEach(element => {
                 let contract: Contract;
                 if (element.data.txid == null) {
-                    contract = JSON.parse(this.Hex2String(element.data.toString()));
+                    contract = JSON.parse(this._service.Hex2String(element.data.toString()));
                     contract.contract_id = element.txid;
                     contract.client = element.publishers[0];
                     contract.status = 0;
@@ -29,7 +29,7 @@ export class ContractView implements OnInit {
                 } else {
                     _service.gettxoutdata(element.data.txid).then(largedata => {
                         console.log(element);
-                        contract = JSON.parse(this.Hex2String(largedata.toString()));
+                        contract = JSON.parse(this._service.Hex2String(largedata.toString()));
                         contract.contract_id = element.txid;
                         contract.client = element.publishers[0];
                         contract.status = 0;
@@ -44,16 +44,6 @@ export class ContractView implements OnInit {
     }
 
     ngOnInit() {}
-
-    Hex2String(hex_str: string) {
-        let j;
-        let hexes = hex_str.match(/.{1,4}/g) || [];
-        let result_back = "";
-        for (j = 0; j < hexes.length; j++) {
-            result_back += String.fromCharCode(parseInt(hexes[j], 16));
-        }
-        return result_back;
-    }
 
     getSelectedContract(id: string): Contract {
         return this.contracts.find(x => x.contract_id === id);

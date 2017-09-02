@@ -75,7 +75,7 @@ export class ProjectNew implements OnInit {
         let projectJSON = JSON.stringify(this.project)
         // console.log(projectJSON);
 
-        let data_hex = this.String2Hex(projectJSON)
+        let data_hex = this._service.String2Hex(projectJSON)
         // console.log(data_hex);
         // console.log(this.Hex2String(data_hex));  
 
@@ -86,29 +86,7 @@ export class ProjectNew implements OnInit {
             this._router.navigate(['/pages/work/my_projects'])
         });
     }
-
-    String2Hex(str: string) {
-        let hex, i;
-
-        let result = "";
-        for (i = 0; i < str.length; i++) {
-            hex = str.charCodeAt(i).toString(16);
-            result += ("000" + hex).slice(-4);
-        }
-        return result;
-    }
-
-    Hex2String(hex_str: string) {
-        let j;
-        let hexes = hex_str.match(/.{1,4}/g) || [];
-        let result_back = "";
-        for (j = 0; j < hexes.length; j++) {
-            result_back += String.fromCharCode(parseInt(hexes[j], 16));
-        }
-
-        return result_back;
-    }
-
+    
     onItemAdded(item) {
         this.skills.push(item.value);
         console.log(this.skills);

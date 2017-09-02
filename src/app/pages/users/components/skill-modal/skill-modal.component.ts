@@ -34,7 +34,7 @@ export class SkillModal implements OnInit {
     let skillJSON = JSON.stringify(this.items);
     console.log(skillJSON);
 
-    let data_hex = this.String2Hex(skillJSON);
+    let data_hex = this._service.String2Hex(skillJSON);
     console.log(data_hex);
     // console.log(this.Hex2String(data_hex));  
 
@@ -47,26 +47,4 @@ export class SkillModal implements OnInit {
   onItemAdded(item) {
         this.items.push(item.value);
     }
-
-  String2Hex(str: string) {
-    let hex, i;
-
-    let result = "";
-    for (i = 0; i < str.length; i++) {
-      hex = str.charCodeAt(i).toString(16);
-      result += ("000" + hex).slice(-4);
-    }
-    return result;
-  }
-
-  Hex2String(hex_str: string) {
-    let j;
-    let hexes = hex_str.match(/.{1,4}/g) || [];
-    let result_back = "";
-    for (j = 0; j < hexes.length; j++) {
-      result_back += String.fromCharCode(parseInt(hexes[j], 16));
-    }
-
-    return result_back;
-  }
 }

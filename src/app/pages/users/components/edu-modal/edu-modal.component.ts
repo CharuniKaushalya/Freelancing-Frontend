@@ -3,9 +3,9 @@ import { NgbActiveModal } from '@ng-bootstrap/ng-bootstrap';
 import 'rxjs/add/operator/filter';
 import 'rxjs/add/operator/debounceTime';
 import 'rxjs/add/operator/map';
-import {FormGroup, AbstractControl, FormBuilder, Validators} from '@angular/forms';
-import {EmailValidator, EqualPasswordsValidator} from '../../../../theme/validators';
-import { MyService } from  "../../../../theme/services/backend/service";
+import { FormGroup, AbstractControl, FormBuilder, Validators } from '@angular/forms';
+import { EmailValidator, EqualPasswordsValidator } from '../../../../theme/validators';
+import { MyService } from "../../../../theme/services/backend/service";
 import { Router } from '@angular/router';
 import { CountryPickerService } from 'angular2-countrypicker';
 import { CountryPickerComponent } from './country-picker.component';
@@ -21,36 +21,38 @@ import { Education } from "../../../../theme/models/education";
 })
 
 export class EducationModal implements OnInit {
-  
+
   public countries: any[];
 
   modalHeader: string;
   modalContent: string = "";
-  public form:FormGroup;
-  public uniname:AbstractControl;
-  public degree:AbstractControl;
+  public form: FormGroup;
+  public uniname: AbstractControl;
+  public degree: AbstractControl;
   public myCountryPicker: CountryPickerComponent;
 
-  public submitted:boolean = false;
+  public submitted: boolean = false;
 
-    @Input() education: Education;
-    eduStream: string = "user-edu";
+  @Input() education: Education;
+  eduStream: string = "user-edu";
 
 
   items = [];
-  myitems = ['mysql', 'Java', 'erlang','Python','JS'];
+  myitems = ['mysql', 'Java', 'erlang', 'Python', 'JS'];
   years = null;
   titles = null;
   country: string;
   userkey: string;
 
 
-  constructor(fb:FormBuilder,private _service: MyService, private activeModal: NgbActiveModal, private countryPickerService: CountryPickerService) {
+  constructor(fb: FormBuilder, private _service: MyService, private activeModal: NgbActiveModal,
+    private countryPickerService: CountryPickerService) {
 
     this.countryPickerService.getCountries().subscribe(countries => this.countries = countries);
 
     this.years = [2013, 2014, 2015, 2016, 2017, 2018];
-    this.titles = ["Associate", 'Certificate', "B.A.", "BArch", "BFA", "B.Sc.", "M.A." , "M.B.A." ,"MFA" , "M.Sc." , "J.D." , "M.D." ,"Ph.D" , "LLB" , "LLM"];
+    this.titles = ["Associate", 'Certificate', "B.A.", "BArch", "BFA", "B.Sc.", "M.A.", "M.B.A.", "MFA", "M.Sc.", "J.D.",
+      "M.D.", "Ph.D", "LLB", "LLM"];
     console.log(this.years);
     this.education = new Education();
 
@@ -60,61 +62,36 @@ export class EducationModal implements OnInit {
     });
 
     this.uniname = this.form.controls['uniname'];
-    this.degree = this.form.controls['degree']; }
+    this.degree = this.form.controls['degree'];
+  }
 
-  ngOnInit() {}
+  ngOnInit() { }
 
   closeModal() {
-    
+
     this.activeModal.close();
   }
 
-  public onSubmit(values:Object):void {
+  public onSubmit(values: Object): void {
     this.submitted = true;
     this.activeModal.close();
-     console.log("submitted");
-      // your code goes here
-      this.education.country = "Sri Lanka";
-      console.log(this.education);
-      console.log(this.userkey);
-      let key = this.userkey;
-      let eduJSON = JSON.stringify(this.education);
-      console.log(eduJSON);
+    console.log("submitted");
+    // your code goes here
+    this.education.country = "Sri Lanka";
+    console.log(this.education);
+    console.log(this.userkey);
+    let key = this.userkey;
+    let eduJSON = JSON.stringify(this.education);
+    console.log(eduJSON);
 
-      let data_hex = this.String2Hex(eduJSON);
-      console.log(data_hex);
-      // console.log(this.Hex2String(data_hex));  
+    let data_hex = this._service.String2Hex(eduJSON);
+    console.log(data_hex);
+    // console.log(this.Hex2String(data_hex));  
 
-      this._service.publishToStream(this.eduStream, key, data_hex).then(data => {
-        console.log(data);
-      });
-      location.reload();
+    this._service.publishToStream(this.eduStream, key, data_hex).then(data => {
+      console.log(data);
+    });
+    location.reload();
   }
-
-  String2Hex(str: string) {
-    let hex, i;
-
-    let result = "";
-    for (i = 0; i < str.length; i++) {
-      hex = str.charCodeAt(i).toString(16);
-      result += ("000" + hex).slice(-4);
-    }
-    return result;
-  }
-
-  Hex2String(hex_str: string) {
-    let j;
-    let hexes = hex_str.match(/.{1,4}/g) || [];
-    let result_back = "";
-    for (j = 0; j < hexes.length; j++) {
-      result_back += String.fromCharCode(parseInt(hexes[j], 16));
-    }
-
-    return result_back;
-  }
-
-
-
-
 
 }

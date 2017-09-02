@@ -31,7 +31,7 @@ export class Profile implements OnInit {
     userkey = "";
     skillsStream = "user-skill";
     eduStream = "user-edu";
-    skills =  [];
+    skills = [];
     educations: Education[] = [];
 
 
@@ -57,33 +57,33 @@ export class Profile implements OnInit {
                 let user_id = params['user_id'];
                 this._service.getstreamitem(this.userStream, user_id.toString())
                     .then(data => {
-                        this._service.listStreamKeyItems(this.skillsStream,data.key).then(data => {
-                          data.forEach(element => {
-                            console.log(element);
-                            console.log(element.key);
-                            let skill = JSON.parse(this.Hex2String(element.data.toString()));
-                            skill.forEach(element => {
-                                this.skills.push(element);
+                        this._service.listStreamKeyItems(this.skillsStream, data.key).then(data => {
+                            data.forEach(element => {
+                                console.log(element);
+                                console.log(element.key);
+                                let skill = JSON.parse(this._service.Hex2String(element.data.toString()));
+                                skill.forEach(element => {
+                                    this.skills.push(element);
+                                });
                             });
-                          });
-                          
+
                         });
-                        this._service.listStreamKeyItems(this.eduStream,data.key).then(data => {
-                          data.forEach(element => {
-                            console.log(element);
-                            console.log(element.key);
-                            let edu: Education = JSON.parse(this.Hex2String(element.data.toString()));
-                            console.log(edu);
-                            edu.edu_id = element.txid;
-                            this.educations.push(edu);
-                          });
-                          
+                        this._service.listStreamKeyItems(this.eduStream, data.key).then(data => {
+                            data.forEach(element => {
+                                console.log(element);
+                                console.log(element.key);
+                                let edu: Education = JSON.parse(this._service.Hex2String(element.data.toString()));
+                                console.log(edu);
+                                edu.edu_id = element.txid;
+                                this.educations.push(edu);
+                            });
+
                         });
                         console.log("loaded  user skills");
-                          console.log(this.skills);
+                        console.log(this.skills);
                         this.userkey = data.key;
-                         console.log(this.userkey);
-                        this.user = JSON.parse(this.Hex2String(data.data.toString()));
+                        console.log(this.userkey);
+                        this.user = JSON.parse(this._service.Hex2String(data.data.toString()));
                     });
             } else {
 
@@ -91,21 +91,10 @@ export class Profile implements OnInit {
         });
     }
 
-    Hex2String(hex_str: string) {
-        let j;
-        let hexes = hex_str.match(/.{1,4}/g) || [];
-        let result_back = "";
-        for (j = 0; j < hexes.length; j++) {
-            result_back += String.fromCharCode(parseInt(hexes[j], 16));
-        }
-
-        return result_back;
-    }
-
     valuechange() {
 
-
     }
+
     onItemAdded(item) {
         this.items.push(item.value);
     }

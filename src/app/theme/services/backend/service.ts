@@ -25,6 +25,28 @@ export class MyService {
     //     });
     // }
 
+    String2Hex(str: string) {
+        let hex, i;
+
+        let result = "";
+        for (i = 0; i < str.length; i++) {
+            hex = str.charCodeAt(i).toString(16);
+            result += ("000" + hex).slice(-4);
+        }
+        return result;
+    }
+
+    Hex2String(hex_str: string) {
+        let j;
+        let hexes = hex_str.match(/.{1,4}/g) || [];
+        let result_back = "";
+        for (j = 0; j < hexes.length; j++) {
+            result_back += String.fromCharCode(parseInt(hexes[j], 16));
+        }
+
+        return result_back;
+    }
+
     getinfo(): Promise<any> {
         return this.callAPI('getinfo', 'get', null, null, null);
     }
@@ -85,14 +107,14 @@ export class MyService {
         return this.callAPI('liststreamitems', 'get', params, null, null);
     }
 
-    listStreamKeyItems(stream: string,key: string): Promise<any> {
+    listStreamKeyItems(stream: string, key: string): Promise<any> {
         let params: URLSearchParams = new URLSearchParams();
         params.set('stream', stream);
         params.set('key', key);
         return this.callAPI('liststreamkeyitems', 'get', params, null, null);
     }
 
-    gettxoutdata(txid:string){
+    gettxoutdata(txid: string) {
         let params: URLSearchParams = new URLSearchParams();
         params.set('txid', txid);
         return this.callAPI('gettxoutdata', 'get', params, null, null);

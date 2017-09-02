@@ -65,40 +65,18 @@ export class Register {
       let key = this.user.username;
       let userJSON = JSON.stringify(this.user);
 
-      let data_hex = this.String2Hex(userJSON);
+      let data_hex = this._service.String2Hex(userJSON);
 
       this.authService.signUp(this.email.value,this.password.value).then((data) => {
         this._router.navigate(['']);
       }) 
 
-      // this._service.publishToStream(this.projctsStream, key, data_hex).then(data => {
-      //   console.log("saved");
-      //   console.log(data);
+      this._service.publishToStream(this.projctsStream, key, data_hex).then(data => {
+        console.log("saved");
+        console.log(data);
 
-      //   this._router.navigate([''])
-      // });
+        this._router.navigate([''])
+      });
     }
-  }
-
-  String2Hex(str: string) {
-    let hex, i;
-
-    let result = "";
-    for (i = 0; i < str.length; i++) {
-      hex = str.charCodeAt(i).toString(16);
-      result += ("000" + hex).slice(-4);
-    }
-    return result;
-  }
-
-  Hex2String(hex_str: string) {
-    let j;
-    let hexes = hex_str.match(/.{1,4}/g) || [];
-    let result_back = "";
-    for (j = 0; j < hexes.length; j++) {
-      result_back += String.fromCharCode(parseInt(hexes[j], 16));
-    }
-
-    return result_back;
   }
 }

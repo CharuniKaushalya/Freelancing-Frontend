@@ -22,13 +22,13 @@ export class MyProjects implements OnInit {
             data.forEach(element => {
                 let project: Project;
                 if (element.data.txid == null) {
-                    project = JSON.parse(this.Hex2String(element.data.toString()));
+                    project = JSON.parse(this._service.Hex2String(element.data.toString()));
                     project.project_id = element.txid;
                     project.client = element.publishers[0];
                     this.projects.push(project);
                 } else {
                     _service.gettxoutdata(element.data.txid).then(largedata => {
-                        project = JSON.parse(this.Hex2String(largedata.toString()));
+                        project = JSON.parse(this._service.Hex2String(largedata.toString()));
                         project.project_id = element.txid;
                         project.client = element.publishers[0];
                         this.projects.push(project);
@@ -41,17 +41,6 @@ export class MyProjects implements OnInit {
     }
 
     ngOnInit() {
-    }
-
-    Hex2String(hex_str: string) {
-        let j;
-        let hexes = hex_str.match(/.{1,4}/g) || [];
-        let result_back = "";
-        for (j = 0; j < hexes.length; j++) {
-            result_back += String.fromCharCode(parseInt(hexes[j], 16));
-        }
-
-        return result_back;
     }
 
     goToProject(id: string) {

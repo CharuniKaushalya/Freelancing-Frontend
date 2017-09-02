@@ -71,7 +71,7 @@ export class Skill {
       let skillJSON = JSON.stringify(this.skill);
       console.log(skillJSON);
 
-      let data_hex = this.String2Hex(skillJSON);
+      let data_hex = this._service.String2Hex(skillJSON);
       console.log(data_hex);
       // console.log(this.Hex2String(data_hex));  
 
@@ -87,7 +87,7 @@ export class Skill {
   LoadSkills() {
     this._service.listStreamItems(this.skillsStream).then(data => {
       data.forEach(element => {
-        let skill: SkillModel = JSON.parse(this.Hex2String(element.data.toString()));
+        let skill: SkillModel = JSON.parse(this._service.Hex2String(element.data.toString()));
         skill.skill_id = element.txid;
         this.skills.push(skill);
       });
@@ -102,28 +102,6 @@ export class Skill {
     } else {
       event.confirm.reject();
     }
-  }
-
-  String2Hex(str: string) {
-    let hex, i;
-
-    let result = "";
-    for (i = 0; i < str.length; i++) {
-      hex = str.charCodeAt(i).toString(16);
-      result += ("000" + hex).slice(-4);
-    }
-    return result;
-  }
-
-  Hex2String(hex_str: string) {
-    let j;
-    let hexes = hex_str.match(/.{1,4}/g) || [];
-    let result_back = "";
-    for (j = 0; j < hexes.length; j++) {
-      result_back += String.fromCharCode(parseInt(hexes[j], 16));
-    }
-
-    return result_back;
   }
 
 }
