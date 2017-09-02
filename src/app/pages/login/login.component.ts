@@ -1,5 +1,7 @@
-import {Component} from '@angular/core';
-import {FormGroup, AbstractControl, FormBuilder, Validators} from '@angular/forms';
+import { Component } from '@angular/core';
+import { FormGroup, AbstractControl, FormBuilder, Validators } from '@angular/forms';
+import { Router } from '@angular/router';
+import { AuthService } from '../../providers/auth.service';
 
 @Component({
   selector: 'login',
@@ -8,12 +10,14 @@ import {FormGroup, AbstractControl, FormBuilder, Validators} from '@angular/form
 })
 export class Login {
 
-  public form:FormGroup;
-  public email:AbstractControl;
-  public password:AbstractControl;
-  public submitted:boolean = false;
+  public form: FormGroup;
+  public email: AbstractControl;
+  public password: AbstractControl;
+  public submitted: boolean = false;
+  
+  error="";
 
-  constructor(fb:FormBuilder) {
+  constructor(fb: FormBuilder, public authService: AuthService, private _router: Router) {
     this.form = fb.group({
       'email': ['', Validators.compose([Validators.required, Validators.minLength(4)])],
       'password': ['', Validators.compose([Validators.required, Validators.minLength(4)])]
@@ -23,11 +27,16 @@ export class Login {
     this.password = this.form.controls['password'];
   }
 
-  public onSubmit(values:Object):void {
+  public onSubmit(values: Object): void {
     this.submitted = true;
     if (this.form.valid) {
-      // your code goes here
-      // console.log(values);
+      this.authService.signIn(this.email.value,this.password.value).then((data) => {
+        this._router.navigate(['']);
+      }).catch(error=>{
+        this.error = error.message;
+        this.form.reset();
+      })
+
     }
   }
 }

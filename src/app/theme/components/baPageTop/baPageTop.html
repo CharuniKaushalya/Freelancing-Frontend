@@ -6,18 +6,18 @@
   <div class="search">
     <i class="ion-ios-search-strong" ng-click="startSearch()"></i>
     <input id="searchInput" type="text" placeholder="Search for...">
-  </div>
+  </div> 
 
   <div class="user-profile clearfix">
     <div class="dropdown al-user-profile">
-      <a class="profile-toggle-link dropdown-toggle" id="user-profile-dd" data-toggle="dropdown" aria-expanded="false">
+      <a class="profile-toggle-link dropdown-toggle" id="user-profile-dd" data-toggle="dropdown" aria-expanded="true">
         <img src="{{ ( 'Nasta' | baProfilePicture ) }}">
       </a>
-      <ul class="dropdown-menu top-dropdown-menu profile-dropdown" aria-labelledby="user-profile-dd">
-        <li class="dropdown-item"><a href><i class="fa fa-user"></i>Profile</a></li>
+      <ul class="dropdown-menu top-dropdown-menu profile-dropdown">
+        <li class="dropdown-item"><a href><i class="fa fa-user"></i>{{user_email}}</a></li>
         <li class="dropdown-item"><a href><i class="fa fa-cog"></i>Settings</a></li>
-        <li class="dropdown-item"><a href class="signout"><i class="fa fa-power-off"></i>Sign out</a></li>
-      </ul>
+        <li class="dropdown-item"><a (click)="logout()" href class="signout"><i class="fa fa-power-off"></i>Sign out</a></li>
+      </ul> 
     </div>
     <ba-msg-center></ba-msg-center>
   </div>

@@ -11,14 +11,19 @@ import { TranslateService } from '@ngx-translate/core';
  */
 import { routing } from './app.routing';
 
+//Firebase
+import { AngularFireModule } from 'angularfire2';
+import { AngularFireDatabaseModule, AngularFireDatabase } from 'angularfire2/database';
+import { AngularFireAuthModule, AngularFireAuth } from 'angularfire2/auth';
+
+import { AuthService } from './providers/auth.service';
+
 // App is our top level component
 import { App } from './app.component';
 import { AppState, InternalStateType } from './app.service';
 import { GlobalState } from './global.state';
 import { NgaModule } from './theme/nga.module';
 import { PagesModule } from './pages/pages.module';
-
-
 
 // Application wide providers
 const APP_PROVIDERS = [
@@ -31,6 +36,15 @@ export type StoreType = {
   restoreInputValues: () => void,
   disposeOldHosts: () => void
 };
+
+export const firebaseConfig = {
+    apiKey: "AIzaSyD5Q8KmavCVl0g8YYPO8_m-UlE2umTaDC0",
+    authDomain: "blockwork-e2f23.firebaseapp.com",
+    databaseURL: "https://blockwork-e2f23.firebaseio.com",
+    projectId: "blockwork-e2f23",
+    storageBucket: "blockwork-e2f23.appspot.com",
+    messagingSenderId: "520243918205"
+  };
 
 /**
  * `AppModule` is the main entry point into Angular2's bootstraping process
@@ -50,10 +64,14 @@ export type StoreType = {
     NgaModule.forRoot(),
     NgbModule.forRoot(),
     PagesModule,
-    routing
+    routing,
+    AngularFireModule.initializeApp(firebaseConfig),
+    AngularFireDatabaseModule,
+    AngularFireAuthModule,
   ],
   providers: [ // expose our Services and Providers into Angular's dependency injection
-    APP_PROVIDERS
+    APP_PROVIDERS,
+    AuthService
   ]
 })
 

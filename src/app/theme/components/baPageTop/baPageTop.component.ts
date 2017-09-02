@@ -1,6 +1,9 @@
-import {Component} from '@angular/core';
+import { Component } from '@angular/core';
+import { Router } from '@angular/router';
 
-import {GlobalState} from '../../../global.state';
+import { GlobalState } from '../../../global.state';
+
+import { AuthService } from '../../../providers/auth.service';
 
 @Component({
   selector: 'ba-page-top',
@@ -9,13 +12,41 @@ import {GlobalState} from '../../../global.state';
 })
 export class BaPageTop {
 
-  public isScrolled:boolean = false;
-  public isMenuCollapsed:boolean = false;
+  public isScrolled: boolean = false;
+  public isMenuCollapsed: boolean = false;
 
-  constructor(private _state:GlobalState) {
+  private isLoggedIn: Boolean;
+  user_displayName:string;
+  user_email: string;
+  private auth: any;
+
+  constructor(private _state: GlobalState, public authService: AuthService, private _router: Router) {
     this._state.subscribe('menu.isCollapsed', (isCollapsed) => {
       this.isMenuCollapsed = isCollapsed;
     });
+
+    this.authService.getAuth().authState.subscribe(user => {
+      console.log(user);
+      this.auth = user;
+      if (this.auth == null) {
+        console.log("Logged out");
+        this.isLoggedIn = false;
+        this.user_displayName = '';
+        this.user_email = '';
+        this._router.navigate(['login']);
+      } else {
+        this.isLoggedIn = true;
+        this.user_displayName = this.auth.displayName;
+        this.user_email = this.auth.email;
+        console.log("Logged in");
+        console.log(this.user_email);
+      }
+    });
+  }
+
+  logout() {
+    this.authService.signOut();
+    this._router.navigate(['login']);
   }
 
   public toggleMenu() {

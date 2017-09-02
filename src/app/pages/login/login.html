@@ -18,6 +18,7 @@
           <input [formControl]="password" type="password" class="form-control" id="inputPassword3" placeholder="{{'login.password' | translate}}">
         </div>
       </div>
+      <h5 class="text-danger" >{{error}}</h5>
       <div class="form-group row">
         <div class="offset-sm-2 col-sm-10">
           <button [disabled]="!form.valid" type="submit" class="btn btn-default btn-auth" translate>{{'login.sign_in'}}</button>

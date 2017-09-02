@@ -1,6 +1,7 @@
 import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
 import { FormGroup, AbstractControl, FormBuilder, Validators } from '@angular/forms';
 import { EmailValidator, EqualPasswordsValidator } from '../../theme/validators';
+import { AuthService } from '../../providers/auth.service';
 
 import { MyService } from "../../theme/services/backend/service";
 import { Router } from '@angular/router';
@@ -31,7 +32,7 @@ export class Register {
 
   userTypes = ['Freelancer', 'Client', 'QA', 'Consultant'];
 
-  constructor(private _router:Router,fb: FormBuilder, private _service: MyService) {
+  constructor(private _router:Router,public authService: AuthService,fb: FormBuilder, private _service: MyService) {
 
     this.user = new User();
 
@@ -56,25 +57,26 @@ export class Register {
   public onSubmit(values: Object): void {
     this.submitted = true;
     if (this.form.valid) {
-      // your code goes here
+
       console.log(values);
       this.user.usertype = 1;
       console.log(this.user);
 
       let key = this.user.username;
       let userJSON = JSON.stringify(this.user);
-      console.log(userJSON);
 
       let data_hex = this.String2Hex(userJSON);
-      console.log(data_hex);
-      // console.log(this.Hex2String(data_hex));  
 
-      this._service.publishToStream(this.projctsStream, key, data_hex).then(data => {
-        console.log("saved");
-        console.log(data);
+      this.authService.signUp(this.email.value,this.password.value).then((data) => {
+        this._router.navigate(['']);
+      }) 
 
-        this._router.navigate([''])
-      });
+      // this._service.publishToStream(this.projctsStream, key, data_hex).then(data => {
+      //   console.log("saved");
+      //   console.log(data);
+
+      //   this._router.navigate([''])
+      // });
     }
   }
 
