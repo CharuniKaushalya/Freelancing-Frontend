@@ -4,6 +4,7 @@ import 'rxjs/add/operator/filter';
 import 'rxjs/add/operator/debounceTime';
 import 'rxjs/add/operator/map';
 import { MyService } from "../../../../theme/services/backend/service";
+import { Skill } from "../../../../theme/models/skill";
 
 @Component({
   selector: 'add-service-modal',
@@ -18,11 +19,23 @@ export class SkillModal implements OnInit {
   modalContent: string = "";
   userkey: string;
   items = [];
-  myitems = ['mysql', 'Java', 'erlang','Python','JS', "AngularJS", "C"];
-  skillsStream = "user-skill";
+  myitems = [];
+  skillsStream = "skills";
+  userSkillsStream = "user-skill";
+
 
 
   constructor(private _service: MyService, private activeModal: NgbActiveModal) {
+    _service.listStreamItems(this.skillsStream).then(data => {
+      data.forEach(element => {
+        console.log(element);
+        console.log(element.key);
+        let skill:Skill = JSON.parse(this._service.Hex2String(element.data.toString()));
+        this.myitems.push(skill.name);
+                                
+      });
+      console.log(this.myitems);
+    });
   }
 
   ngOnInit() {}
@@ -38,7 +51,7 @@ export class SkillModal implements OnInit {
     console.log(data_hex);
     // console.log(this.Hex2String(data_hex));  
 
-    this._service.publishToStream(this.skillsStream, key, data_hex).then(data => {
+    this._service.publishToStream(this.userSkillsStream, key, data_hex).then(data => {
       console.log(data);
     });
     location.reload();

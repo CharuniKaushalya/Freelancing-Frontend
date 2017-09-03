@@ -35,7 +35,13 @@
             </section><!--//section-->
 
             <section class="project section">
-            <ba-card cardTitle="Latest Projects" baCardClass="with-scroll">
+            <ba-card baCardClass="with-scroll">
+            PORTFOLIO
+            <div class="pull-right">
+                <div class="text-primary pull-right"><a  (click)="smModalShow()"><i class="fa fa-cog"></i> Add New</a></div>
+            </div>
+            <hr>
+            
             <div class="row">
             <div class="col-md-4"> 
                 <img  src="assets/img/app/project/project-3.png" alt="project name" class="img-thumbnail" width="304" height="236"/>
@@ -104,7 +110,7 @@
                 <ul class="list-unstyled">
                     <li>SKILLS<div class="text-primary pull-right"><a  (click)="smModalShow()"><i class="fa fa-cog"></i> Add New</a></div></li><hr>
                     <div *ngFor="let skill of skills">
-                        <li>{{skill}}<div class="text-success pull-right">32%<i class="fa fa-level-up"></i></div></li><hr>
+                        <li>{{skill}}<div class="text-success pull-right">Entry<i class="fa fa-level-up"></i></div></li><hr>
                     </div>
                 </ul>
             </ba-card>

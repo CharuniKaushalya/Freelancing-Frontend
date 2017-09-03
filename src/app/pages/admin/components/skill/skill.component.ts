@@ -81,6 +81,7 @@ export class Skill {
 
       //this._router.navigate(['pages/admin/skill']);
       this.LoadSkills();
+      location.reload();
     }
   }
 

@@ -58,8 +58,6 @@ export class Profile implements OnInit {
                     if (!data.error) {
                         this._service.listStreamKeyItems(this.skillsStream, data.key).then(data => {
                             data.forEach(element => {
-                                console.log(element);
-                                console.log(element.key);
                                 let skill = JSON.parse(this._service.Hex2String(element.data.toString()));
                                 skill.forEach(element => {
                                     this.skills.push(element);
@@ -69,17 +67,12 @@ export class Profile implements OnInit {
                         });
                         this._service.listStreamKeyItems(this.eduStream, data.key).then(data => {
                             data.forEach(element => {
-                                console.log(element);
-                                console.log(element.key);
                                 let edu: Education = JSON.parse(this._service.Hex2String(element.data.toString()));
-                                console.log(edu);
                                 edu.edu_id = element.txid;
                                 this.educations.push(edu);
                             });
 
                         });
-                        console.log("loaded  user skills");
-                        console.log(this.skills);
                         this.userkey = data.key;
                         console.log(this.userkey);
                         this.user = JSON.parse(this._service.Hex2String(data.data.toString()));
