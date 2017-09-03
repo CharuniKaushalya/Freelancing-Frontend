@@ -117,11 +117,8 @@
                     <li>EDUCATION<div class="text-primary pull-right"><a  (click)="eduModalShow()"><i class="fa fa-cog"></i> Add New</a></div></li><hr>
                     <div *ngFor="let education of educations">
                         <li><h5 class="title"><i class="lnr lnr-graduation-hat"></i><a href="#"> {{education.title}} {{education.degree}}</a></h5>
-                        <h6 class="university">{{education.university_name}} - <span class="year">({{education.grad_year}})</span></h6></li><hr>
+                        <h6 class="university">{{education.university_name}}, {{education.country}} - <span class="year">({{education.grad_year}})</span></h6></li><hr>
                     </div>
-
-                    <li><h5 class="title"><i class="lnr lnr-graduation-hat"></i><a href="#"> MSc Psychology and Computer Science</a></h5>
-                    <h6 class="university">University College London <span class="year">(2011-2012)</span></h6></li>
                 </ul>
             </ba-card>
             </aside><!--//aside-->

@@ -8,7 +8,8 @@ import { EmailValidator, EqualPasswordsValidator } from '../../../../theme/valid
 import { MyService } from "../../../../theme/services/backend/service";
 import { Router } from '@angular/router';
 import { CountryPickerService } from 'angular2-countrypicker';
-import { CountryPickerComponent } from './country-picker.component';
+import { ICountry } from './country.interface';
+import * as _ from 'lodash';
 
 import { Education } from "../../../../theme/models/education";
 
@@ -22,18 +23,22 @@ import { Education } from "../../../../theme/models/education";
 
 export class EducationModal implements OnInit {
 
-  public countries: any[];
+  //public countries: any[];
 
   modalHeader: string;
   modalContent: string = "";
   public form: FormGroup;
   public uniname: AbstractControl;
   public degree: AbstractControl;
-  public myCountryPicker: CountryPickerComponent;
 
   public submitted: boolean = false;
 
   @Input() education: Education;
+  @Input() setValue: string = 'cca3';
+  @Input() setName: string = 'name.common';
+  @Input() modelName: string = "country";
+
+  public countries: ICountry[];
   eduStream: string = "user-edu";
 
 
@@ -48,12 +53,22 @@ export class EducationModal implements OnInit {
   constructor(fb: FormBuilder, private _service: MyService, private activeModal: NgbActiveModal,
     private countryPickerService: CountryPickerService) {
 
-    this.countryPickerService.getCountries().subscribe(countries => this.countries = countries);
+    this.countryPickerService.getCountries().subscribe(countries => {
+      this.countries = countries.sort((a: ICountry, b: ICountry) => {
+        let na = this.getName(a);
+        let nb = this.getName(b);
+        if (na > nb) {
+          return 1;
+        }
+        if (na < nb) {
+          return -1;
+        }
+        return 0;
+      });
+    });
 
     this.years = [2013, 2014, 2015, 2016, 2017, 2018];
-    this.titles = ["Associate", 'Certificate', "B.A.", "BArch", "BFA", "B.Sc.", "M.A.", "M.B.A.", "MFA", "M.Sc.", "J.D.",
-      "M.D.", "Ph.D", "LLB", "LLM"];
-    console.log(this.years);
+    this.titles = ["Associate", 'Certificate', "B.A.", "BArch", "BFA", "B.Sc.", "M.A.", "M.B.A.", "MFA", "M.Sc.", "J.D.","M.D.", "Ph.D", "LLB", "LLM"];
     this.education = new Education();
 
     this.form = fb.group({
@@ -75,9 +90,7 @@ export class EducationModal implements OnInit {
   public onSubmit(values: Object): void {
     this.submitted = true;
     this.activeModal.close();
-    console.log("submitted");
     // your code goes here
-    this.education.country = "Sri Lanka";
     console.log(this.education);
     console.log(this.userkey);
     let key = this.userkey;
@@ -92,6 +105,14 @@ export class EducationModal implements OnInit {
       console.log(data);
     });
     location.reload();
+  }
+
+  public getValue(obj: ICountry) {
+    return _.get(obj, this.setValue);
+  }
+
+  public getName(obj: ICountry) {
+    return _.get(obj, this.setName);
   }
 
 }

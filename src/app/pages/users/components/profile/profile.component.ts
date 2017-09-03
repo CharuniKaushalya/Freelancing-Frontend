@@ -27,7 +27,6 @@ export class Profile implements OnInit {
     PeerInfo = null;
     user: User;
     userStream: string = "Users";
-    items = ['Pizza', 'Pasta', 'Parmesan'];
     userkey = "";
     skillsStream = "user-skill";
     eduStream = "user-edu";
@@ -47,7 +46,6 @@ export class Profile implements OnInit {
             console.log(data);
             this.PeerInfo = data;
         });
-        console.log(this.items);
     }
 
 
@@ -56,7 +54,8 @@ export class Profile implements OnInit {
             if (params['user_id'] !== undefined) {
                 let user_id = params['user_id'];
                 this._service.getstreamitem(this.userStream, user_id.toString())
-                    .then(data => {
+                .then(data => {
+                    if (!data.error) {
                         this._service.listStreamKeyItems(this.skillsStream, data.key).then(data => {
                             data.forEach(element => {
                                 console.log(element);
@@ -84,19 +83,20 @@ export class Profile implements OnInit {
                         this.userkey = data.key;
                         console.log(this.userkey);
                         this.user = JSON.parse(this._service.Hex2String(data.data.toString()));
-                    });
-            } else {
 
+                    }
+                    else{
+                        this.goToDash();
+                    }
+                        
+                });
+            }else {
             }
         });
     }
 
     valuechange() {
 
-    }
-
-    onItemAdded(item) {
-        this.items.push(item.value);
     }
 
     smModalShow(): void {
@@ -110,6 +110,11 @@ export class Profile implements OnInit {
         activeModal.componentInstance.modalHeader = 'Add Education';
         activeModal.componentInstance.userkey = this.userkey;
     }
+
+    goToDash() {
+    let link = ['/dashboard'];
+    this._router.navigate(link);
+  }
 
 
 }
