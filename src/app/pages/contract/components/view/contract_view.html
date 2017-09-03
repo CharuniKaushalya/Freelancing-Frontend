@@ -63,9 +63,27 @@
                                         </td>
                                         <td>
                                             <br>
-                                            <button type="button" class="btn btn-primary  btn-sm float-sm-right"
-                                                    (click)="updateStatus(contract.contract_id)">
-                                                Advance
+                                            <button *ngIf="completeBtn" class="btn btn-primary  btn-sm float-sm-right"
+                                                    type="button" (click)="completeBtnClicked(contract.contract_id)">Complete
+                                            </button>
+                                        </td>
+                                        <td>
+                                            <br>
+                                            <button *ngIf="redoBtn" class="btn btn-primary  btn-sm float-sm-right"
+                                                    style="width: 110px" type="button"
+                                                    (click)="redoBtnClicked(contract.contract_id)">Request Redo
+                                            </button>
+                                            <br>
+                                            <button *ngIf="paidBtn" class="btn btn-primary  btn-sm float-sm-right"
+                                                    style="width: 110px" type="button"
+                                                    (click)="paidBtnClicked(contract.contract_id)">Accepted & Paid
+                                            </button>
+                                        </td>
+                                        <td>
+                                            <br>
+                                            <button *ngIf="paymentConfirmBtn" class="btn btn-primary  btn-sm float-sm-right"
+                                                    type="button" (click)="paymentConfirmBtnClicked(contract.contract_id)">
+                                                Payment Accepted
                                             </button>
                                         </td>
                                     </tr>
