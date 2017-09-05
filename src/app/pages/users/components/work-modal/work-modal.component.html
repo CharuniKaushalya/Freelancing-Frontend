@@ -1,0 +1,96 @@
+<div class="modal-content">
+  <div class="modal-header">
+    <h4 class="modal-title">{{modalHeader}}</h4>
+    <button class="close" aria-label="Close" (click)="closeModal()">
+      <span aria-hidden="true">&times;</span>
+    </button>
+  </div>
+  <div class="modal-body">
+
+    
+
+
+
+    <form [formGroup]="form" (ngSubmit)="onSubmit(form.value)" class="form-horizontal">
+    <div class="form-group row" [ngClass]="{'has-error': (!company.valid && company.touched), 'has-success': (company.valid && company.touched)}">
+        <label for="inputcompName3" class="col-sm-2 control-label"> Complany</label>
+
+        <div class="col-sm-10">
+          <input [formControl]="company"  [(ngModel)]="employment.company" type="text" class="form-control" id="inputcompName3" placeholder="Company Name">
+        </div>
+      </div>
+      <div class="form-group row" [ngClass]="{'has-error': (!city.valid && city.touched), 'has-success': (city.valid && city.touched)}">
+        <label for="inputcityName3" class="col-sm-2 control-label">Location</label>
+
+        <div class="col-sm-5">
+          <input [formControl]="city"  [(ngModel)]="employment.city" type="text" class="form-control" id="inputcityName3" placeholder="City">
+        </div>
+        <div class="col-sm-5">
+          <select class="form-control form-control-sm"   [(ngModel)]="employment.country" [ngModelOptions]="{standalone: true}">
+                <option *ngFor="let c of countries; let i = index;" [ngValue]="getName(c)">{{getName(c)}}</option>
+            </select>
+        </div>
+      </div>
+      <div class="form-group row" [ngClass]="{'has-error': (!title.valid && title.touched), 'has-success': (title.valid && title.touched)}">
+        <label for="inputtitleName3" class="col-sm-2 control-label"> Title</label>
+
+        <div class="col-sm-10">
+          <input [formControl]="company"  [(ngModel)]="employment.title" type="text" class="form-control" id="inputtitleName3" placeholder="Title">
+        </div>
+      </div>
+      <div class="form-group row">
+        <label  class="col-sm-2 control-label">Roles</label>
+
+        <div class="col-sm-5">
+             <select [(ngModel)]="employment.role" [ngModelOptions]="{standalone: true}" class="form-control" id="cur_type" >
+                <option *ngFor="let role of roles" [ngValue]="role" >{{role}}</option>
+              </select>
+        </div>
+      </div>
+      <div class="form-group row">
+        <label  class="col-sm-2 control-label">Period</label>
+
+        <div class="col-sm-5">
+              <select [(ngModel)]="employment.from_month" [ngModelOptions]="{standalone: true}" class="form-control" id="cur_type" >
+                <option *ngFor="let month of months" [ngValue]="month" >{{month}}</option>
+              </select>
+        </div>
+        <div class="col-sm-5">
+              <select [(ngModel)]="employment.from_year" [ngModelOptions]="{standalone: true}" class="form-control" id="cur_type" >
+                <option *ngFor="let year of years" [ngValue]="year" >{{year}}</option>
+              </select>
+        </div>
+        
+      </div>
+      <p  class="col-sm-10 offset-sm-2" style="text-align:center">Through</p>
+      <div class="form-group row">
+        <div class="col-sm-5 offset-sm-2">
+              <select [(ngModel)]="employment.to_month" [ngModelOptions]="{standalone: true}" class="form-control" id="cur_type" >
+                <option *ngFor="let month of months" [ngValue]="month" >{{month}}</option>
+              </select>
+        </div>
+        <div class="col-sm-5">
+              <select [(ngModel)]="employment.to_year" [ngModelOptions]="{standalone: true}" class="form-control" id="cur_type" >
+                <option selected="true">Year</option>
+                <option *ngFor="let year of years" [ngValue]="year" >{{year}}</option>
+              </select>
+        </div>
+      </div>
+      <div class="form-group row">
+        <label for="description" class="col-sm-2 control-label"> Description</label>
+
+        <div class="col-sm-10">
+          <textarea [(ngModel)]="employment.description" [ngModelOptions]="{standalone: true}" class="form-control" rows="4" name="description" id="description" placeholder="Describe your role here."></textarea>
+        </div>
+      </div>
+       
+      <div class="form-group row">
+        <div class="offset-sm-2 col-sm-10">
+          <button type="submit" class="btn btn-primary pull-right">Save changes</button>
+        </div>
+      </div>
+    </form>
+
+
+  </div>
+</div>

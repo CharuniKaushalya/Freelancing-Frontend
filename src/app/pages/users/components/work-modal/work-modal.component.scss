@@ -1,0 +1,15 @@
+@import "../../../../theme/sass/conf/conf";
+
+.modal-buttons .btn {
+  margin-right: 20px;
+}
+
+.modal-content {
+  color: $dropdown-text;
+}
+
+:host /deep/ ng2-dropdown-menu div{
+	left: inherit !important;
+	top: inherit !important;
+} 
+
