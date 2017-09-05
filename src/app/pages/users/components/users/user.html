@@ -27,10 +27,11 @@
                                     </a>
                                    
                                 </td>
-                                <td><br>{{user.name}} }</td>
+                                <td><br>{{user.name}}</td>
                                 <td><br>{{user.email}}</td>
                                 <td>
-                                    <br><button type="button" class="btn btn-primary  btn-sm">{{user.usertype}}</button>
+                                    <br><button type="button" class="btn btn-primary  btn-sm">
+                                    <div ng-if="user.usertype == 1">Freelancer</div></button>
                                 </td>
                             </tr>
                         </tbody>
