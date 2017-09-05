@@ -80,7 +80,13 @@ export class MyService {
         return this.callAPI('liststreams', 'get', null, null, null);
     }
 
-    createStream(address: string, name: string): Promise<any> {
+    createStream(name: string): Promise<any> {
+        let params: URLSearchParams = new URLSearchParams();
+        params.set('name', name);
+        return this.callAPI('create', 'get', params, null, null);
+    }
+
+    createStreamFrom(address: string, name: string): Promise<any> {
         let params: URLSearchParams = new URLSearchParams();
         params.set('from_address', address);
         params.set('name', name);

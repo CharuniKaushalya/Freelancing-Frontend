@@ -10,6 +10,7 @@ import { Project } from "../../../../theme/models/project";
 import { TimePeriod } from "../../../../theme/models/timeperiod";
 import { Budget } from "../../../../theme/models/budget";
 import { DownloadFile } from "../../../../theme/models/downloadFile";
+import { Skill } from "../../../../theme/models/skill";
 
 @Component({
     selector: 'project_new',
@@ -30,7 +31,8 @@ export class ProjectNew implements OnInit {
     encodedFiles: DownloadFile[] = [];
     projctsStream: string = "projects";
 
-    myitems = ['mysql', 'Java', 'erlang','Python','JS'];
+    skill_items = [];
+    skillsStream = "skills";
 
     constructor(private _router: Router, private _service: MyService) {
 
@@ -39,6 +41,15 @@ export class ProjectNew implements OnInit {
         this.budget = new Budget();
         this.project.time_period = this.time_period;
         this.project.budget = this.budget;
+
+        _service.listStreamItems(this.skillsStream).then(data => {
+            data.forEach(element => {
+                console.log(element);
+                console.log(element.key);
+                let skill: Skill = JSON.parse(this._service.Hex2String(element.data.toString()));
+                this.skill_items.push(skill.name);
+            });
+        });
 
     }
 
@@ -70,7 +81,7 @@ export class ProjectNew implements OnInit {
 
     save() {
         this.project.files = this.encodedFiles;
-        this.project.skills = this.skills ;
+        this.project.skills = this.skills;
         let key = this.project.projectName;
         let projectJSON = JSON.stringify(this.project)
         // console.log(projectJSON);
@@ -86,7 +97,7 @@ export class ProjectNew implements OnInit {
             this._router.navigate(['/pages/work/my_projects'])
         });
     }
-    
+
     onItemAdded(item) {
         this.skills.push(item.value);
         console.log(this.skills);
