@@ -125,14 +125,6 @@ export const PAGES_MENU = [
             }
           },
           {
-            path: 'project_details/:1',
-            data: {
-              menu: {
-                title: 'general.menu.project_details',
-              }
-            }
-          },
-          {
             path: 'my_work',
             data: {
               menu: {

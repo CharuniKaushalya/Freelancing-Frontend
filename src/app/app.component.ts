@@ -39,22 +39,19 @@ export class App implements OnInit {
     }
 
     ngOnInit() {
-        this._service.getaddresses().then(addresses => {
-            let myAddress = addresses[0].address;
-            this.streams.forEach(stream => {
-                this._service.listStreamItems(stream).then(data => {
-                    if (data.error) {
-                        if (data.result == null) {
-                            console.log("Not found Stream" + stream)
-                            this._service.createStream(myAddress, stream).then(streamData => {
-                                console.log("created " + stream)
-                            })
-                            this._service.subscribeStream(stream).then(subsData => {
-                                console.log("subscribed " + stream)
-                            })
-                        }
+        this.streams.forEach(stream => {
+            this._service.listStreamItems(stream).then(data => {
+                if (data.error) {
+                    if (data.result == null) {
+                        console.log("Not found Stream" + stream)
+                        this._service.createStream(stream).then(streamData => {
+                            console.log("created " + stream)
+                        })
+                        this._service.subscribeStream(stream).then(subsData => {
+                            console.log("subscribed " + stream)
+                        })
                     }
-                });
+                }
             });
         });
     }

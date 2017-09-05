@@ -68,7 +68,8 @@ export class EducationModal implements OnInit {
     });
 
     this.years = [2013, 2014, 2015, 2016, 2017, 2018];
-    this.titles = ["Associate", 'Certificate', "B.A.", "BArch", "BFA", "B.Sc.", "M.A.", "M.B.A.", "MFA", "M.Sc.", "J.D.","M.D.", "Ph.D", "LLB", "LLM"];
+    this.titles = ["Associate", 'Certificate', "B.A.", "BArch", "BFA", "B.Sc.", "M.A.", "M.B.A.", "MFA", "M.Sc.", 
+                    "J.D.","M.D.", "Ph.D", "LLB", "LLM"];
     this.education = new Education();
 
     this.form = fb.group({
