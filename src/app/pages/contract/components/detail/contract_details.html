@@ -70,9 +70,10 @@
                                 <th>Payment</th>
                                 <th>Deadline</th>
                                 <th>Task</th>
+                                <th>Status</th>
                                 </thead>
                                 <tbody>
-                                <tr *ngFor="let milestone of listOfMilestones">
+                                <tr *ngFor="let milestone of contract.milestoneValues">
                                     <td>
                                         <br>{{milestone.name}}
                                     </td>
@@ -86,10 +87,36 @@
                                         <br>{{milestone.task}}
                                     </td>
                                     <td>
+                                        <br>{{milestone.state}}
+                                    </td>
+                                </tr>
+                                <tr *ngIf="!isCompleted">
+                                    <td colspan=5 *ngIf="contract.status.milestone_state=='W'">
                                         <br>
-                                        <button type="button" class="btn btn-primary  btn-sm float-sm-right"
-                                                (click)="updateStatus(milestone.id)" onclick="this.disabled=true">Complete
+                                        <button class="btn btn-primary  btn-sm float-sm-right" type="button"
+                                                (click)="stateBtnClicked('R')">Complete
                                         </button>
+                                        <br><br>
+                                    </td>
+                                    <td colspan=5 *ngIf="contract.status.milestone_state=='R'">
+                                        <br>
+                                        <button class="btn btn-primary  btn-sm float-sm-right" style="width: 110px"
+                                                type="button" (click)="stateBtnClicked('W')">
+                                            Request Redo
+                                        </button>
+                                        <br>
+                                        <button class="btn btn-primary  btn-sm float-sm-right" style="width: 110px"
+                                                type="button" (click)="stateBtnClicked('P')">
+                                            Accepted & Paid
+                                        </button>
+                                    </td>
+                                    <td colspan=5 *ngIf="contract.status.milestone_state=='P'">
+                                        <br>
+                                        <button class="btn btn-primary  btn-sm float-sm-right" type="button"
+                                                (click)="stateBtnClicked('C')">
+                                            Payment Accepted
+                                        </button>
+                                        <br><br>
                                     </td>
                                 </tr>
                                 </tbody>
@@ -104,3 +131,4 @@
         </div>
     </div>
 </div>
+

@@ -1,19 +1,14 @@
-import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
-import { MyService } from "../../../../theme/services/backend/service";
-import { Router } from '@angular/router';
+import {Component, EventEmitter, Input, OnInit, Output} from '@angular/core';
+import {MyService} from "../../../../theme/services/backend/service";
+import {Router} from '@angular/router';
 
 import 'rxjs/add/operator/filter';
 import 'rxjs/add/operator/debounceTime';
 import 'rxjs/add/operator/map';
 
-<<<<<<< HEAD
-import { Contract } from "../../../../theme/models/contract";
-import { Project } from "../../../../theme/models/project";
-=======
 import {Contract} from "../../../../theme/models/contract";
 import {Project} from "../../../../theme/models/project";
 import {ContractStatus} from "../../../../theme/models/contractStatus";
->>>>>>> Retrieve latest contract status
 
 @Component({
     selector: 'my-contract',
@@ -31,7 +26,6 @@ export class MyContract implements OnInit {
 
     fromAddresses = null;
     toAddresses = null;
-    selectedFromAddress = null;
     balances = null;
     permissions = "receive";
     projects: Project[] = [];
@@ -106,18 +100,15 @@ export class MyContract implements OnInit {
                 let project: Project;
                 if (element.data.txid == null) {
                     project = JSON.parse(this._service.Hex2String(element.data.toString()));
-                    project.project_id = element.txid;
-                    project.client = element.publishers[0];
-                    this.projects.push(project);
+
                 } else {
                     _service.gettxoutdata(element.data.txid).then(largedata => {
                         project = JSON.parse(this._service.Hex2String(largedata.toString()));
-                        project.project_id = element.txid;
-                        project.client = element.publishers[0];
-                        this.projects.push(project);
                     })
                 }
-
+                project.project_id = element.txid;
+                project.client = element.publishers[0];
+                this.projects.push(project);
             });
             console.log(this.projects);
         });
@@ -126,7 +117,8 @@ export class MyContract implements OnInit {
         this.contract.milestones = 0;
     }
 
-    ngOnInit() { }
+    ngOnInit() {
+    }
 
     onClickFromAddress(address: string) {
         this._service.getaddressbalances(address).then(data => {
@@ -183,11 +175,9 @@ export class MyContract implements OnInit {
         let contractJSON = JSON.stringify(this.contract);
         console.log(contractJSON);
 
-<<<<<<< HEAD
-        let data_hex = this._service.String2Hex(projectJSON);
-=======
-        let data_hex = this.String2Hex(contractJSON);
->>>>>>> Retrieve latest contract status
+
+        let data_hex = this._service.String2Hex(contractJSON);
+
 
         this._service.publishToStream(this.contractStream, key, data_hex).then(data => {
             console.log("Contract saved");
@@ -197,8 +187,6 @@ export class MyContract implements OnInit {
             this._router.navigate(['/pages/contract/contract_view'])
         });
     }
-<<<<<<< HEAD
-=======
 
     saveContractStatus(id: string) {
         let key = id;
@@ -206,18 +194,14 @@ export class MyContract implements OnInit {
 
         /* setting the contract state attributes */
         contractStatus.contract_id = key;
-        if (this.contract.milestones == 0) {
-            contractStatus.current_milestone = 0;
-        } else {
-            contractStatus.current_milestone = 1;
-        }
+        contractStatus.current_milestone = 1;
         contractStatus.milestone_state = 'W';
 
         /* saving contract state to the blockchain */
         let contractStatusJSON = JSON.stringify(contractStatus);
         console.log(contractStatusJSON);
 
-        let data_hex = this.String2Hex(contractStatusJSON);
+        let data_hex = this._service.String2Hex(contractStatusJSON);
 
         this._service.publishToStream(this.contractStatusStream, key, data_hex).then(data => {
             console.log("Contract status saved");
@@ -225,24 +209,4 @@ export class MyContract implements OnInit {
         });
     }
 
-    String2Hex(str: string) {
-        let hex, i;
-        let result = "";
-        for (i = 0; i < str.length; i++) {
-            hex = str.charCodeAt(i).toString(16);
-            result += ("000" + hex).slice(-4);
-        }
-        return result;
-    }
-
-    Hex2String(hex_str: string) {
-        let j;
-        let hexes = hex_str.match(/.{1,4}/g) || [];
-        let result_back = "";
-        for (j = 0; j < hexes.length; j++) {
-            result_back += String.fromCharCode(parseInt(hexes[j], 16));
-        }
-        return result_back;
-    }
->>>>>>> Retrieve latest contract status
 }
