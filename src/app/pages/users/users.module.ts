@@ -11,7 +11,8 @@ import { Users } from './users.component';
 import { Profile } from './components/profile/profile.component';
 import { SkillModal } from './components/skill-modal/skill-modal.component';
 import { EducationModal } from './components/edu-modal/edu-modal.component';
-import { CountryPickerComponent } from './components/edu-modal/country-picker.component';
+import { PortfolioModal } from './components/proj-modal/proj-modal.component';
+import { WorkModal } from './components/work-modal/work-modal.component';
 
 @NgModule({
   imports: [
@@ -32,11 +33,14 @@ import { CountryPickerComponent } from './components/edu-modal/country-picker.co
     Profile,
     SkillModal,
     EducationModal,
-    CountryPickerComponent,
+    PortfolioModal,
+    WorkModal,
   ],
   entryComponents: [
     SkillModal,
-    EducationModal
+    EducationModal,
+    PortfolioModal,
+    WorkModal
   ],
 })
 export class UsersModule { }

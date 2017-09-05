@@ -38,19 +38,21 @@
             <ba-card baCardClass="with-scroll">
             PORTFOLIO
             <div class="pull-right">
-                <div class="text-primary pull-right"><a  (click)="smModalShow()"><i class="fa fa-cog"></i> Add New</a></div>
+                <div class="text-primary pull-right"><a  (click)="projModalShow()"><i class="fa fa-cog"></i> Add New</a></div>
             </div>
             <hr>
-            
-            <div class="row">
-            <div class="col-md-4"> 
-                <img  src="assets/img/app/project/project-3.png" alt="project name" class="img-thumbnail" width="304" height="236"/>
-            </div>
-            <div class="col-md-8"> 
-                <h4 class="title"><a href="#" target="_blank">DevStudio - Designed for Web Development Agencies</a></h4>
-                <p>You can put one of your secondary projects here. Suspendisse in tellus dolor. Vivamus a tortor eu turpis pharetra consequat quis non metus. Aliquam aliquam, orci eu suscipit pellentesque, mauris dui tincidunt enim, eget iaculis ante dolor non turpis.</p>
-                <p><a class="more-link" href="#" target="_blank"><i class="fa fa-external-link"></i> Find out more</a></p>
-            </div>
+
+            <div *ngFor="let portfolio of portfolios">
+                <div class="row">
+                    <div class="col-md-4"> 
+                        <img  src="assets/img/app/project/project-3.png" alt="project name" class="img-thumbnail" width="304" height="236"/>
+                    </div>
+                    <div class="col-md-8"> 
+                        <h4 class="title"><a href="#" target="_blank">{{portfolio.title}}</a></h4>
+                        <p>{{portfolio.description}}</p>
+                        
+                    </div>
+                </div>
             </div>
             <div class="row">
             <div class="col-md-4"> 
@@ -66,11 +68,15 @@
             </section><!--//section-->
             
             <section class="experience section">
-            <ba-card cardTitle="Work Experience" baCardClass="with-scroll">
+            <ba-card baCardClass="with-scroll">
                 <ul class="list-unstyled">
-                    <li><h4 class="title">Co-Founder & Lead Developer - <span class="place"><a href="#">Startup Hub</a></span> <span class="year">(2014 - Present)</span></h4>
-                    <div class=""><p>Aenean leo ligula, porttitor eu, consequat vitae, eleifend ac, enim. Aliquam lorem ante, dapibus in, viverra quis, feugiat a, tellus. Phasellus viverra nulla ut metus varius laoreet. Donec vitae sapien ut libero venenatis faucibus. Nullam quis ante. Etiam sit amet orci eget eros faucibus tincidunt.</p></div></li><br/>
-                    <li><h4 class="title">Software Engineer - <span class="place"><a href="#">Google</a></span> <span class="year">(2013 - 2014)</span></h4><div class=""><p>Vivamus a tortor eu turpis pharetra consequat quis non metus. Aliquam aliquam, orci eu suscipit pellentesque, mauris dui tincidunt enim. Sed fringilla mauris sit amet nibh. Donec sodales sagittis magna.</p></div></li>
+                    <li>WORK EXPERIENCE<div class="text-primary pull-right"><a  (click)="workModalShow()"><i class="fa fa-cog"></i> Add New</a></div></li><hr>
+                    <div *ngFor="let employment of employments">
+                    <li><h4 class="title">{{employment.title}} ({{employment.role}}) - <span class="place"><a href="#">{{employment.company}}, {{employment.city}}, {{employment.country}}</a>
+                    </span> <br/>
+                    <span class="year">({{employment.from_month}}, {{employment.from_year}} - {{employment.to_month}}), {{employment.to_year}}</span></h4>
+                    <div class=""><p>{{employment.description}}</p></div></li><hr>
+                    </div>
                 </ul>
             </ba-card>
             </section><!--//section-->
