@@ -1,0 +1,44 @@
+<div class="container">
+    <div class="row">
+
+        <div class="col-sm-12">
+            <div class="col-sm-12">
+                <ba-card cardTitle="Users" baCardClass="with-scroll table-panel">
+                    <table class="table table-condensed">
+                        <thead>
+                            <tr>
+                                <th></th>
+                                <th>UserName</th>
+                                <th>Full Name</th>
+                                <th>Email</th>
+                                <th>User Type</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr *ngFor="let user of users">
+                                <td>
+                                    <br>
+                                    <font size="5" color="#209e91"><i class="fa fa-user"></i></font>
+                                </td>
+                                <td>
+                                    <br>
+                                    <a style="cursor:pointer" (click)="goToUser(user.user_id)">
+                                        <h3>{{user.username}}</h3>
+                                    </a>
+                                   
+                                </td>
+                                <td><br>{{user.name}}</td>
+                                <td><br>{{user.email}}</td>
+                                <td>
+                                    <br><button type="button" class="btn btn-primary  btn-sm">
+                                    <div ng-if="user.usertype == 1">Freelancer</div></button>
+                                </td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </ba-card>
+            </div>
+
+        </div>
+    </div>
+</div>

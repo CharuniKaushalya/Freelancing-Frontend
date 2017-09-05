@@ -11,8 +11,12 @@ import 'rxjs/add/operator/map';
 import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
 import { SkillModal } from '../skill-modal/skill-modal.component';
 import { EducationModal } from '../edu-modal/edu-modal.component';
+import { PortfolioModal } from '../proj-modal/proj-modal.component';
+import { WorkModal } from '../work-modal/work-modal.component';
 import { SkillModel } from "../../../../theme/models/skillmodel";
 import { Education } from "../../../../theme/models/education";
+import { Employment } from "../../../../theme/models/employment";
+import { Portfolio } from "../../../../theme/models/portfolio";
 
 @Component({
     selector: 'profile',
@@ -30,8 +34,12 @@ export class Profile implements OnInit {
     userkey = "";
     skillsStream = "user-skill";
     eduStream = "user-edu";
+    workStream = "user-work";
+    projStream = "user-portfolio";
     skills = [];
     educations: Education[] = [];
+    employments: Employment[] = [];
+    portfolios: Portfolio[] = [];
 
 
     constructor(private _service: MyService,
@@ -55,7 +63,7 @@ export class Profile implements OnInit {
                 let user_id = params['user_id'];
                 this._service.getstreamitem(this.userStream, user_id.toString())
                 .then(data => {
-                    if (!data.error) {
+                    if (data.error == undefined || !data.error) {
                         this._service.listStreamKeyItems(this.skillsStream, data.key).then(data => {
                             data.forEach(element => {
                                 let skill = JSON.parse(this._service.Hex2String(element.data.toString()));
@@ -73,6 +81,23 @@ export class Profile implements OnInit {
                             });
 
                         });
+                        this._service.listStreamKeyItems(this.projStream, data.key).then(data => {
+                            data.forEach(element => {
+                                let protfolio: Portfolio = JSON.parse(this._service.Hex2String(element.data.toString()));
+                                protfolio.item_id = element.txid;
+                                this.portfolios.push(protfolio);
+                            });
+
+                        });
+                        this._service.listStreamKeyItems(this.workStream, data.key).then(data => {
+                            data.forEach(element => {
+                                let work: Employment = JSON.parse(this._service.Hex2String(element.data.toString()));
+                                work.emp_id = element.txid;
+                                this.employments.push(work);
+                            });
+
+                        });
+                        console.log(this.portfolios);
                         this.userkey = data.key;
                         console.log(this.userkey);
                         this.user = JSON.parse(this._service.Hex2String(data.data.toString()));
@@ -101,6 +126,16 @@ export class Profile implements OnInit {
     eduModalShow(): void {
         const activeModal = this.modalService.open(EducationModal, { size: 'lg' });
         activeModal.componentInstance.modalHeader = 'Add Education';
+        activeModal.componentInstance.userkey = this.userkey;
+    }
+    projModalShow(): void {
+        const activeModal = this.modalService.open(PortfolioModal, { size: 'lg' });
+        activeModal.componentInstance.modalHeader = 'Add Item';
+        activeModal.componentInstance.userkey = this.userkey;
+    }
+    workModalShow(): void {
+        const activeModal = this.modalService.open(WorkModal, { size: 'lg' });
+        activeModal.componentInstance.modalHeader = 'Add Employeement';
         activeModal.componentInstance.userkey = this.userkey;
     }
 
