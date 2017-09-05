@@ -14,8 +14,8 @@ export class Login {
   public email: AbstractControl;
   public password: AbstractControl;
   public submitted: boolean = false;
-  
-  error="";
+
+  error = "";
 
   constructor(fb: FormBuilder, public authService: AuthService, private _router: Router) {
     this.form = fb.group({
@@ -30,36 +30,41 @@ export class Login {
   public onSubmit(values: Object): void {
     this.submitted = true;
     if (this.form.valid) {
-      this.authService.signIn(this.email.value,this.password.value).then((data) => {
+      this.authService.signIn(this.email.value, this.password.value).then((data) => {
         this._router.navigate(['']);
-      }).catch(error=>{
+      }).catch(error => {
         this.error = error.message;
         this.form.reset();
       })
     }
   }
 
-  loginWithGoogle(){
+  loginWithGoogle() {
     this.authService.signInWithGoogle().then((data) => {
-        this._router.navigate(['']);
-      }).catch(error=>{
-        this.error = error.message;
-      })
+      this.goToUserType(data.user.email, data.user.displayName);
+    }).catch(error => {
+      this.error = error.message;
+    })
   }
 
-  loginWithFacebook(){
+  loginWithFacebook() {
     this.authService.signInWithFacebook().then((data) => {
-        this._router.navigate(['']);
-      }).catch(error=>{
-        // this.error = error.message;
-      })
+      this.goToUserType(data.user.email, data.user.displayName);
+    }).catch(error => {
+      this.error = error.message;
+    })
   }
 
-  loginWithTwitter(){
+  loginWithTwitter() {
     this.authService.signInWithTwitter().then((data) => {
-        this._router.navigate(['']);
-      }).catch(error=>{
-        // this.error = error.message;
-      })
+      this.goToUserType(data.user.email, data.user.displayName);
+    }).catch(error => {
+      this.error = error.message;
+    })
+  }
+
+  goToUserType(email: string, name: string) {
+    let link = ['/login/user-type', email, name];
+    this._router.navigate(link);
   }
 }

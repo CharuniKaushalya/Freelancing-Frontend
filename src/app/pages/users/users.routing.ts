@@ -1,4 +1,4 @@
-import { Routes, RouterModule }  from '@angular/router';
+import { Routes, RouterModule } from '@angular/router';
 
 import { Users } from './users.component';
 import { Profile } from './components/profile/profile.component';
@@ -10,9 +10,9 @@ const routes: Routes = [
     path: '',
     component: Users,
     children: [
-     	{ path: '', component: MyUsers },
+      { path: '', component: MyUsers },
       { path: 'profile', component: Profile },
-      {	path: 'profile/:user_id', component: Profile}
+      { path: 'profile/:user_id', component: Profile }
     ]
   }
 ];

@@ -28,7 +28,7 @@ export class Register {
   public submitted: boolean = false;
 
   @Input() user: User;
-  projctsStream: string = "Users";
+  userStream: string = "Users";
 
   userTypes = ['Freelancer', 'Client', 'QA', 'Consultant'];
 
@@ -68,15 +68,13 @@ export class Register {
       let data_hex = this._service.String2Hex(userJSON);
 
       this.authService.signUp(this.email.value,this.password.value).then((data) => {
-        this._router.navigate(['']);
+        this._service.publishToStream(this.userStream, key, data_hex).then(data => {
+          console.log("saved");
+          console.log(data);
+
+          this._router.navigate([''])
+        });
       }) 
-
-      this._service.publishToStream(this.projctsStream, key, data_hex).then(data => {
-        console.log("saved");
-        console.log(data);
-
-        this._router.navigate([''])
-      });
     }
   }
 }

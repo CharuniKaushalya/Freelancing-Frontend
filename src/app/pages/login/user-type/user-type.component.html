@@ -1,0 +1,23 @@
+<div class="auth-main">
+	<div class="auth-block">
+		<h1 translate>Select your User Type</h1>
+
+		<form class="form-horizontal">
+			<div class="form-group">
+				<label for="user_type" class="control-label">Select User Type</label>
+				<select [(ngModel)]="user.type" [ngModelOptions]="{standalone: true}" class="form-control" name="user_type" id="user_type">
+					<option *ngFor="let user_type of user_types" [ngValue]="user_type">
+						{{user_type}}
+					</option>
+				</select>
+			</div>
+			<br><hr>
+			<div class="form-group">
+				<div class="col-sm-offset-2 col-sm-9">
+					<button type="submit" class="btn btn-default btn-auth pull-right" (click)="saveUserToBlockchain()">Go !</button>
+				</div>
+			</div>
+		</form>
+		<br><br><br><br>
+	</div>
+</div>

@@ -1,4 +1,4 @@
-import { Routes, RouterModule }  from '@angular/router';
+import { Routes, RouterModule } from '@angular/router';
 
 import { Contract } from './contract.component';
 import { MyContract } from './components/index/contract.component';

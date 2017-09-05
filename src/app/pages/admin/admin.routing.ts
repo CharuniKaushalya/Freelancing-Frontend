@@ -1,4 +1,4 @@
-import { Routes, RouterModule }  from '@angular/router';
+import { Routes, RouterModule } from '@angular/router';
 
 import { Admin } from './admin.component';
 import { Skill } from './components/skill/skill.component';
