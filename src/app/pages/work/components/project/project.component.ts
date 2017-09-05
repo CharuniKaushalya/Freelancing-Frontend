@@ -3,6 +3,8 @@ import { MyService } from "../../../../theme/services/backend/service";
 import { TreeModel } from 'ng2-tree';
 import { Router } from '@angular/router';
 
+import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
+import { BidModelComponent } from '../bid-model/bid-model.component';
 import { Project } from "../../../../theme/models/project";
 
 @Component({
@@ -17,7 +19,7 @@ export class MyProjects implements OnInit {
     projctsStream: string = "projects";
     projects: Project[] = [];
 
-    constructor(private _router: Router, private _service: MyService) {
+    constructor(private _router: Router, private _service: MyService,private modalService: NgbModal) {
         _service.listStreamItems(this.projctsStream).then(data => {
             data.forEach(element => {
                 let project: Project;
@@ -41,6 +43,13 @@ export class MyProjects implements OnInit {
     }
 
     ngOnInit() {
+    }
+
+    bidModalShow(): void {
+        console.log("sdsd")
+        const activeModal = this.modalService.open(BidModelComponent, { size: 'sm' });
+        activeModal.componentInstance.modalHeader = 'Place  a Bid';
+        activeModal.componentInstance.userkey = "";
     }
 
     goToProject(id: string) {

@@ -13,6 +13,7 @@ import { ProjectDetails } from './components/project_detail/project_details.comp
 
 import { TagInputModule } from 'ngx-chips';
 import { NgbDropdownModule, NgbModalModule } from '@ng-bootstrap/ng-bootstrap';
+import { BidModelComponent } from './components/bid-model/bid-model.component';
 
 @NgModule({
   imports: [
@@ -30,7 +31,11 @@ import { NgbDropdownModule, NgbModalModule } from '@ng-bootstrap/ng-bootstrap';
     MyWork,
     MyProjects,
     ProjectNew,
-    ProjectDetails
-  ]
+    ProjectDetails,
+    BidModelComponent
+  ],
+  entryComponents: [
+    BidModelComponent
+  ],
 })
 export class WorkModule { }
