@@ -57,7 +57,7 @@ export const PAGES_MENU = [
         },
         children: [
           {
-            path: 'profile',
+            path: '',
             data: {
               menu: {
                 title: 'general.menu.profile',
