@@ -165,6 +165,16 @@ export const PAGES_MENU = [
         ]
       },
       {
+        path: ['/discussion'],
+        data: {
+          menu: {
+            title: 'Discussion',
+            icon: 'ion-ios-compose-outline'
+            
+          }
+        }
+      },
+      {
         path: '',
         data: {
           menu: {
