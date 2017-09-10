@@ -59,10 +59,9 @@ export class Register {
     if (this.form.valid) {
 
       console.log(values);
-      this.user.usertype = 1;
       console.log(this.user);
 
-      let key = this.user.username;
+      let key = this.user.email;
       let userJSON = JSON.stringify(this.user);
 
       let data_hex = this._service.String2Hex(userJSON);

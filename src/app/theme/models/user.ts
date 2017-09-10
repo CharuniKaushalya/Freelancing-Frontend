@@ -10,6 +10,6 @@ export class User {
 	public name: string;
     public email: string;
     public password :string;
-	public usertype: number;
-    
+	public usertype: string;
+    public type: string;
 }

@@ -3,6 +3,9 @@ import { Routes } from '@angular/router';
 
 import { BaMenuService } from '../theme';
 import { PAGES_MENU } from './pages.menu';
+import { AuthService } from '../providers/auth.service';
+import { MyService } from "../theme/services/backend/service";
+import { privilegeService } from "./privileges.service";
 
 @Component({
   selector: 'pages',
@@ -31,11 +34,114 @@ import { PAGES_MENU } from './pages.menu';
     `
 })
 export class Pages {
+  
+  private auth: any;
+  userStream: string = "Users";
+  educations: Education[] = [];
+  previleges = null;
 
-  constructor(private _menuService: BaMenuService,) {
+
+      
+  constructor(public _pri: privilegeService, private _menuService: BaMenuService, public authService: AuthService, private _service: MyService, ) {
+    this.authService.getAuth().authState.subscribe(user => {
+      this.auth = user;
+      if (this.auth != null) {
+        this._service.listStreamKeyItems(this.userStream, this.auth.email).then(data => {
+          if(data[0]){
+            let user = JSON.parse(this._service.Hex2String(data[0].data.toString()));
+            let array = null;
+            console.log(data);
+            this.addUserProfile(data[0].txid);
+            this._pri.getData().then((data) => {
+              this.previleges = data;
+
+ 
+              array = this.getPrivileges(user.type);
+              array.forEach(element => {
+                console.log(element);
+                let component = {
+                path: element.type,
+                data: {
+                  menu: {
+                    title: element.title,
+                    icon: element.icon,
+                    selected: false,
+                    expanded: false,
+                    order: 0
+                  }
+                },
+                children:[]
+              };
+           
+              element.data.forEach(item => {
+                component.children.push({
+                  path: item.type,
+                  data: {
+                    menu: {
+                      title: item.title,
+                    }
+                  }
+                });
+              });
+              PAGES_MENU[0].children.push(component);
+            
+              });
+            
+              this._menuService.updateMenuByRoutes(<Routes>PAGES_MENU);
+         });
+
+        }
+
+        });
+      }
+
+    });
+      
   }
 
   ngOnInit() {
-    this._menuService.updateMenuByRoutes(<Routes>PAGES_MENU);
+    //this._menuService.updateMenuByRoutes(<Routes>PAGES_MENU);
+  }
+
+  getPrivileges(usertype: string){
+    switch(usertype) {
+      case 'Freelancer':
+          return this.previleges.Freelancer;
+      case 'Client':
+          return this.previleges.Client;
+      case 'QA':
+          return this.previleges.Consultant;
+      case 'Consultant':
+          return this.previleges.Consultant;
+      default:
+          return 0;
+    }
+  }
+
+  addUserProfile(userid: string){
+      let component = {
+        path: 'users',
+        data: {
+          menu: {
+            title: 'Profile',
+            icon: 'fa fa-user',
+            selected: false,
+            expanded: false,
+            order: 250,
+          }
+        },
+        children: [
+          {
+            path: ['users/profile/'+userid],
+            data: {
+              menu: {
+                title: 'My Profile',
+              }
+            }
+          },
+        ]
+      };
+      PAGES_MENU[0].children.push(component);
+
   }
 }
