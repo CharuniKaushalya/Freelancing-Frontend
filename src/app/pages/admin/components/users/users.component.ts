@@ -35,7 +35,7 @@ export class Users {
         type: 'string'
       },
       type: {
-        title: 'User-Type',
+         title: 'User Type',
         type: 'string'
       }
     },

@@ -45,11 +45,10 @@ export class MyProjects implements OnInit {
     ngOnInit() {
     }
 
-    bidModalShow(): void {
-        console.log("sdsd")
+    bidModalShow(project_id): void {
         const activeModal = this.modalService.open(BidModelComponent, { size: 'sm' });
         activeModal.componentInstance.modalHeader = 'Place  a Bid';
-        activeModal.componentInstance.userkey = "";
+        activeModal.componentInstance.key = project_id;
     }
 
     goToProject(id: string) {

@@ -61,6 +61,7 @@
                 <div class="form-group">
                     <label for="min_qty" class="col-sm-4">Minimum Amount</label>
                     <label for="max_qty" class="col-sm-4">Maximum Amount</label>
+                    <label for="max_qty" class="col-sm-3">Type</label>
                     <div class="row">
                         <div class="col-sm-4">
                             <input [(ngModel)]="project.budget.min" [ngModelOptions]="{standalone: true}" class="form-control" name="min_qty" id="min_qty"
@@ -72,10 +73,11 @@
                                 min=0 type="number">
                         </div>
                         <div class="col-sm-3">
-                            <select [(ngModel)]="project.budget.type" [ngModelOptions]="{standalone: true}" class="form-control" id="cur_type" (ngModelChange)="onChangeBudgetType($event)">
-                            <option [ngValue]="USD" selected>USD</option>
-                            <option [ngValue]="BTC">BTC</option>
-                        </select>
+                            <select [(ngModel)]="project.budget.type" [ngModelOptions]="{standalone: true}" class="form-control" id="cur_type">
+                                <option *ngFor="let cur_type of cur_types" [ngValue]="cur_type">
+                                    {{cur_type}}
+                                </option>
+                            </select>
                         </div>
                     </div>
                 </div>

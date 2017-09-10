@@ -5,12 +5,45 @@
       <span aria-hidden="true">&times;</span>
     </button>
   </div>
-  <div class="modal-body">
-    <p>
-      bid-model works!
-    </p>
-  </div>
-  <div class="modal-footer">
 
+  <div class="modal-body">
+    <form [formGroup]="form" (ngSubmit)="onSubmit(form.value)" class="form-horizontal">
+
+      <div class="container">
+
+        <div class="">
+
+          <div class="form-group" [ngClass]="{'has-error': (!bid_amount.valid && bid_amount.touched), 'has-success': (bid_amount.valid && bid_amount.touched)}">
+
+
+            <label for="inputBidAmount" class="control-label">Amount</label>
+            <div class="input-group">
+              <input [formControl]="bid_amount" [(ngModel)]="bid.bid_amount" type="number" min=0 id="inputBidAmount" placeholder="Bid Amount"
+                class="form-control with-primary-addon" aria-describedby="basic-addon2">
+              <span class="input-group-addon input-group-addon-primary addon-right" id="basic-addon2">USD</span>
+
+            </div>
+          </div>
+
+          <div class="form-group" [ngClass]="{'has-error': (!deliver_time.valid && deliver_time.touched), 'has-success': (deliver_time.valid && deliver_time.touched)}">
+
+
+            <label for="inputDeliveryTime" class="control-label">Delivery Time</label>
+            <div class="input-group">
+              <input [formControl]="deliver_time" [(ngModel)]="bid.deliver_time" type="number" min=0 id="inputDeliveryTime" placeholder="Delivery Time"
+                class="form-control with-primary-addon" aria-describedby="basic-addon2">
+              <span class="input-group-addon input-group-addon-primary addon-right" id="basic-addon2">Days</span>
+
+            </div>
+          </div>
+
+        </div>
+        <hr>
+        <div class="form-group">
+          <button [disabled]="!form.valid" type="submit" class="btn btn-primary btn-md pull-right">Place Bid</button>
+        </div>
+
+      </div>
+    </form>
   </div>
 </div>

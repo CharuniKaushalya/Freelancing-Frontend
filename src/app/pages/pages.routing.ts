@@ -14,6 +14,11 @@ export const routes: Routes = [
     path: 'register',
     loadChildren: 'app/pages/register/register.module#RegisterModule'
   },
+
+  {
+    path: 'discussion',
+    loadChildren: 'app/pages/discussion/discussion.module#DiscussionModule' 
+  },
   {
     path: 'pages',
     component: Pages,
@@ -24,7 +29,8 @@ export const routes: Routes = [
       { path: 'admin', loadChildren: './admin/admin.module#AdminModule' },
       { path: 'users', loadChildren: './users/users.module#UsersModule' },
       { path: 'contract', loadChildren: './contract/contract.module#ContractModule' },
-      { path: 'work', loadChildren: './work/work.module#WorkModule' },
+      { path: 'work', loadChildren: './work/work.module#WorkModule' }
+
     ]
   }
 ];
