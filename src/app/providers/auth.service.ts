@@ -13,6 +13,7 @@ export class AuthService {
     afAuth.authState.subscribe(user => {
       console.log(user);
       this.user = user;
+      localStorage.setItem("user", user.email);
     });
   }
 
@@ -41,6 +42,7 @@ export class AuthService {
   }
 
   signOut() {
+    localStorage.setItem("user", "");
     return this.afAuth.auth.signOut();
   }
 

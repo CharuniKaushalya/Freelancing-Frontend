@@ -28,25 +28,29 @@
                                             <th>Bids</th>
                                             <th>My Bid</th>
                                             <th>Average Bid</th>
-                                            <th>Actions</th>
                                         </tr>
                                     </thead>
                                     <tbody>
-                                        <tr>
-                                            <td><font size="5" color="#209e91"><i class="fa fa-product-hunt"></i></font></td>
+                                        <tr *ngFor="let project of bid_projects">
                                             <td>
-                                                <a href="#"><h3>Project Title</h3></a>
-                                                <p>Description Description Description Description </p>
+                                                <br>
+                                                <font size="5" color="#209e91"><i class="fa fa-product-hunt"></i></font>
                                             </td>
-                                            <td>5</td>
-                                            <td>10 USD</td>
-                                            <td>25 USD</td>
                                             <td>
-
-                                                <a href="#"><i class="lnr lnr-pencil"></i></a>
-                                                <a href="#"><i class="lnr lnr-cross"></i></a>
-
+                                                <br>
+                                                <a style="cursor:pointer" (click)="goToProject(project.project_id)">
+                                                    <h3>{{project.projectName}}</h3>
+                                                </a>
+                                                <p>{{project.description}} </p>
+                                                <a *ngIf="project.skills">
+                                                    <button *ngFor="let skill of project.skills" type="button" class="btn btn-default btn-sm" style="background-color: #776e6e;color: #ffffff;cursor:default;">{{skill}}</button>
+                                                </a>
                                             </td>
+                                            <td><br>1</td>
+                                            <td>
+                                                <br>25 USD
+                                            </td>
+                                            <td><br>15 USD</td>
                                         </tr>
                                     </tbody>
                                 </table>
@@ -72,9 +76,13 @@
                                     </thead>
                                     <tbody>
                                         <tr>
-                                            <td><font size="5" color="#209e91"><i class="fa fa-product-hunt"></i></font></td>
                                             <td>
-                                                <a href="#"><h3>Project Title</h3></a>
+                                                <font size="5" color="#209e91"><i class="fa fa-product-hunt"></i></font>
+                                            </td>
+                                            <td>
+                                                <a href="#">
+                                                    <h3>Project Title</h3>
+                                                </a>
                                                 <p>Description Description Description Description </p>
                                             </td>
                                             <td>
@@ -117,9 +125,13 @@
                                     </thead>
                                     <tbody>
                                         <tr>
-                                            <td><font size="5" color="#209e91"><i class="fa fa-product-hunt"></i></font></td>
                                             <td>
-                                                <a href="#"><h3>Project Title</h3></a>
+                                                <font size="5" color="#209e91"><i class="fa fa-product-hunt"></i></font>
+                                            </td>
+                                            <td>
+                                                <a href="#">
+                                                    <h3>Project Title</h3>
+                                                </a>
                                                 <p>Description Description Description Description </p>
                                             </td>
                                             <td>
