@@ -39,6 +39,23 @@ export class privilegeService {
       ]
     }
   ],
+  QA:[
+    {
+      type: 'work',
+      title: 'Work',
+      icon: 'fa fa-bars',
+      data: [
+        {
+          type: 'my_projects',
+          title: 'general.menu.my_projects'
+        },
+        {
+          type: 'my_work',
+          title: 'general.menu.my_work'
+        }
+      ]
+    }
+  ],
   Client:[
     {
       type: 'admin',
