@@ -26,13 +26,6 @@
     <div class="row">
       <br/><br/>
         <div class="primary col-sm-12 col-xs-12 col-md-8 col-xl-8 col-lg-8">
-            <section class="about section">
-            <ba-card cardTitle="About me" baCardClass="with-scroll">
-                <p>Write a brief intro about yourself. Write a brief intro about yourself.Write a brief intro about yourself.Write a brief intro about yourself.Write a brief intro about yourself.LWrite a brief intro about yourself.Write a brief intro about yourself.Write a brief intro about yourself.</p> <br/>   
-     
-    <p>It's a good idea to include your personal interests and hobbies as well. It's a good idea to include your personal interests and hobbies as well. It's a good idea to include your personal interests and hobbies as well. It's a good idea to include your personal interests and hobbies as well. It's a good idea to include your personal interests and hobbies as well. It's a good idea to include your personal interests and hobbies as well. It's a good idea to include your personal interests and hobbies as well. </p>
-            </ba-card>
-            </section><!--//section-->
 
             <section class="project section">
             <ba-card baCardClass="with-scroll">
@@ -100,9 +93,8 @@
             <aside class="info aside section">
             <ba-card cardTitle="Basic Information" baCardClass="with-scroll">
                 <ul class="list-unstyled">
-                    <li><i class="fa fa-map-marker"></i><span class="sr-only"> Location:</span> Colombo, Srilanka</li><hr>
+                    <li><i class="fa fa-map-marker"></i><span class="sr-only"> Name:</span> {{user?.name}}</li><hr>
                     <li><i class="fa fa-envelope-o"></i><span class="sr-only"> Email:</span><a href="#">   {{user?.email}}</a></li><hr>
-                    <li><i class="fa fa-link"></i><span class="sr-only"> Website:</span><a href="#"> http://www.website.com</a></li>
                 </ul>
             </ba-card>
             </aside><!--//aside-->
@@ -150,54 +142,7 @@
             </ba-card>
             </aside><!--//aside-->
 
-            <aside class="verifications section">
-            <ba-card cardTitle="Verifications" baCardClass="with-scroll">
-                <ul class="list-unstyled">
-                    <li class="item">
-                        <h5 class="title"><i class="fa fa-facebook"></i>   Facebook Connected</h5> 
-                    </li><!--//item--><hr>
-                    <li class="item">
-                        <h5 class="title"><i class="fa fa-envelope"></i>    Email Verified</h5> 
-                    </li><!--//item--><hr>
-                    <li class="item">
-                        <h5 class="title"><i class="fa fa-phone"></i>    Phone Verified</h5> 
-                    </li><!--//item-->
-                </ul>
-            </ba-card>
-            </aside><!--//aside-->
-
-            <aside class="verifications section">
-            <ba-card cardTitle="Verifications" baCardClass="with-scroll">
-            </ba-card>
-            </aside><!--//aside-->
-
                         
-            
-            <aside class="blog aside section">
-                <div class="stats-info stats-info1">
-                    <div class="panel-heading">
-                        <h2 class="panel-title">My GitHub</h2>
-                    </div>
-                    <div id="rss-feeds" class="panel-body panel-body2">
-                    <div id="github-graph" class="github-graph"></div><!--//github-graph-->
-                   
-                    <div id="feed" class="ghfeed">
-                    </div><!--//ghfeed-->
-                    </div><!--//content-->
-                </div><!--//section-inner-->
-            </aside><!--//section--><br/><br/>
-
-            <aside class="blog aside section">
-                <div class="stats-info stats-info1">
-                    <div class="panel-heading">
-                        <h2 class="panel-title">Latest Blog Posts</h2>
-                    </div>
-                    <div id="rss-feeds" class="panel-body panel-body2">
-                    <p>You can use Sascha Depold's <a href="https://github.com/sdepold/jquery-rss" target="_blank">jQuery RSS plugin</a> to pull in your blog post feeds.</p>
-
-                    </div><!--//content-->
-                </div><!--//section-inner-->
-            </aside><!--//section--><br/><br/>
         </div><!--//secondary-->    
     </div><!--//row-->
 </div><!--//masonry-->

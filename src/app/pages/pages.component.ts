@@ -37,7 +37,6 @@ export class Pages {
   
   private auth: any;
   userStream: string = "Users";
-  educations: Education[] = [];
   previleges = null;
 
 
