@@ -34,6 +34,8 @@ export class ProjectNew implements OnInit {
     skill_items = [];
     skillsStream = "skills";
 
+    cur_types = ['USD', 'BTC'];
+
     constructor(private _router: Router, private _service: MyService) {
 
         this.project = new Project();
@@ -75,20 +77,17 @@ export class ProjectNew implements OnInit {
         });
     }
 
-    onChangeBudgetType(value: any) {
-        this.project.budget.type = value;
-    }
+    // onChangeBudgetType(value: any) {
+    //     this.project.budget.type = value;
+    // }
 
     save() {
         this.project.files = this.encodedFiles;
         this.project.skills = this.skills;
         let key = this.project.projectName;
         let projectJSON = JSON.stringify(this.project)
-        // console.log(projectJSON);
 
         let data_hex = this._service.String2Hex(projectJSON)
-        // console.log(data_hex);
-        // console.log(this.Hex2String(data_hex));  
 
         this._service.publishToStream(this.projctsStream, key, data_hex).then(data => {
             console.log("saved");

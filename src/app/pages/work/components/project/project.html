@@ -60,7 +60,8 @@
                                     </a>
                                     <p>{{project.description}} </p>
                                     <a *ngIf="project.skills">
-                                        <button *ngFor="let skill of project.skills" type="button" class="btn btn-info btn-xs">{{skill}}</button>
+                                        <button *ngFor="let skill of project.skills" type="button" class="btn btn-default btn-sm"
+                                         style="background-color: #776e6e;color: #ffffff;cursor:default;">{{skill}}</button>
                                     </a>
                                 </td>
                                 <td><br>1</td>
@@ -69,7 +70,7 @@
                                 </td>
                                 <td><br>{{project.budget.min}}-{{project.budget.max}} {{project.budget.type}}</td>
                                 <td>
-                                    <br><button (click)="bidModalShow()" type="button" class="btn btn-primary  btn-sm">Bid Now</button>
+                                    <br><button (click)="bidModalShow(project.project_id)" type="button" class="btn btn-primary  btn-sm">Bid Now</button>
                                 </td>
                             </tr>
                         </tbody>

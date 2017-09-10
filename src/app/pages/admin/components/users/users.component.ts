@@ -33,6 +33,10 @@ export class Users {
       email: {
         title: 'E-mail',
         type: 'string'
+      },
+      type: {
+         title: 'User Type',
+        type: 'string'
       }
     },
     pager: {

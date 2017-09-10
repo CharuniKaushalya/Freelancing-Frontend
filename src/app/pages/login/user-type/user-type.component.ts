@@ -12,9 +12,8 @@ import { MyService } from "../../../theme/services/backend/service";
 export class UserTypeComponent implements OnInit {
 
   @Input() user: User;
-  usersStream: string = "Users";
-  user_types = ['Client', 'Freelancer', 'QA', 'Consultant'];
   userStream: string = "Users";
+  user_types = ['Client', 'Freelancer', 'QA', 'Consultant'];
 
   constructor(private _service: MyService, private _route: ActivatedRoute, private _router: Router) {
     this.user = new User();
@@ -24,7 +23,7 @@ export class UserTypeComponent implements OnInit {
     this._route.params.forEach((params: Params) => {
       if (params['email'] !== undefined) {
         let email = params['email'];
-        this._service.listStreamItems(this.usersStream).then(data => {
+        this._service.listStreamItems(this.userStream).then(data => {
           data.forEach(element => {
             if (element.key == email) {
               this._router.navigate([''])

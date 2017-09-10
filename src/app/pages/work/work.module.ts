@@ -1,6 +1,6 @@
 import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
-import { FormsModule } from '@angular/forms';
+import { FormsModule ,ReactiveFormsModule } from '@angular/forms';
 import { NgaModule } from '../../theme/nga.module';
 import { TreeModule } from 'ng2-tree';
 
@@ -19,6 +19,7 @@ import { BidModelComponent } from './components/bid-model/bid-model.component';
   imports: [
     CommonModule,
     FormsModule,
+    ReactiveFormsModule ,
     NgaModule,
     TreeModule,
     routing,
