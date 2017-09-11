@@ -1,9 +1,8 @@
-import {Component} from '@angular/core';
+import {Component, OnInit} from '@angular/core';
 
 @Component({
   selector: 'discussion',
-  styleUrls: ['./discussion.scss'],
-  templateUrl: './discussion.html'
+  template: `<router-outlet></router-outlet>`
 })
 export class Discussion {
 

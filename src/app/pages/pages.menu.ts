@@ -44,7 +44,30 @@ export const PAGES_MENU = [
             }
           }
         ]
-      }
+      },
+      {
+        path: 'discussion',
+        data: {
+          menu: {
+            title: 'Discussion',
+            icon: 'ion-ios-compose-outline',
+            selected: false,
+            expanded: false,
+            order: 250,
+          }
+        },
+        children: [
+          
+          {
+            path: 'discussion_view',
+            data: {
+              menu: {
+                title: 'View'
+              }
+            }
+          }
+        ]
+      },
     ]
   }
 ];
