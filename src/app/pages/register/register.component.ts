@@ -29,7 +29,8 @@ export class Register {
 
   @Input() user: User;
   userStream: string = "Users";
-
+  error:any;
+  
   userTypes = ['Freelancer', 'Client', 'QA', 'Consultant'];
 
   constructor(private _router:Router,public authService: AuthService,fb: FormBuilder, private _service: MyService) {
@@ -75,5 +76,34 @@ export class Register {
         });
       }) 
     }
+  }
+
+  loginWithGoogle() {
+    this.authService.signInWithGoogle().then((data) => {
+      this.goToUserType(data.user.email, data.user.displayName);
+    }).catch(error => {
+      this.error = error.message;
+    })
+  }
+
+  loginWithFacebook() {
+    this.authService.signInWithFacebook().then((data) => {
+      this.goToUserType(data.user.email, data.user.displayName);
+    }).catch(error => {
+      this.error = error.message;
+    })
+  }
+
+  loginWithTwitter() {
+    this.authService.signInWithTwitter().then((data) => {
+      this.goToUserType(data.user.email, data.user.displayName);
+    }).catch(error => {
+      this.error = error.message;
+    })
+  }
+
+  goToUserType(email: string, name: string) {
+    let link = ['/login/user-type', email, name];
+    this._router.navigate(link);
   }
 }

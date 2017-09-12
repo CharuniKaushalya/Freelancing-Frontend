@@ -50,6 +50,7 @@
           <span *ngIf="!passwords.valid && (password.touched || repeatPassword.touched)" class="help-block sub-little-text">Passwords don't match.</span>
         </div>
       </div>
+       <h5 class="text-danger" >{{error}}</h5>
       <div class="form-group row">
         <div class="offset-sm-2 col-sm-10">
           <button [disabled]="!form.valid" type="submit" class="btn btn-default btn-auth">Sign up</button>
@@ -62,9 +63,9 @@
 
     <div class="al-share-auth">
       <ul class="al-share clearfix">
-        <li><i class="socicon socicon-facebook" title="Share on Facebook"></i></li>
-        <li><i class="socicon socicon-twitter" title="Share on Twitter"></i></li>
-        <li><i class="socicon socicon-google" title="Share on Google Plus"></i></li>
+        <li><i class="socicon socicon-facebook" (click)="loginWithFacebook()" title="Share on Facebook"></i></li>
+        <li><i class="socicon socicon-twitter" (click)="loginWithTwitter()" title="Share on Twitter"></i></li>
+        <li><i class="socicon socicon-google" (click)="loginWithGoogle()" title="Share on Google Plus"></i></li>
       </ul>
     </div>
   </div>
