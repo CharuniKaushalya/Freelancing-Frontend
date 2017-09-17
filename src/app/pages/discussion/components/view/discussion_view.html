@@ -1,0 +1,61 @@
+ <div class="outter-wp">
+  <div class="container">
+    <div class="row">
+
+        <div class="col-sm-12">
+
+            <ul class="nav nav-tabs">
+                <li class="nav-item">
+                    <a class="nav-link active" data-toggle="tab" href="#discussions">Discussions</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" data-toggle="tab" href="#add_new">Add New</a>
+                </li>
+               
+            </ul>
+            <br>
+            <div class="tab-content">
+                <div id="discussions" class="tab-pane active">
+                    <div class="col-sm-12">
+                        <ba-card cardTitle="Discussions" baCardClass="with-scroll table-panel">
+                            <div>
+                               <div class="questions">
+        <h5>1.What is Lorem Ipsum?</h5>
+            <p>Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book.</p>
+          </div>
+       <div class="questions">
+        <h5>2.What is Lorem Ipsum dummy text ever since the 1500s?</h5>
+          <p>Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book.</p>
+       </div> 
+                            </div>
+
+                        </ba-card>
+                    </div>
+                </div>
+                <div id="add_new" class="tab-pane fade">
+                    <div class="col-sm-12">
+                        <form>
+    <div class="form-group">
+      <input class="form-control" name="title" type="text" placeholder="Title">
+    </div>
+       
+      <div class="form-group">
+          <textarea class="form-control" rows="20" name="description" id="description" placeholder="Description"></textarea>
+      </div>
+      
+       <div class="form-group">
+              <div class="col-sm-offset-2 col-sm-9">
+                  <button class="btn btn-primary" (click)="saveDiscussion()">SAVE</button>
+              </div>
+       </div>
+    </form>
+                    </div>
+                </div>
+               
+            </div>
+        </div>
+    </div>
+</div>                              <!--sub-heard-part-->
+                                  
+
+  
