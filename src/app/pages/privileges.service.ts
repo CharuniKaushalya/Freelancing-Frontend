@@ -119,6 +119,10 @@ export class privilegeService {
           title: 'general.menu.my_projects'
         },
         {
+          type: 'posted_projects',
+          title: 'Posted Projects'
+        },
+        {
           type: 'project_new',
           title: 'general.menu.project_new'
         },

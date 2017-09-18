@@ -10,10 +10,12 @@ import { MyWork } from './components/work/work.component';
 import { MyProjects } from './components/project/project.component';
 import { ProjectNew } from './components/project_new/project_new.component';
 import { ProjectDetails } from './components/project_detail/project_details.component';
+import { PostedProjects } from './components/post-projects/post_project.component';
 
 import { TagInputModule } from 'ngx-chips';
 import { NgbDropdownModule, NgbModalModule } from '@ng-bootstrap/ng-bootstrap';
 import { BidModelComponent } from './components/bid-model/bid-model.component';
+import { PublishModelComponent } from './components/publish-model/model.component';
 
 @NgModule({
   imports: [
@@ -33,10 +35,13 @@ import { BidModelComponent } from './components/bid-model/bid-model.component';
     MyProjects,
     ProjectNew,
     ProjectDetails,
-    BidModelComponent
+    BidModelComponent,
+    PostedProjects,
+    PublishModelComponent,
   ],
   entryComponents: [
-    BidModelComponent
+    BidModelComponent,
+    PublishModelComponent
   ],
 })
 export class WorkModule { }

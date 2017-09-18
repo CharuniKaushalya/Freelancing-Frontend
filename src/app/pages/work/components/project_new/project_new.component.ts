@@ -2,6 +2,7 @@ import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
 import { MyService } from "../../../../theme/services/backend/service";
 import { TreeModel } from 'ng2-tree';
 import { Router } from '@angular/router';
+import { AuthService } from '../../../../providers/auth.service';
 import 'rxjs/add/operator/filter';
 import 'rxjs/add/operator/debounceTime';
 import 'rxjs/add/operator/map';
@@ -33,16 +34,26 @@ export class ProjectNew implements OnInit {
 
     skill_items = [];
     skillsStream = "skills";
+    user_email: string;
 
     cur_types = ['USD', 'BTC'];
 
-    constructor(private _router: Router, private _service: MyService) {
+    constructor(private _router: Router, private _service: MyService, public authService: AuthService) {
 
         this.project = new Project();
         this.time_period = new TimePeriod();
         this.budget = new Budget();
         this.project.time_period = this.time_period;
         this.project.budget = this.budget;
+
+        this.authService.getAuth().authState.subscribe(user => {
+            console.log(user);
+            if (user == null) {
+              this.user_email = '';
+            } else {
+              this.user_email = user.email;
+            }
+        });
 
         _service.listStreamItems(this.skillsStream).then(data => {
             data.forEach(element => {
@@ -84,6 +95,7 @@ export class ProjectNew implements OnInit {
     save() {
         this.project.files = this.encodedFiles;
         this.project.skills = this.skills;
+        this.project.user = this.user_email;
         let key = this.project.projectName;
         let projectJSON = JSON.stringify(this.project)
 
@@ -93,7 +105,7 @@ export class ProjectNew implements OnInit {
             console.log("saved");
             // console.log(data);
 
-            this._router.navigate(['/pages/work/my_projects'])
+            this._router.navigate(['/pages/work/posted_projects'])
         });
     }
 
