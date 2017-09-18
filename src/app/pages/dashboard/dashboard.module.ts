@@ -23,7 +23,6 @@ import { TodoService } from './todo/todo.service';
 import { TrafficChartService } from './trafficChart/trafficChart.service';
 import { UsersMapService } from './usersMap/usersMap.service';
 import { NgbDropdownModule, NgbModalModule } from '@ng-bootstrap/ng-bootstrap';
-import { BidModelComponent } from '../work/components/bid-model/bid-model.component';
 
 @NgModule({
   imports: [
@@ -45,7 +44,6 @@ import { BidModelComponent } from '../work/components/bid-model/bid-model.compon
     Todo,
     Calendar,
     Dashboard,
-    BidModelComponent
   ],
   providers: [
     CalendarService,
@@ -55,9 +53,6 @@ import { BidModelComponent } from '../work/components/bid-model/bid-model.compon
     TodoService,
     TrafficChartService,
     UsersMapService
-  ],
-  entryComponents: [
-    BidModelComponent,
   ],
 })
 export class DashboardModule { }
