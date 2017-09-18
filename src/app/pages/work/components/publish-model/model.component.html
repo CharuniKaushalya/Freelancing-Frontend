@@ -16,8 +16,7 @@
             <label for="inputUserType" class="control-label">Select Reuired User Type</label>
             <div>
               <select [(ngModel)]="project_utype.publish_utype" [ngModelOptions]="{standalone: true}" class="form-control" id="user_type">
-                <option [ngValue]="null" selected>Odaberi tip odluke</option>  
-                <option *ngFor="let user_type of user_types; let i = index" [ngValue]="user_type.value">
+                <option *ngFor="let user_type of user_types; let i = index" [ngValue]="user_type.value" selected="i==0">
                       {{user_type.name}}
                   </option>
               </select>
