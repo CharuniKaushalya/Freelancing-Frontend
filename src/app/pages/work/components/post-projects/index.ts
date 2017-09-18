@@ -1,1 +1,1 @@
-export * from './project.component';
+export * from './post_project.component';
