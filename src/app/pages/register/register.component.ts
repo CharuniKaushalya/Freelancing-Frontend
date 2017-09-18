@@ -69,9 +69,9 @@ export class Register {
 
       this.authService.signUp(this.email.value,this.password.value).then((data) => {
         this._service.publishToStream(this.userStream, key, data_hex).then(data => {
+          localStorage.setItem("userType",this.user.usertype);
           console.log("saved");
           console.log(data);
-
           this._router.navigate([''])
         });
       }) 
