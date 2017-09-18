@@ -49,6 +49,7 @@ export class Pages {
           if(data[0]){
             let user = JSON.parse(this._service.Hex2String(data[0].data.toString()));
             let array = null;
+            localStorage.setItem("user_type", user.type);
             console.log(data);
             this.addUserProfile(data[0].txid);
             this._pri.getData().then((data) => {
