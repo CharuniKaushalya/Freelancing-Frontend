@@ -20,6 +20,17 @@ export class privilegeService {
             title: 'general.menu.my_work'
           }
         ]
+      },
+      {
+        type: 'contract',
+        title: 'Contract',
+        icon: 'fa fa-balance-scale',
+        data: [
+          {
+            type: 'contract_view',
+            title: 'general.menu.contract_view'
+          }
+        ]
       }
     ],
     Consultant: [
@@ -37,6 +48,17 @@ export class privilegeService {
             title: 'general.menu.my_work'
           }
         ]
+      },
+      {
+        type: 'contract',
+        title: 'Contract',
+        icon: 'fa fa-balance-scale',
+        data: [
+          {
+            type: 'contract_view',
+            title: 'general.menu.contract_view'
+          }
+        ]
       }
     ],
     QA: [
@@ -52,6 +74,17 @@ export class privilegeService {
           {
             type: 'my_work',
             title: 'general.menu.my_work'
+          }
+        ]
+      },
+      {
+        type: 'contract',
+        title: 'Contract',
+        icon: 'fa fa-balance-scale',
+        data: [
+          {
+            type: 'contract_view',
+            title: 'general.menu.contract_view'
           }
         ]
       }
@@ -86,12 +119,31 @@ export class privilegeService {
             title: 'general.menu.my_projects'
           },
           {
+            type: 'posted_projects',
+            title: 'Posted Projects'
+          },
+          {
             type: 'project_new',
             title: 'general.menu.project_new'
           },
           {
             type: 'my_work',
             title: 'general.menu.my_work'
+          }
+        ]
+      },
+      {
+        type: 'contract',
+        title: 'Contract',
+        icon: 'fa fa-balance-scale',
+        data: [
+          {
+            type: 'mycontract',
+            title: 'general.menu.mycontract'
+          },
+          {
+            type: 'contract_view',
+            title: 'general.menu.contract_view'
           }
         ]
       }
@@ -108,3 +160,4 @@ export class privilegeService {
     });
   }
 }
+
