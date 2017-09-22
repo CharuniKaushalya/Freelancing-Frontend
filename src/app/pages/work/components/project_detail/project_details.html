@@ -19,6 +19,41 @@
                             </a>
                         </div>
                     </div>
+                    <div>
+                <ba-card cardTitle="Current Bids" baCardClass="with-scroll table-panel">
+                    <table class="table table-condensed">
+                        <thead>
+                            <tr>
+                                <th></th>
+                                <th>User</th>
+                                <th>Amount</th>
+                                <th>Delivery Time</th>
+                                <th>Actions</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr *ngFor="let bid of bids">
+                                <td>
+                                    <br>
+                                    <font size="5" color="#209e91"><i class="fa fa-product-hunt"></i></font>
+                                </td>
+                                <td><br><a style="cursor:pointer" (click)="goToUser(bid.user_id)">
+                                        <h3>{{bid.user_name}}</h3>
+                                    </a>
+                                <p>{{bid.user_email}}</p>
+                                </td>
+                                <td><br>{{bid.bid_amount}}
+                                </td>
+                                <td><br>{{bid.deliver_time}}
+                                </td>
+                                <td>
+                                    <br><button (click)="contact_fumction(bid.user_id)" type="button" class="btn btn-primary  btn-sm">Contact</button>
+                                </td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </ba-card>
+            </div>
                     <br><br>
                     <div *ngIf="project?.skills">
                         <h4>Required Skills: </h4>
@@ -26,6 +61,8 @@
                     </div>
                     <br><br>
                 </div>
+
+                
             </ba-card>
         </div>
     </div>

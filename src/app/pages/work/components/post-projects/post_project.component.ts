@@ -23,6 +23,7 @@ export class PostedProjects implements OnInit {
     user_email:string;
 
     constructor(private _router: Router, private _service: MyService, private modalService: NgbModal, public authService: AuthService) {
+       console.log("init");
         this.authService.getAuth().authState.subscribe(user => {
             this.user_email = user.email;
         });
@@ -32,8 +33,7 @@ export class PostedProjects implements OnInit {
                 _service.gettxoutdata(element.txid).then(largedata => {
                     project = JSON.parse(this._service.Hex2String(largedata.toString()));
                     console.log("here come");
-                    if(project.user && project.user == this.user_email){
-                        console.log("here come 2");
+                    if(project.user && project.user == localStorage.getItem("user")){
                         project.project_id = element.txid;
                         project.client = element.publishers[0];
                         this.projects.push(project);
