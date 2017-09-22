@@ -4,9 +4,8 @@
         <div class="col-sm-12">
             <ba-card cardTitle="{{project?.projectName}}" baCardClass="with-scroll table-panel">
                 <div>
-                    <p>{{project?.description}} </p>
-                    <button class="btn btn-info btn-md" style="cursor:default;">15 Bids</button>
-                    <button class="btn btn-success btn-md" style="cursor:default;">AVG BID - 155$</button>
+                    <button class="btn btn-info btn-md" style="cursor:default;">{{bids?.length}} Bids</button>
+                    <button class="btn btn-success btn-md" style="cursor:default;">AVG BID - {{bidsum/bids?.length}}{{project?.budget?.type}}</button>
                     <button class="btn btn-default btn-md" style="cursor:default;">
                             BUDGET - From {{project?.budget?.min}} to {{project?.budget?.max}} {{project?.budget?.type}}
                     </button>

@@ -22,7 +22,8 @@ export class ProjectDetails implements OnInit {
     userstream: string = "Users";
     decodedFiles = [];
     bids: Bid[] = [];
-    public bidcount: number = 0;
+    public bidavg: number = 0;
+    public bidsum: number = 0;
 
     constructor(private _service: MyService, private _route: ActivatedRoute, private _router: Router) {
         this._route.params.forEach((params: Params) => {
@@ -42,12 +43,12 @@ export class ProjectDetails implements OnInit {
                         if (project_id == bid_key.split("/")[0]) {
 
                             let bid: Bid;
-                            this.bidcount = 8;
                             bid = JSON.parse(this._service.Hex2String(element.data.toString()));
+                            this.bidsum += bid.bid_amount;
+                            console.log(bid.bid_amount);
                             _service.listStreamKeyItems(this.userstream, bid.user_email.toString()).then(data => {
                                 let user: User;
                                 user = JSON.parse(this._service.Hex2String(data[0].data.toString()));
-                                console.log(user);
                                 bid.user_type = user.type;
                                 bid.user_name = user.name;
                                 bid.user_id  = data[0].txid;
@@ -59,6 +60,7 @@ export class ProjectDetails implements OnInit {
                            
                         }
                     });
+                    console.log(this.bidsum);
 
                 });
 

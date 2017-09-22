@@ -40,6 +40,7 @@ export class Profile implements OnInit {
     educations: Education[] = [];
     employments: Employment[] = [];
     portfolios: Portfolio[] = [];
+    useremail: string;
 
 
     constructor(private _service: MyService,
@@ -54,6 +55,8 @@ export class Profile implements OnInit {
             console.log(data);
             this.PeerInfo = data;
         });
+
+        this.useremail = localStorage.getItem("user");
     }
 
 
