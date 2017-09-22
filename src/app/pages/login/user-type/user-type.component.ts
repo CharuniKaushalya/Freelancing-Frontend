@@ -26,6 +26,11 @@ export class UserTypeComponent implements OnInit {
         this._service.listStreamItems(this.userStream).then(data => {
           data.forEach(element => {
             if (element.key == email) {
+              let u: User;
+              this._service.gettxoutdata(element.txid).then(largedata => {
+                u = JSON.parse(this._service.Hex2String(largedata.toString()));
+                localStorage.setItem("userType", u.usertype);
+              })
               this._router.navigate([''])
             }
           });
@@ -51,7 +56,7 @@ export class UserTypeComponent implements OnInit {
     this._service.publishToStream(this.userStream, key, data_hex).then(data => {
       console.log("saved");
       console.log(data);
-
+      localStorage.setItem("userType", this.user.usertype);
       this._router.navigate([''])
     });
 

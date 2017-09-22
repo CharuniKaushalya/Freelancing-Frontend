@@ -7,7 +7,7 @@ import * as firebase from 'firebase';
 @Injectable()
 export class AuthService {
 
-  user:any;
+  user: any;
 
   constructor(private afAuth: AngularFireAuth) {
     afAuth.authState.subscribe(user => {
@@ -17,12 +17,12 @@ export class AuthService {
     });
   }
 
-  getAuth(){
+  getAuth() {
     return this.afAuth;
   }
 
-  signIn(email:string,password:string) {
-    return this.afAuth.auth.signInWithEmailAndPassword(email,password);
+  signIn(email: string, password: string) {
+    return this.afAuth.auth.signInWithEmailAndPassword(email, password);
   }
 
   signInWithGoogle() {
@@ -37,12 +37,13 @@ export class AuthService {
     return this.afAuth.auth.signInWithPopup(new firebase.auth.TwitterAuthProvider());
   }
 
-  signUp(email:string,password:string) {
-    return this.afAuth.auth.createUserWithEmailAndPassword(email,password);
+  signUp(email: string, password: string) {
+    return this.afAuth.auth.createUserWithEmailAndPassword(email, password);
   }
 
   signOut() {
     localStorage.setItem("user", "");
+    localStorage.setItem("userType", "");
     return this.afAuth.auth.signOut();
   }
 
