@@ -29,17 +29,18 @@ export class Register {
 
   @Input() user: User;
   userStream: string = "Users";
-  error:any;
-  
+  error: any;
+  success: any;
+
   userTypes = ['Freelancer', 'Client', 'QA', 'Consultant'];
 
-  constructor(private _router:Router,public authService: AuthService,fb: FormBuilder, private _service: MyService) {
+  constructor(private _router: Router, public authService: AuthService, fb: FormBuilder, private _service: MyService) {
 
     this.user = new User();
 
     this.form = fb.group({
-      'username': ['', Validators.compose([Validators.required, Validators.minLength(4)])],
-      'name': ['', Validators.compose([Validators.required, Validators.minLength(4)])],
+      'username': ['', Validators.compose([Validators.required, Validators.minLength(6)])],
+      'name': ['', Validators.compose([Validators.required, Validators.minLength(6)])],
       'email': ['', Validators.compose([Validators.required, EmailValidator.validate])],
       'passwords': fb.group({
         'password': ['', Validators.compose([Validators.required, Validators.minLength(4)])],
@@ -59,22 +60,36 @@ export class Register {
     this.submitted = true;
     if (this.form.valid) {
 
-      console.log(values);
-      console.log(this.user);
+      // console.log(values);
+      // console.log(this.user);
 
       let key = this.user.email;
       let userJSON = JSON.stringify(this.user);
 
       let data_hex = this._service.String2Hex(userJSON);
 
-      this.authService.signUp(this.email.value,this.password.value).then((data) => {
-        this._service.publishToStream(this.userStream, key, data_hex).then(data => {
-          localStorage.setItem("userType",this.user.usertype);
-          console.log("saved");
-          console.log(data);
-          this._router.navigate([''])
-        });
-      }) 
+      this.authService.signUp(this.email.value, this.password.value).then((data) => {
+
+        this.authService.getAuth().auth.currentUser.sendEmailVerification().then((data) => {
+
+          this.error = "";
+          this.success = "Plase check your email " + this.user.email + " to verify your Account";
+
+          this._service.publishToStream(this.userStream, key, data_hex).then(data => {
+            localStorage.setItem("userType", this.user.usertype);
+            console.log("saved");
+            setTimeout(() => {
+              this.form.reset();
+              this.authService.signOut();
+            }, 250);
+
+          });
+        }).catch(error => {
+          this.error = error.message;
+        })
+      }).catch(error => {
+        this.error = error.message;
+      })
     }
   }
 
