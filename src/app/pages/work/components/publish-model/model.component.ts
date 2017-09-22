@@ -32,12 +32,40 @@ export class PublishModelComponent implements OnInit {
   bidStream: string = "project_user_type";
   user_types = [{name: "Need a Consultant", value: "Consultant"},{name: "Need a Freelancer", value: "Freelancer"}];
 
+  public checkboxModel = [{
+    name: 'Need a Consultant',
+    checked: false,
+    class: 'col-md-4',
+    value: "Consultant",
+    disabled: false
+  }, {
+    name: 'Need a Freelancer',
+    checked: true,
+    class: 'col-md-4',
+    value: "Freelancer",
+    disabled: false
+  }, {
+    name: 'Need a QA',
+    checked: false,
+    class: 'col-md-4',
+    value: "QA",
+    disabled: false
+  }];
+
+  isDisabled: boolean = false;
+
+  public checkboxPropertiesMapping = {
+    model: 'checked',
+    value: 'name',
+    label: 'name',
+    baCheckboxClass: 'class'
+  };
+
   constructor(private activeModal: NgbActiveModal, fb: FormBuilder, public authService: AuthService,
     private _service: MyService, private _router: Router) {
     this.project_utype = new ProjectUserType();
 
-  
-    
+ 
 
 
     this.authService.getAuth().authState.subscribe(user => {
@@ -59,17 +87,22 @@ export class PublishModelComponent implements OnInit {
 
     this.project_utype.project_id = this.key;
     this.project_utype.putype_id = this.key;
-
-    let projectJSON = JSON.stringify(this.project_utype);
-
-    console.log(this.project_utype);
-    let data_hex = this._service.String2Hex(projectJSON);
-
-    this._service.publishToStream(this.bidStream, this.project_utype.putype_id, data_hex).then(data => {
-      this.activeModal.close();
-      //this._router.navigate(['/pages/work/my_work'])
+    console.log(this.checkboxModel);
+    this.checkboxModel.forEach(element => {
+      if(element.checked){
+        this.project_utype.publish_utype = element.value;
+        let projectJSON = JSON.stringify(this.project_utype);
+        
+            console.log(this.project_utype);
+            let data_hex = this._service.String2Hex(projectJSON);
+        
+            this._service.publishToStream(this.bidStream, this.project_utype.putype_id, data_hex).then(data => {
+              this.activeModal.close();
+              //this._router.navigate(['/pages/work/my_work'])
+            });
+      }
+      
     });
-
   }
 
 }

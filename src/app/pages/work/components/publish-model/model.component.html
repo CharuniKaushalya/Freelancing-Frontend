@@ -9,19 +9,9 @@
   <div class="modal-body">
 
       <div class="container">
-
-          <div class="form-group">
-
-
-            <label for="inputUserType" class="control-label">Select Reuired User Type</label>
-            <div>
-              <select [(ngModel)]="project_utype.publish_utype" [ngModelOptions]="{standalone: true}" class="form-control" id="user_type">
-                <option *ngFor="let user_type of user_types; let i = index" [ngValue]="user_type.value" selected="i==0">
-                      {{user_type.name}}
-                  </option>
-              </select>
+          <div class="row">
+              <ba-multi-checkbox [(ngModel)]="checkboxModel" [propertiesMapping]="checkboxPropertiesMapping"></ba-multi-checkbox>
             </div>
-          </div>
           <div class="form-group">
             <button type="submit" class="btn btn-primary btn-md pull-right" (click)="onSubmit()">Publish</button>
          </div>
