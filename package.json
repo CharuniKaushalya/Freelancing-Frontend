@@ -1,15 +1,15 @@
 {
-  "name": "ng2-admin",
+  "name": "Blockwork",
   "version": "1.0.0",
-  "description": "Angular and Bootstrap 4 Admin Template.",
-  "author": "Akveo <contact@akveo.com>",
-  "homepage": "http://akveo.github.io/ng2-admin/",
+  "description": "Angular and Bootstrap Freelancing Frontend",
+  "author": "",
+  "homepage": "",
   "repository": {
     "type": "git",
-    "url": "https://github.com/akveo/ng2-admin.git"
+    "url": "https://github.com/CharuniKaushalya/Freelancing-Frontend"
   },
   "bugs": {
-    "url": "https://github.com/akveo/ng2-admin/issues"
+    "url": "https://github.com/CharuniKaushalya/Freelancing-Frontend/issues"
   },
   "license": "MIT",
   "scripts": {
