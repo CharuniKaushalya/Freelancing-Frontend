@@ -74,7 +74,15 @@ export class Register {
             console.log("new address - " + address);
 
             this._service.grantPermissions(address).then(data => {
-              console.log("saved permission");
+              console.log("Granted permission");
+
+              this._service.sendAsset(address, 'USD', '0').then(data => {
+                console.log(data);
+              });
+
+              this._service.sendAsset(address, 'BTC', '0').then(data => {
+                console.log(data);
+              });
             });
 
             let key = this.user.email;
