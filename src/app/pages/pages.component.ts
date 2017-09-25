@@ -139,6 +139,14 @@ export class Pages {
               }
             }
           },
+          {
+            path: ['users/wallet/'+userid],
+            data: {
+              menu: {
+                title: 'My Wallet',
+              }
+            }
+          },
         ]
       };
       PAGES_MENU[0].children.push(component);

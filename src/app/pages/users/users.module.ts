@@ -9,6 +9,7 @@ import { CountryPickerModule } from 'angular2-countrypicker';
 import { routing } from './users.routing';
 import { Users } from './users.component';
 import { Profile } from './components/profile/profile.component';
+import { Wallet } from './components/wallet/wallet.component';
 import { MyUsers } from './components/users/user.component';
 import { SkillModal } from './components/skill-modal/skill-modal.component';
 import { EducationModal } from './components/edu-modal/edu-modal.component';
@@ -32,6 +33,7 @@ import { WorkModal } from './components/work-modal/work-modal.component';
   declarations: [
     Users,
     Profile,
+    Wallet,
     SkillModal,
     EducationModal,
     PortfolioModal,
