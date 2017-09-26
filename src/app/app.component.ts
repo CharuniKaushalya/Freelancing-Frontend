@@ -20,7 +20,7 @@ import { MyService } from "./theme/services/backend/service";
 export class App implements OnInit {
 
     isMenuCollapsed: boolean = false;
-    streams: string[] = ["projects", "contracts", "Users", "skills", "user-skill", "user-edu", "user-portfolio", "user-work","bid", "project_user_type"];
+    streams: string[] = ["projects", "contracts", "ContractStatus","Users", "skills", "user-skill", "user-edu", "user-portfolio", "user-work","bid", "project_user_type"];
 
     constructor(private _state: GlobalState,
         private _imageLoader: BaImageLoaderService,
