@@ -12,4 +12,5 @@ export class User {
     public password :string;
 	public usertype: string;
     public type: string;
+    public address: string;
 }

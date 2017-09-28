@@ -157,6 +157,35 @@ export class MyService {
         return this.callAPI('getstreamitem', 'get', params, null, null);
     }
 
+    getNewAddress(): Promise<any> {
+        return this.callAPI('getnewaddress', 'get', null, null, null);
+    }
+
+    grantPermissions(address: string) {
+
+        let permissions = 'connect,send,receive,create,issue,activate';
+
+        let params: URLSearchParams = new URLSearchParams();
+        params.set('addresses', address);
+        params.set('permissions', permissions);
+        return this.callAPI('grant', 'get', params, null, null);
+    }
+
+    getAddressBalances(address: string, includeLocked: string) {
+        let params: URLSearchParams = new URLSearchParams();
+        params.set('address', address);
+        params.set('includeLocked', includeLocked);
+        return this.callAPI('getaddressbalances', 'get', params, null, null);
+    }
+
+    sendAsset(address: string, asset: string, qty: string): Promise<any> {
+        let params: URLSearchParams = new URLSearchParams();
+        params.set('address', address);
+        params.set('asset', asset);
+        params.set('qty', qty);
+        return this.callAPI('sendasset', 'get', params, null, null);
+    }
+
     callAPI(url: string, httpMethod: string, params: URLSearchParams, headers: Headers, body: string): Promise<any> {
         switch (httpMethod) {
 

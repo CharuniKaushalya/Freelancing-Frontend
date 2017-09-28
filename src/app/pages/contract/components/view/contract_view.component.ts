@@ -14,7 +14,7 @@ import {ContractStatus} from "../../../../theme/models/contractStatus";
 
 export class ContractView implements OnInit {
 
-    contractStream: string = "Contracts";
+    contractStream: string = "contracts";
     contractStatusStream: string = "ContractStatus";
 
     active_contracts: Contract[] = [];

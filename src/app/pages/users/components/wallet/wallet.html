@@ -1,0 +1,53 @@
+<div class="container">
+    <div class="row">
+
+        <div class="col-sm-12">
+            <div class="col-sm-12">
+                <ba-card cardTitle="Wallet" baCardClass="with-scroll table-panel">
+                    <table class="table table-condensed">
+                        <thead>
+                        <tr>
+                            <th></th>
+                            <th>Asset</th>
+                            <th>Available Balance</th>
+                            <th>Locked Amount</th>
+                            <th>Fund Account</th>
+                            <th></th>
+                        </tr>
+                        </thead>
+                        <tbody>
+                        <tr *ngFor="let asset of assets">
+                            <td>
+                                <br><font size="5" color="#209e91"><i class="fa fa-money"></i></font>
+                            </td>
+                            <td>
+                                <br>
+                                <h3>{{asset.asset_name}}</h3>
+                            </td>
+                            <td>
+                                <br>
+                                <div style="font-size: 18px">{{asset.available_balance}}</div>
+                            </td>
+                            <td>
+                                <br>
+                                <div style="font-size: 18px">{{asset.locked_amount}}</div>
+                            </td>
+                            <td>
+                                <br>
+                                <input class="form-control" name="{{asset.asset_name}}_amount"
+                                       id="{{asset.asset_name}}_amount" type="number"
+                                       [(ngModel)]="asset.requested_amount" placeholder="100.0"><br>
+                            </td>
+                            <td>
+                                <br>
+                                <button type="button" class="btn btn-primary  btn-sm"
+                                        (click)="getAsset(asset.asset_name)">Fund</button>
+                            </td>
+                        </tr>
+                        </tbody>
+                    </table>
+                </ba-card>
+            </div>
+        </div>
+    </div>
+</div>

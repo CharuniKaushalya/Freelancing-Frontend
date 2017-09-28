@@ -21,6 +21,7 @@ import { ProjectUserType } from "../../../../theme/models/projectUserType";
 export class PublishModelComponent implements OnInit {
 
   key: string;
+  modalHeader: string;
 
   public form: FormGroup;
   public bid_amount: AbstractControl;
@@ -37,10 +38,11 @@ export class PublishModelComponent implements OnInit {
     checked: false,
     class: 'col-md-4',
     value: "Consultant",
+    id: 0,
     disabled: false
   }, {
     name: 'Need a Freelancer',
-    checked: true,
+    checked: false,
     class: 'col-md-4',
     value: "Freelancer",
     disabled: false
@@ -65,17 +67,31 @@ export class PublishModelComponent implements OnInit {
     private _service: MyService, private _router: Router) {
     this.project_utype = new ProjectUserType();
 
- 
-
 
     this.authService.getAuth().authState.subscribe(user => {
       this.project_utype.user_email = user.email;
     });
 
+
+
   }
 
   ngOnInit() {
+    this._service.listStreamKeyItems(this.bidStream, this.key).then(data => {
+      data.forEach(element => {
+        let project_utype: ProjectUserType
+        project_utype = JSON.parse(this._service.Hex2String(element.data.toString()));
+        console.log(project_utype.publish_utype);
+        if(project_utype.publish_utype == "Freelancer"){
+          this.checkboxModel[1].disabled = true;
+        }else if(project_utype.publish_utype == "Consultant"){
+          this.checkboxModel[0].disabled = true;
+        }else if(project_utype.publish_utype == "QA"){
+          this.checkboxModel[2].disabled = true;
+        }
+      });
 
+  });
   }
 
   closeModal() {
@@ -87,7 +103,6 @@ export class PublishModelComponent implements OnInit {
 
     this.project_utype.project_id = this.key;
     this.project_utype.putype_id = this.key;
-    console.log(this.checkboxModel);
     this.checkboxModel.forEach(element => {
       if(element.checked){
         this.project_utype.publish_utype = element.value;
