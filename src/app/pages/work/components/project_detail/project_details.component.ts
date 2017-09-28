@@ -100,5 +100,7 @@ export class ProjectDetails implements OnInit {
     goToContract() {
         console.log(this.fBid)  //key of freelancer bid ----> project_id/user_email
         console.log(this.qaBid) // key of QA bid------> project_id/user_email
+        let link = ['/pages/contract/mycontract', this.fBid, this.qaBid];
+        this._router.navigate(link);
     }
 }
