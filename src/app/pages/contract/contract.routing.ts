@@ -12,7 +12,7 @@ const routes: Routes = [
     path: '',
     component: Contract,
     children: [
-      { path: 'mycontract', component: MyContract },
+      { path: 'mycontract/:fBid/:qaBid', component: MyContract },
       { path: 'contract_view', component: ContractView },
       { path: 'contract_details/:contract_id', component: ContractDetails },
     ]

@@ -1,14 +1,15 @@
-import {Component, EventEmitter, Input, OnInit, Output} from '@angular/core';
-import {MyService} from "../../../../theme/services/backend/service";
-import {Router} from '@angular/router';
+import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
+import { MyService } from "../../../../theme/services/backend/service";
+import { Router, ActivatedRoute, Params } from '@angular/router';
 
 import 'rxjs/add/operator/filter';
 import 'rxjs/add/operator/debounceTime';
 import 'rxjs/add/operator/map';
 
-import {Contract} from "../../../../theme/models/contract";
-import {Project} from "../../../../theme/models/project";
-import {ContractStatus} from "../../../../theme/models/contractStatus";
+import { Contract } from "../../../../theme/models/contract";
+import { Project } from "../../../../theme/models/project";
+import { User } from "../../../../theme/models/user";
+import { ContractStatus } from "../../../../theme/models/contractStatus";
 
 @Component({
     selector: 'my-contract',
@@ -19,10 +20,14 @@ import {ContractStatus} from "../../../../theme/models/contractStatus";
 export class MyContract implements OnInit {
 
     @Input() contract: Contract;
+    @Input() qa_contract: Contract;
     @Output() close = new EventEmitter();
     contractStream: string = "Contracts";
     contractStatusStream: string = "ContractStatus";
     projctsStream: string = "Projects";
+    userstream: string = "Users";
+
+    hasQA = false; 
 
     fromAddresses = null;
     toAddresses = null;
@@ -80,41 +85,78 @@ export class MyContract implements OnInit {
         }
     ];
 
-    constructor(private _router: Router, private _service: MyService) {
+    constructor(private _router: Router, private _route: ActivatedRoute, private _service: MyService) {
+        this._route.params.forEach((params: Params) => {
+            if (params['fBid'] !== undefined) {
+                let fBid = params['fBid'];
+                let project_id = fBid.split("/")[0];
+                let f_email = fBid.split("/")[1];
 
-        _service.getaddresses().then(data => {
-            console.log(data);
-            this.fromAddresses = data;
-            this._service.getaddressbalances(this.fromAddresses[0].address).then(data => {
-                this.balances = data;
-            });
-        });
+                this.contract = new Contract();
+                this.contract.milestones = 0;
 
-        _service.listpermissions(this.permissions, null).then(data => {
-            console.log(data);
-            this.toAddresses = data;
-        });
+                this.qa_contract = new Contract();
+                this.qa_contract.milestones = 0;
 
-        _service.listStreamItems(this.projctsStream).then(data => {
-            data.forEach(element => {
-                let project: Project;
-                if (element.data.txid == null) {
-                    project = JSON.parse(this._service.Hex2String(element.data.toString()));
+                _service.gettxoutdata(project_id).then(largedata => {
+                    let project = JSON.parse(this._service.Hex2String(largedata.toString()));
+                    this.contract.projectName = project.projectName;
+                    this.contract.type = "Developer";
+                    this.contract.description = project.description;
+                    this.contract.asset = project.budget.type;
 
-                } else {
-                    _service.gettxoutdata(element.data.txid).then(largedata => {
-                        project = JSON.parse(this._service.Hex2String(largedata.toString()));
-                    })
+                    this.qa_contract.projectName = project.projectName;
+                    this.qa_contract.type = "QA";
+                    this.qa_contract.description = project.description;
+                    this.qa_contract.asset = project.budget.type;
+                });
+
+                _service.listStreamKeyItems(this.userstream, f_email.toString()).then(data => {
+                    let user: User;
+                    user = JSON.parse(this._service.Hex2String(data[0].data.toString()));
+                    this.contract.freelancer = user.address;
+                });
+
+                if (params['qaBid'] !== undefined && params['qaBid'] !== 1) {
+                    this.hasQA=true
+                    let qaBid = params['qaBid'];
+                    let qa_email = qaBid.split("/")[1];
+                    _service.listStreamKeyItems(this.userstream, qa_email.toString()).then(data => {
+                        let user: User;
+                        user = JSON.parse(this._service.Hex2String(data[0].data.toString()));
+                        this.qa_contract.freelancer = user.address;
+                    });
+
                 }
-                project.project_id = element.txid;
-                project.client = element.publishers[0];
-                this.projects.push(project);
-            });
-            console.log(this.projects);
-        });
+            }
+            else {
+                _service.getaddresses().then(data => {
+                    console.log(data);
+                    this.fromAddresses = data;
+                    this._service.getaddressbalances(this.fromAddresses[0].address).then(data => {
+                        this.balances = data;
+                    });
+                });
 
-        this.contract = new Contract();
-        this.contract.milestones = 0;
+                _service.listpermissions(this.permissions, null).then(data => {
+                    console.log(data);
+                    this.toAddresses = data;
+                });
+
+                _service.listStreamItems(this.projctsStream).then(data => {
+                    data.forEach(element => {
+                        let project: Project;
+                        _service.gettxoutdata(element.data.txid).then(largedata => {
+                            project = JSON.parse(this._service.Hex2String(largedata.toString()));
+                            project.project_id = element.txid;
+                            project.client = element.publishers[0];
+                            this.projects.push(project);
+                        });
+                    });
+                });
+
+            }
+        });
     }
 
     ngOnInit() {

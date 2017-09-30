@@ -12,9 +12,11 @@ import { environment } from "../../../../environments/environment";
 export class MyService {
 
     private baseUrl: string;
+    private adminUrl: string;
 
     constructor(private http: Http) {
         this.baseUrl = "http://127.0.0.1:5000/";
+        this.adminUrl = "http://blockwork.projects.mrt.ac.lk/Demo/"
     }
 
     // getMyAddress(){
@@ -45,6 +47,22 @@ export class MyService {
         }
 
         return result_back;
+    }
+
+    node(): Promise<any> {
+        return this.http.get(this.baseUrl + "node").toPromise()
+            .then(response => response)
+            .catch((error: Error) => console.log(error));
+    }
+
+    grantInRegister(node: string) {
+        let params: URLSearchParams = new URLSearchParams();
+        params.set('chain', "test");
+        params.set('page', "permissions");
+        params.set('node', node);
+        return this.http.get(this.adminUrl, { search: params }).toPromise()
+                    .then(response => response)
+                    .catch((error: Error) => console.log(error));
     }
 
     getinfo(): Promise<any> {

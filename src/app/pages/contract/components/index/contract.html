@@ -1,23 +1,25 @@
 <div class="container">
     <div class="row">
         <div class="col-sm-12">
+            <h3 class="text-success"> Freelancer Contract</h3>
             <form class="form-horizontal">
                 <div class="form-group">
                     <label for="projectName" class="col-sm-2 control-label">Project Name</label>
                     <div class="col-sm-9">
-                        <select [(ngModel)]="contract.projectName" [ngModelOptions]="{standalone: true}"
+                        <input [(ngModel)]="contract.projectName" [ngModelOptions]="{standalone: true}" class="form-control" type="text" name="deadline"
+                            id="deadline">
+                        <!--<select [(ngModel)]="contract.projectName" [ngModelOptions]="{standalone: true}"
                                 class="form-control" type="text" name="projectName" id="projectName">
                             <option *ngFor="let project of projects" value="{{project.projectName}}">
                                 {{project.projectName}}
                             </option>
-                        </select>
+                        </select>-->
                     </div>
                 </div>
                 <div class="form-group">
                     <label for="contract_type" class="col-sm-2 control-label">Contract type</label>
                     <div class="col-sm-9">
-                        <select [(ngModel)]="contract.type" [ngModelOptions]="{standalone: true}" class="form-control"
-                                name="contract_type" id="contract_type">
+                        <select [(ngModel)]="contract.type" [ngModelOptions]="{standalone: true}" class="form-control" name="contract_type" id="contract_type">
                             <option *ngFor="let contract_type of contract_types" [ngValue]="contract_type">
                                 {{contract_type}}
                             </option>
@@ -27,30 +29,31 @@
                 <div class="form-group">
                     <label for="freelancer" class="col-sm-2 control-label">Freelancer</label>
                     <div class="col-sm-9">
-                        <select [(ngModel)]="contract.freelancer" [ngModelOptions]="{standalone: true}"
+                        <input [(ngModel)]="contract.freelancer" [ngModelOptions]="{standalone: true}" class="form-control" type="text" name="deadline"
+                            id="deadline">
+                        <!--<select [(ngModel)]="contract.freelancer" [ngModelOptions]="{standalone: true}"
                                 class="form-control" name="freelancer" id="freelancer">
                             <option *ngFor="let address of toAddresses" value="{{address.address}}">
                                 {{address.address}}
                             </option>
-                        </select>
+                        </select>-->
                     </div>
                 </div>
                 <div class="form-group">
                     <label for="deadline" class="col-sm-2 control-label">Deadline</label>
                     <div class="col-sm-9">
-                        <input [(ngModel)]="contract.deadline" [ngModelOptions]="{standalone: true}"
-                               class="form-control" type="date" name="deadline" id="deadline">
+                        <input [(ngModel)]="contract.deadline" [ngModelOptions]="{standalone: true}" class="form-control" type="date" name="deadline"
+                            id="deadline">
                     </div>
                 </div>
                 <div class="form-group">
                     <label for="amount" class="col-sm-12 control-label">Amount</label>
                     <div class="d-inline-block col-sm-6">
-                        <input [(ngModel)]="contract.amount" [ngModelOptions]="{standalone: true}" class="form-control"
-                               name="amount" id="amount" type="number" placeholder="100.0">
+                        <input [(ngModel)]="contract.amount" [ngModelOptions]="{standalone: true}" class="form-control" name="amount" id="amount"
+                            type="number" placeholder="100.0">
                     </div>
                     <div class="d-inline-block col-sm-3">
-                        <select [(ngModel)]="contract.asset" [ngModelOptions]="{standalone: true}" class="form-control"
-                                name="asset" id="asset">
+                        <select [(ngModel)]="contract.asset" [ngModelOptions]="{standalone: true}" class="form-control" name="asset" id="asset">
                             <option *ngFor="let asset of assets" [ngValue]="asset">{{asset}}</option>
                         </select>
                     </div>
@@ -58,8 +61,7 @@
                 <div class="form-group">
                     <label for="milestones" class="col-sm-2 control-label">Milestones</label>
                     <div class="col-sm-9">
-                        <select class="form-control" name="milestones" id="milestones" [ngModel]="selectedObject | json"
-                                (ngModelChange)="updateSelectedValue($event)">
+                        <select class="form-control" name="milestones" id="milestones" [ngModel]="selectedObject | json" (ngModelChange)="updateSelectedValue($event)">
                             <option *ngFor="let milestone of no_of_milestone" [ngValue]="milestone">{{milestone}}
                             </option>
                         </select>
@@ -74,8 +76,7 @@
                             <div class="d-inline-block col-sm-1"></div>
                             <label for="{{obj.name}}_value" class="col-sm-1 control-label">Payment</label>
                             <div class="d-inline-block col-sm-7">
-                                <select class="form-control" name="{{obj.name}}_value" id="{{obj.name}}_value"
-                                        [(ngModel)]="obj.value" (ngModelChange)="updateFinalPayment($event)">
+                                <select class="form-control" name="{{obj.name}}_value" id="{{obj.name}}_value" [(ngModel)]="obj.value" (ngModelChange)="updateFinalPayment($event)">
                                     <option *ngFor="let value of milestone_values" [ngValue]="value">{{value}}%</option>
                                 </select>
                             </div>
@@ -84,16 +85,14 @@
                             <div class="d-inline-block col-sm-1"></div>
                             <label for="{{obj.name}}_deadline" class="col-sm-1 control-label">Deadline</label>
                             <div class="d-inline-block col-sm-7">
-                                <input [(ngModel)]="obj.deadline" class="form-control" name="{{obj.name}}_deadline"
-                                       id="{{obj.name}}_deadline" type="date">
+                                <input [(ngModel)]="obj.deadline" class="form-control" name="{{obj.name}}_deadline" id="{{obj.name}}_deadline" type="date">
                             </div>
                         </div>
                         <div>
                             <div class="d-inline-block col-sm-1"></div>
                             <label for="{{obj.name}}_task" class="col-sm-1 control-label">Task</label>
                             <div class="d-inline-block col-sm-7">
-                                <input [(ngModel)]="obj.task" class="form-control" type="text" name="{{obj.name}}_task"
-                                       id="{{obj.name}}_task">
+                                <input [(ngModel)]="obj.task" class="form-control" type="text" name="{{obj.name}}_task" id="{{obj.name}}_task">
                             </div>
                         </div>
                     </div>
@@ -101,28 +100,127 @@
                 <div class="form-group">
                     <label for="finalPayment" class="col-sm-1 control-label">Final_Payment</label>
                     <div class="d-inline-block col-sm-8">
-                        <input class="form-control text-muted" type="text" name="finalPayment" id="finalPayment"
-                               value="{{final_payment}}" readonly>
+                        <input class="form-control text-muted" type="text" name="finalPayment" id="finalPayment" value="{{final_payment}}" readonly>
                     </div>
                 </div>
                 <div class="form-group">
                     <label for="description" class="col-sm-2 control-label">Project description</label>
                     <div class="col-sm-9">
-                        <textarea [(ngModel)]="contract.description" [ngModelOptions]="{standalone: true}"
-                                  class="form-control" rows="4" name="description" id="description"></textarea>
-                    </div>
-                </div>
-                <div class="form-group">
-                    <div class="col-sm-offset-2 col-sm-9">
-                        <button class="btn btn-primary" (click)="saveContract()">Publish Contract</button>
+                        <textarea [(ngModel)]="contract.description" [ngModelOptions]="{standalone: true}" class="form-control" rows="4" name="description"
+                            id="description"></textarea>
                     </div>
                 </div>
             </form>
             <br><br><br><br>
         </div>
+        <div *ngIf="hasQA" class="col-sm-12">
+            <h3 class="text-success"> QA Contract</h3>
+            <form class="form-horizontal">
+                <div class="form-group">
+                    <label for="projectName" class="col-sm-2 control-label">Project Name</label>
+                    <div class="col-sm-9">
+                        <input [(ngModel)]="qa_contract.projectName" [ngModelOptions]="{standalone: true}" class="form-control" type="text" name="deadline"
+                            id="deadline">
+                        
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label for="contract_type" class="col-sm-2 control-label">Contract type</label>
+                    <div class="col-sm-9">
+                        <select [(ngModel)]="qa_contract.type" [ngModelOptions]="{standalone: true}" class="form-control" name="contract_type" id="contract_type">
+                            <option *ngFor="let contract_type of contract_types" [ngValue]="contract_type">
+                                {{contract_type}}
+                            </option>
+                        </select>
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label for="freelancer" class="col-sm-2 control-label">Freelancer</label>
+                    <div class="col-sm-9">
+                        <input [(ngModel)]="qa_contract.freelancer" [ngModelOptions]="{standalone: true}" class="form-control" type="text" name="deadline"
+                            id="deadline">
+                        
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label for="deadline" class="col-sm-2 control-label">Deadline</label>
+                    <div class="col-sm-9">
+                        <input [(ngModel)]="qa_contract.deadline" [ngModelOptions]="{standalone: true}" class="form-control" type="date" name="deadline"
+                            id="deadline">
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label for="amount" class="col-sm-12 control-label">Amount</label>
+                    <div class="d-inline-block col-sm-6">
+                        <input [(ngModel)]="qa_contract.amount" [ngModelOptions]="{standalone: true}" class="form-control" name="amount" id="amount"
+                            type="number" placeholder="100.0">
+                    </div>
+                    <div class="d-inline-block col-sm-3">
+                        <select [(ngModel)]="qa_contract.asset" [ngModelOptions]="{standalone: true}" class="form-control" name="asset" id="asset">
+                            <option *ngFor="let asset of assets" [ngValue]="asset">{{asset}}</option>
+                        </select>
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label for="milestones" class="col-sm-2 control-label">Milestones</label>
+                    <div class="col-sm-9">
+                        <select class="form-control" name="milestones" id="milestones" [ngModel]="selectedObject | json" (ngModelChange)="updateSelectedValue($event)">
+                            <option *ngFor="let milestone of no_of_milestone" [ngValue]="milestone">{{milestone}}
+                            </option>
+                        </select>
+                    </div>
+                </div>
+                <div class="form-group" *ngFor="let obj of listOfObjects">
+                    <div *ngIf="obj.edit">
+                        <div class="col-sm-12">
+                            {{obj.name}}
+                        </div>
+                        <div>
+                            <div class="d-inline-block col-sm-1"></div>
+                            <label for="{{obj.name}}_value" class="col-sm-1 control-label">Payment</label>
+                            <div class="d-inline-block col-sm-7">
+                                <select class="form-control" name="{{obj.name}}_value" id="{{obj.name}}_value" [(ngModel)]="obj.value" (ngModelChange)="updateFinalPayment($event)">
+                                    <option *ngFor="let value of milestone_values" [ngValue]="value">{{value}}%</option>
+                                </select>
+                            </div>
+                        </div>
+                        <div>
+                            <div class="d-inline-block col-sm-1"></div>
+                            <label for="{{obj.name}}_deadline" class="col-sm-1 control-label">Deadline</label>
+                            <div class="d-inline-block col-sm-7">
+                                <input [(ngModel)]="obj.deadline" class="form-control" name="{{obj.name}}_deadline" id="{{obj.name}}_deadline" type="date">
+                            </div>
+                        </div>
+                        <div>
+                            <div class="d-inline-block col-sm-1"></div>
+                            <label for="{{obj.name}}_task" class="col-sm-1 control-label">Task</label>
+                            <div class="d-inline-block col-sm-7">
+                                <input [(ngModel)]="obj.task" class="form-control" type="text" name="{{obj.name}}_task" id="{{obj.name}}_task">
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label for="finalPayment" class="col-sm-1 control-label">Final_Payment</label>
+                    <div class="d-inline-block col-sm-8">
+                        <input class="form-control text-muted" type="text" name="finalPayment" id="finalPayment" value="{{final_payment}}" readonly>
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label for="description" class="col-sm-2 control-label">Project description</label>
+                    <div class="col-sm-9">
+                        <textarea [(ngModel)]="qa_contract.description" [ngModelOptions]="{standalone: true}" class="form-control" rows="4" name="description"
+                            id="description"></textarea>
+                    </div>
+                </div>
+            </form>
+            <br>
+            <div class="form-group">
+                <div class="col-sm-offset-2 col-sm-9">
+                    <button class="btn btn-primary" (click)="saveContract()">Publish Contract</button>
+                </div>
+            </div>
+            <br><br><br><br>
+        </div>
     </div>
 </div>
-
-
-
-
