@@ -115,10 +115,6 @@ export class privilegeService {
         icon: 'fa fa-bars',
         data: [
           {
-            type: 'my_projects',
-            title: 'general.menu.my_projects'
-          },
-          {
             type: 'posted_projects',
             title: 'Posted Projects'
           },
