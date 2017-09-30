@@ -35,7 +35,7 @@ export class Users {
         type: 'string'
       },
       type: {
-         title: 'User Type',
+        title: 'User Type',
         type: 'string'
       }
     },
@@ -60,6 +60,8 @@ export class Users {
         this.users.push(user);
       });
       console.log(this.users);
+    }).catch(error => {
+      console.log(error.message);
     });
     this.source.load(this.users);
 

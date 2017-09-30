@@ -40,6 +40,8 @@ export class ProjectDetails implements OnInit {
                 this._service.gettxoutdata(project_id.toString()).then(data => {
                     this.project = JSON.parse(this._service.Hex2String(data.toString()));
                     this.project.project_id = project_id;
+                }).catch(error => {
+                    console.log(error.message);
                 });
 
                 let bid_key = project_id + "/" + localStorage.getItem("user");
@@ -67,11 +69,14 @@ export class ProjectDetails implements OnInit {
                                     this.qa_bidsum += bid.bid_amount;
                                     this.qa_bids.push(bid);
                                 }
+                            }).catch(error => {
+                                console.log(error.message);
                             });
-
                         }
                     });
                     console.log(this.freelancer_bidsum);
+                }).catch(error => {
+                    console.log(error.message);
                 });
 
             } else {

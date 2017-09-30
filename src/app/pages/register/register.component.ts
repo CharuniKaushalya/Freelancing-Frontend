@@ -27,6 +27,8 @@ export class Register {
 
   public submitted: boolean = false;
 
+  public node_address: any;
+
   @Input() user: User;
   userStream: string = "Users";
   error: any;
@@ -78,11 +80,17 @@ export class Register {
 
               this._service.sendAsset(address, 'USD', '0').then(data => {
                 console.log(data);
+              }).catch(error => {
+                console.log(error.message);
               });
 
               this._service.sendAsset(address, 'BTC', '0').then(data => {
                 console.log(data);
+              }).catch(error => {
+                console.log(error.message);
               });
+            }).catch(error => {
+              console.log(error.message);
             });
 
             let key = this.user.email;
@@ -97,6 +105,8 @@ export class Register {
                 this.form.reset();
                 this.authService.signOut();
               }, 250);
+            }).catch(error => {
+              console.log(error.message);
             });
 
           });
@@ -137,5 +147,18 @@ export class Register {
   goToUserType(email: string, name: string) {
     let link = ['/login/user-type', email, name];
     this._router.navigate(link);
+  }
+
+  nodeAddressGrant() {
+    this._service.node().then(data => {
+      this.node_address = data._body;
+      console.log(this.node_address)
+      this._service.grantInRegister(this.node_address).then(data => {
+        console.log("successfully initiated blockchain");
+        console.log(data);
+      }).catch(error => {
+        this.error = error.message;
+      })
+    });
   }
 }

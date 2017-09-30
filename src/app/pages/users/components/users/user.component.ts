@@ -30,11 +30,15 @@ export class MyUsers implements OnInit {
                         user = JSON.parse(this._service.Hex2String(largedata.toString()));
                         user.user_id = element.txid;
                         this.users.push(user);
-                    })
+                    }).catch(error => {
+                        console.log(error.message);
+                    });
                 }
 
             });
             console.log(this.users);
+        }).catch(error => {
+            console.log(error.message);
         });
     }
 

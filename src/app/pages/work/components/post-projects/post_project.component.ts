@@ -18,9 +18,9 @@ import { Project } from "../../../../theme/models/project";
 export class PostedProjects implements OnInit {
     custom_search = false;
     projctsStream: string = "projects";
-    bidStream:string = "bid";
+    bidStream: string = "bid";
     projects: Project[] = [];
-    user_email:string;
+    user_email: string;
 
     constructor(private _router: Router, private _service: MyService, private modalService: NgbModal, public authService: AuthService) {
         this.authService.getAuth().authState.subscribe(user => {
@@ -33,14 +33,18 @@ export class PostedProjects implements OnInit {
                 let project: Project;
                 _service.gettxoutdata(element.txid).then(largedata => {
                     project = JSON.parse(this._service.Hex2String(largedata.toString()));
-                    if(project.user && project.user == localStorage.getItem("user")){
+                    if (project.user && project.user == localStorage.getItem("user")) {
                         project.project_id = element.txid;
                         project.client = element.publishers[0];
                         this.projects.push(project);
                     }
-                    
-                })
+
+                }).catch(error => {
+                    console.log(error.message);
+                });
             });
+        }).catch(error => {
+            console.log(error.message);
         });
     }
 

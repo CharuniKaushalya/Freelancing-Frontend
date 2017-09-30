@@ -39,7 +39,7 @@ export class BidModelComponent implements OnInit {
       'bid_amount': ['', Validators.compose([Validators.required])],
       'deliver_time': ['', Validators.compose([Validators.required])]
     });
-    
+
     this.bid_amount = this.form.controls['bid_amount'];
     this.deliver_time = this.form.controls['deliver_time'];
 
@@ -71,6 +71,8 @@ export class BidModelComponent implements OnInit {
       this._service.publishToStream(this.bidStream, this.bid.bid_id, data_hex).then(data => {
         this.activeModal.close();
         this._router.navigate(['/pages/work/my_work'])
+      }).catch(error => {
+        console.log(error.message);
       });
 
     }

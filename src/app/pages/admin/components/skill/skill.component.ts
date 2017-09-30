@@ -36,9 +36,9 @@ export class Skill {
         type: 'string'
       }
     },
-    pager : {
-        display : true,
-        perPage:5
+    pager: {
+      display: true,
+      perPage: 5
     }
   };
 
@@ -77,6 +77,8 @@ export class Skill {
 
       this._service.publishToStream(this.skillsStream, key, data_hex).then(data => {
         console.log(data);
+      }).catch(error => {
+        console.log(error.message);
       });
 
       //this._router.navigate(['pages/admin/skill']);
@@ -93,6 +95,8 @@ export class Skill {
         this.skills.push(skill);
       });
       console.log(this.skills);
+    }).catch(error => {
+      console.log(error.message);
     });
     this.source.load(this.skills);
   }

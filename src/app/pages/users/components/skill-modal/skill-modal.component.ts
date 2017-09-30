@@ -30,15 +30,15 @@ export class SkillModal implements OnInit {
       data.forEach(element => {
         console.log(element);
         console.log(element.key);
-        let skill:Skill = JSON.parse(this._service.Hex2String(element.data.toString()));
+        let skill: Skill = JSON.parse(this._service.Hex2String(element.data.toString()));
         this.myitems.push(skill.name);
-                                
+
       });
       console.log(this.myitems);
     });
   }
 
-  ngOnInit() {}
+  ngOnInit() { }
 
   closeModal() {
     this.activeModal.close();
@@ -53,11 +53,13 @@ export class SkillModal implements OnInit {
 
     this._service.publishToStream(this.userSkillsStream, key, data_hex).then(data => {
       console.log(data);
+    }).catch(error => {
+      console.log(error.message);
     });
     location.reload();
   }
 
   onItemAdded(item) {
-        this.items.push(item.value);
-    }
+    this.items.push(item.value);
+  }
 }

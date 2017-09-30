@@ -17,7 +17,7 @@ import { ProjectUserType } from "../../../../theme/models/projectUserType";
 export class MyProjects implements OnInit {
     custom_search = false;
     projctsStream: string = "projects";
-    bidStream:string = "bid";
+    bidStream: string = "bid";
     projects: Project[] = [];
     projctUtypeStream: string = "project_user_type";
 
@@ -35,17 +35,23 @@ export class MyProjects implements OnInit {
                         data.forEach(element => {
                             console.log(element);
                             let putype: ProjectUserType = JSON.parse(this._service.Hex2String(element.data.toString()));
-                            console.log( putype.publish_utype);
-                            if(localStorage.getItem("user_type") == putype.publish_utype){
-                              this.projects.push(project);
+                            console.log(putype.publish_utype);
+                            if (localStorage.getItem("user_type") == putype.publish_utype) {
+                                this.projects.push(project);
                             }
                             //edu.edu_id = element.txid;
                             //this.educations.push(edu);
                         });
-    
+
+                    }).catch(error => {
+                        console.log(error.message);
                     });
-                })
+                }).catch(error => {
+                    console.log(error.message);
+                });
             });
+        }).catch(error => {
+            console.log(error.message);
         });
     }
 

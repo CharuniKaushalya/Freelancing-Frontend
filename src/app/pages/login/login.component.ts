@@ -48,6 +48,8 @@ export class Login {
           this._service.listStreamKeyItems(this.userStream, this.email.value).then(data => {
             let u: User = JSON.parse(this._service.Hex2String(data[0].data.toString()));
             localStorage.setItem("userType", u.usertype);
+          }).catch(error => {
+            console.log(error.message);
           });
           this._router.navigate(['']);
         } else {

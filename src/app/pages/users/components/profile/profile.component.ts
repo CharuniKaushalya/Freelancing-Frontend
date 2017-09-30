@@ -49,11 +49,15 @@ export class Profile implements OnInit {
         _service.getinfo().then(data => {
             console.log(data);
             this.ChainInfo = data;
+        }).catch(error => {
+            console.log(error.message);
         });
 
         _service.getpeerinfo().then(data => {
             console.log(data);
             this.PeerInfo = data;
+        }).catch(error => {
+            console.log(error.message);
         });
 
         this.useremail = localStorage.getItem("user");
@@ -64,8 +68,7 @@ export class Profile implements OnInit {
         this._route.params.forEach((params: Params) => {
             if (params['user_id'] !== undefined) {
                 let user_id = params['user_id'];
-                this._service.getstreamitem(this.userStream, user_id.toString())
-                .then(data => {
+                this._service.getstreamitem(this.userStream, user_id.toString()).then(data => {
                     if (data.error == undefined || !data.error) {
                         this._service.listStreamKeyItems(this.skillsStream, data.key).then(data => {
                             data.forEach(element => {
@@ -75,6 +78,8 @@ export class Profile implements OnInit {
                                 });
                             });
 
+                        }).catch(error => {
+                            console.log(error.message);
                         });
                         this._service.listStreamKeyItems(this.eduStream, data.key).then(data => {
                             data.forEach(element => {
@@ -83,6 +88,8 @@ export class Profile implements OnInit {
                                 this.educations.push(edu);
                             });
 
+                        }).catch(error => {
+                            console.log(error.message);
                         });
                         this._service.listStreamKeyItems(this.projStream, data.key).then(data => {
                             data.forEach(element => {
@@ -91,6 +98,8 @@ export class Profile implements OnInit {
                                 this.portfolios.push(protfolio);
                             });
 
+                        }).catch(error => {
+                            console.log(error.message);
                         });
                         this._service.listStreamKeyItems(this.workStream, data.key).then(data => {
                             data.forEach(element => {
@@ -99,6 +108,8 @@ export class Profile implements OnInit {
                                 this.employments.push(work);
                             });
 
+                        }).catch(error => {
+                            console.log(error.message);
                         });
                         console.log(this.portfolios);
                         this.userkey = data.key;
@@ -106,12 +117,14 @@ export class Profile implements OnInit {
                         this.user = JSON.parse(this._service.Hex2String(data.data.toString()));
 
                     }
-                    else{
+                    else {
                         this.goToDash();
                     }
-                        
+
+                }).catch(error => {
+                    console.log(error.message);
                 });
-            }else {
+            } else {
             }
         });
     }
@@ -143,9 +156,9 @@ export class Profile implements OnInit {
     }
 
     goToDash() {
-    let link = ['/dashboard'];
-    this._router.navigate(link);
-  }
+        let link = ['/dashboard'];
+        this._router.navigate(link);
+    }
 
 
 }

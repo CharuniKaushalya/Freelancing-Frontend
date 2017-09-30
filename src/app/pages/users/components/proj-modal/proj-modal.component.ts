@@ -33,10 +33,10 @@ export class PortfolioModal implements OnInit {
   userkey: string;
 
   public defaultPicture = 'assets/img/theme/no-photo.png';
-  public profile:any = {
+  public profile: any = {
     picture: 'assets/img/app/project/project-3.png'
   };
-  public uploaderOptions:NgUploaderOptions = {
+  public uploaderOptions: NgUploaderOptions = {
     // url: 'http://127.0.0.1:5000/upload'
     url: 'http://127.0.0.1:5000/upload',
   };
@@ -75,6 +75,8 @@ export class PortfolioModal implements OnInit {
 
     this._service.publishToStream(this.portfolioStream, key, data_hex).then(data => {
       console.log(data);
+    }).catch(error => {
+      console.log(error.message);
     });
     location.reload();
   }

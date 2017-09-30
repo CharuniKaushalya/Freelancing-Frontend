@@ -37,7 +37,7 @@ export class Wallet implements OnInit {
 
             this._service.getAddressBalances(this.user.address, 'False').then(unlocked_balances => {
 
-                if(unlocked_balances[0].name == "USD") {
+                if (unlocked_balances[0].name == "USD") {
                     this.assets[0].available_balance = unlocked_balances[0].qty;
                     this.assets[1].available_balance = unlocked_balances[1].qty;
 
@@ -48,7 +48,7 @@ export class Wallet implements OnInit {
 
                 this._service.getAddressBalances(this.user.address, 'True').then(total_balances => {
 
-                    if(total_balances[0].name == "USD") {
+                    if (total_balances[0].name == "USD") {
                         this.assets[0].locked_amount = total_balances[0].qty - this.assets[0].available_balance;
                         this.assets[1].locked_amount = total_balances[1].qty - this.assets[1].available_balance;
 
@@ -56,8 +56,14 @@ export class Wallet implements OnInit {
                         this.assets[0].locked_amount = total_balances[1].qty - this.assets[0].available_balance;
                         this.assets[1].locked_amount = total_balances[0].qty - this.assets[1].available_balance;
                     }
+                }).catch(error => {
+                    console.log(error.message);
                 });
+            }).catch(error => {
+                console.log(error.message);
             });
+        }).catch(error => {
+            console.log(error.message);
         });
     }
 
@@ -71,6 +77,8 @@ export class Wallet implements OnInit {
 
                 this.assets[0].available_balance = Number(this.assets[0].available_balance) + Number(this.assets[0].requested_amount);
                 this.assets[0].requested_amount = '';
+            }).catch(error => {
+                console.log(error.message);
             });
 
         } else {
@@ -78,6 +86,8 @@ export class Wallet implements OnInit {
 
                 this.assets[1].available_balance = Number(this.assets[1].available_balance) + Number(this.assets[1].requested_amount);
                 this.assets[1].requested_amount = '';
+            }).catch(error => {
+                console.log(error.message);
             });
         }
     }

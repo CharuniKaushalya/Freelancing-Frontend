@@ -70,7 +70,7 @@ export class WorkModal implements OnInit {
     });
 
 
-    this.years = this.getYears(0,20);
+    this.years = this.getYears(0, 20);
     this.months = ["January", 'February', "March", "April", "May", "June", "July", "August", "September", "October", "November", "December"];
     this.roles = ["Intern", 'Indivisual Contributer', "Lead", "Manager", "Executive", "Owner", "Director"];
 
@@ -110,6 +110,8 @@ export class WorkModal implements OnInit {
 
     this._service.publishToStream(this.workStream, key, data_hex).then(data => {
       console.log(data);
+    }).catch(error => {
+      console.log(error.message);
     });
     location.reload();
   }
@@ -122,14 +124,14 @@ export class WorkModal implements OnInit {
     return _.get(obj, this.setName);
   }
 
-    public getYears(offset, range){
-        var currentYear = new Date().getFullYear();
-        var years = [];
-        for (var i = 0; i < range + 1; i++){
-            years.push(currentYear - offset - i);
-        }
-        return years;
+  public getYears(offset, range) {
+    var currentYear = new Date().getFullYear();
+    var years = [];
+    for (var i = 0; i < range + 1; i++) {
+      years.push(currentYear - offset - i);
     }
+    return years;
+  }
 
 
 }
