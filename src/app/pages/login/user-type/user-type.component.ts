@@ -59,7 +59,7 @@ export class UserTypeComponent implements OnInit {
       console.log("saved");
       console.log(data);
       localStorage.setItem("userType", this.user.usertype);
-      this._router.navigate([''])
+      this._router.navigate(['pages/dashboard'])
     }).catch(error => {
       console.log(error.message);
     });

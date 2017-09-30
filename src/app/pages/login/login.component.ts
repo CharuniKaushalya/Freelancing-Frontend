@@ -51,7 +51,7 @@ export class Login {
           }).catch(error => {
             console.log(error.message);
           });
-          this._router.navigate(['']);
+          this._router.navigate(['pages/dashboard']);
         } else {
           this.error = "Please verify your email address";
           setTimeout(() => {

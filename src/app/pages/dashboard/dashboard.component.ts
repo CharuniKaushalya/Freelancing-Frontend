@@ -21,6 +21,9 @@ export class Dashboard implements OnInit {
     projects: Project[] = [];
     projctUtypeStream: string = "project_user_type";
 
+    streams: string[] = ["projects", "contracts", "ContractStatus", "Users", "skills", "user-skill", "user-edu", "user-portfolio", "user-work", "bid", "project_user_type"];
+
+
     constructor(private _router: Router, private _service: MyService, private modalService: NgbModal) {
         console.log(localStorage.getItem("user_type"));
         _service.listStreamItems(this.projctsStream).then(data => {
@@ -57,6 +60,27 @@ export class Dashboard implements OnInit {
     }
 
     ngOnInit() {
+        this.streams.forEach(stream => {
+            this._service.listStreamItems(stream).then(data => {
+                if (data.error) {
+                    if (data.result == null) {
+                        console.log("Not found Stream" + stream)
+                        this._service.createStream(stream).then(streamData => {
+                            console.log("created " + stream)
+                        }).catch(error => {
+                            console.log(error.message);
+                        });
+                        this._service.subscribeStream(stream).then(subsData => {
+                            console.log("subscribed " + stream)
+                        }).catch(error => {
+                            console.log(error.message);
+                        });
+                    }
+                }
+            }).catch(error => {
+                console.log(error.message);
+            });
+        });
     }
 
     bidModalShow(project_id): void {
