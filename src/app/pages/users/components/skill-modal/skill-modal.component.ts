@@ -5,6 +5,7 @@ import 'rxjs/add/operator/debounceTime';
 import 'rxjs/add/operator/map';
 import { MyService } from "../../../../theme/services/backend/service";
 import { Skill } from "../../../../theme/models/skill";
+import { Profile } from '../profile/profile.component';
 
 @Component({
   selector: 'add-service-modal',
@@ -45,16 +46,14 @@ export class SkillModal implements OnInit {
     console.log(this.userkey);
     let key = this.userkey;
     let skillJSON = JSON.stringify(this.items);
-    console.log(skillJSON);
 
     let data_hex = this._service.String2Hex(skillJSON);
-    console.log(data_hex);
     // console.log(this.Hex2String(data_hex));  
 
     this._service.publishToStream(this.userSkillsStream, key, data_hex).then(data => {
-      console.log(data);
     });
-    location.reload();
+    console.log(Profile.name);
+    //location.reload();
   }
 
   onItemAdded(item) {

@@ -76,7 +76,6 @@ export class PortfolioModal implements OnInit {
     this._service.publishToStream(this.portfolioStream, key, data_hex).then(data => {
       console.log(data);
     });
-    location.reload();
   }
 
 

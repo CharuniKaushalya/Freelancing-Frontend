@@ -111,7 +111,6 @@ export class WorkModal implements OnInit {
     this._service.publishToStream(this.workStream, key, data_hex).then(data => {
       console.log(data);
     });
-    location.reload();
   }
 
   public getValue(obj: ICountry) {
