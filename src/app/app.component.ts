@@ -20,7 +20,6 @@ import { MyService } from "./theme/services/backend/service";
 export class App implements OnInit {
 
     isMenuCollapsed: boolean = false;
-    streams: string[] = ["projects", "contracts", "ContractStatus","Users", "skills", "user-skill", "user-edu", "user-portfolio", "user-work","bid", "project_user_type"];
 
     constructor(private _state: GlobalState,
         private _imageLoader: BaImageLoaderService,
@@ -39,21 +38,6 @@ export class App implements OnInit {
     }
 
     ngOnInit() {
-        this.streams.forEach(stream => {
-            this._service.listStreamItems(stream).then(data => {
-                if (data.error) {
-                    if (data.result == null) {
-                        console.log("Not found Stream" + stream)
-                        this._service.createStream(stream).then(streamData => {
-                            console.log("created " + stream)
-                        })
-                        this._service.subscribeStream(stream).then(subsData => {
-                            console.log("subscribed " + stream)
-                        })
-                    }
-                }
-            });
-        });
     }
 
     public ngAfterViewInit(): void {

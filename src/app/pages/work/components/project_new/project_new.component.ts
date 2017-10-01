@@ -62,6 +62,8 @@ export class ProjectNew implements OnInit {
                 let skill: Skill = JSON.parse(this._service.Hex2String(element.data.toString()));
                 this.skill_items.push(skill.name);
             });
+        }).catch(error => {
+            console.log(error.message);
         });
 
     }
@@ -106,6 +108,8 @@ export class ProjectNew implements OnInit {
             // console.log(data);
 
             this._router.navigate(['/pages/work/posted_projects'])
+        }).catch(error => {
+            console.log(error.message);
         });
     }
 

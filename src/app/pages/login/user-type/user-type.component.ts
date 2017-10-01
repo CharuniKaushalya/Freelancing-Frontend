@@ -34,6 +34,8 @@ export class UserTypeComponent implements OnInit {
               this._router.navigate([''])
             }
           });
+        }).catch(error => {
+          console.log(error.message);
         });
 
         this.user.email = email;
@@ -57,7 +59,9 @@ export class UserTypeComponent implements OnInit {
       console.log("saved");
       console.log(data);
       localStorage.setItem("userType", this.user.usertype);
-      this._router.navigate([''])
+      this._router.navigate(['pages/dashboard'])
+    }).catch(error => {
+      console.log(error.message);
     });
 
   }

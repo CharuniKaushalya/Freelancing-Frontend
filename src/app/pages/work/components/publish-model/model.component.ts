@@ -76,8 +76,6 @@ export class PublishModelComponent implements OnInit {
       this.project_utype.user_email = user.email;
     });
 
-
-
   }
 
   ngOnInit() {
@@ -94,8 +92,9 @@ export class PublishModelComponent implements OnInit {
           this.checkboxModel[2].disabled = true;
         }
       });
-
-  });
+    }).catch(error => {
+        console.log(error.message);
+    });
   }
 
   closeModal() {
@@ -120,6 +119,8 @@ export class PublishModelComponent implements OnInit {
             this._service.publishToStream(this.bidStream, this.project_utype.putype_id, data_hex).then(data => {
               this.activeModal.close();
               //this._router.navigate(['/pages/work/my_work'])
+            }).catch(error => {
+                console.log(error.message);
             });
       }
       

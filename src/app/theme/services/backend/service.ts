@@ -16,7 +16,7 @@ export class MyService {
 
     constructor(private http: Http) {
         this.baseUrl = "http://127.0.0.1:5000/";
-        this.adminUrl = "http://blockwork.projects.mrt.ac.lk/Demo/"
+        this.adminUrl = "http://blockwork.projects.mrt.ac.lk/grant_access.php"
     }
 
     // getMyAddress(){
@@ -57,8 +57,6 @@ export class MyService {
 
     grantInRegister(node: string) {
         let params: URLSearchParams = new URLSearchParams();
-        params.set('chain', "test");
-        params.set('page', "permissions");
         params.set('node', node);
         return this.http.get(this.adminUrl, { search: params }).toPromise()
                     .then(response => response)

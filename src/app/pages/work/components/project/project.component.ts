@@ -49,10 +49,16 @@ export class MyProjects implements OnInit {
                             //edu.edu_id = element.txid;
                             //this.educations.push(edu);
                         });
-    
+
+                    }).catch(error => {
+                        console.log(error.message);
                     });
-                })
+                }).catch(error => {
+                    console.log(error.message);
+                });
             });
+        }).catch(error => {
+            console.log(error.message);
         });
     }
 

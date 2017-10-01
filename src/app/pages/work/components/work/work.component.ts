@@ -37,13 +37,17 @@ export class MyWork {
                             project.project_id = projectdata.txid;
                             project.client = projectdata.publishers[0];
                             this.bid_projects.push(project);
-                        })
-
-
-                    })
+                        }).catch(error => {
+                            console.log(error.message);
+                        });
+                    }).catch(error => {
+                        console.log(error.message);
+                    });
                 }
             });
 
+        }).catch(error => {
+            console.log(error.message);
         });
     }
 

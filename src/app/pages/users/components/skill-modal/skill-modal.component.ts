@@ -33,7 +33,7 @@ export class SkillModal implements OnInit {
         console.log(element.key);
         let skill:Skill = JSON.parse(this._service.Hex2String(element.data.toString()));
         this.myitems.push(skill.name);
-                                
+
       });
       console.log(this.myitems);
     });
@@ -51,8 +51,10 @@ export class SkillModal implements OnInit {
     // console.log(this.Hex2String(data_hex));  
 
     this._service.publishToStream(this.userSkillsStream, key, data_hex).then(data => {
+      console.log(data);
+    }).catch(error => {
+      console.log(error.message);
     });
-    console.log(Profile.name);
     //location.reload();
   }
 
