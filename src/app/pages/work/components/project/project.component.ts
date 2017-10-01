@@ -1,4 +1,5 @@
 import { Component, OnInit } from '@angular/core';
+import { DatePipe } from '@angular/common';
 import { MyService } from "../../../../theme/services/backend/service";
 import { Router } from '@angular/router';
 
@@ -11,7 +12,7 @@ import { ProjectUserType } from "../../../../theme/models/projectUserType";
     selector: 'my-projects',
     templateUrl: './project.html',
     styleUrls: ['./basicTables.scss'],
-    providers: [MyService],
+    providers: [MyService, DatePipe],
 })
 
 export class MyProjects implements OnInit {
@@ -20,8 +21,9 @@ export class MyProjects implements OnInit {
     bidStream:string = "bid";
     projects: Project[] = [];
     projctUtypeStream: string = "project_user_type";
+    today: number = Date.now();
 
-    constructor(private _router: Router, private _service: MyService, private modalService: NgbModal) {
+    constructor(private _router: Router, private _service: MyService, private modalService: NgbModal, private datePipe: DatePipe,) {
         _service.listStreamItems(this.projctsStream).then(data => {
             data.forEach(element => {
                 let project: Project;
@@ -37,7 +39,12 @@ export class MyProjects implements OnInit {
                             let putype: ProjectUserType = JSON.parse(this._service.Hex2String(element.data.toString()));
                             console.log( putype.publish_utype);
                             if(localStorage.getItem("user_type") == putype.publish_utype){
-                              this.projects.push(project);
+                                if(putype.deadline && 
+                                    this.datePipe.transform(putype.deadline, 'yyyy-MM-dd') >= this.datePipe.transform(this.today, 'yyyy-MM-dd')){
+                                    console.log("selected");
+                                    this.projects.push(project);
+                                }
+                              
                             }
                             //edu.edu_id = element.txid;
                             //this.educations.push(edu);

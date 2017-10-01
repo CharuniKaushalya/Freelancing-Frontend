@@ -11,12 +11,13 @@ import { AuthService } from '../../../../providers/auth.service';
 import { MyService } from "../../../../theme/services/backend/service";
 
 import { ProjectUserType } from "../../../../theme/models/projectUserType";
+import { DatePipe } from '@angular/common';
 
 @Component({
   selector: 'app-publish-model',
   templateUrl: './model.component.html',
   styleUrls: ['./model.component.scss'],
-  providers: [MyService, AuthService]
+  providers: [MyService, AuthService, DatePipe]
 })
 export class PublishModelComponent implements OnInit {
 
@@ -24,8 +25,7 @@ export class PublishModelComponent implements OnInit {
   modalHeader: string;
 
   public form: FormGroup;
-  public bid_amount: AbstractControl;
-  public deliver_time: AbstractControl;
+  today: number = Date.now();
 
   public submitted: boolean = false;
 
@@ -39,19 +39,22 @@ export class PublishModelComponent implements OnInit {
     class: 'col-md-4',
     value: "Consultant",
     id: 0,
-    disabled: false
+    disabled: false,
+    deadline: this.datePipe.transform(this.today, 'yyyy-MM-dd').toString()
   }, {
     name: 'Need a Freelancer',
     checked: false,
     class: 'col-md-4',
     value: "Freelancer",
-    disabled: false
+    disabled: false,
+    deadline: this.datePipe.transform(this.today, 'yyyy-MM-dd').toString()
   }, {
     name: 'Need a QA',
     checked: false,
     class: 'col-md-4',
     value: "QA",
-    disabled: false
+    disabled: false,
+    deadline: this.datePipe.transform(this.today, 'yyyy-MM-dd').toString()
   }];
 
   isDisabled: boolean = false;
@@ -63,10 +66,11 @@ export class PublishModelComponent implements OnInit {
     baCheckboxClass: 'class'
   };
 
-  constructor(private activeModal: NgbActiveModal, fb: FormBuilder, public authService: AuthService,
-    private _service: MyService, private _router: Router) {
-    this.project_utype = new ProjectUserType();
 
+  constructor(private datePipe: DatePipe,private activeModal: NgbActiveModal, fb: FormBuilder, public authService: AuthService,
+    private _service: MyService, private _router: Router) {
+
+    this.project_utype = new ProjectUserType();
 
     this.authService.getAuth().authState.subscribe(user => {
       this.project_utype.user_email = user.email;
@@ -101,14 +105,16 @@ export class PublishModelComponent implements OnInit {
   public onSubmit() {
     this.submitted = true;
 
+
     this.project_utype.project_id = this.key;
     this.project_utype.putype_id = this.key;
     this.checkboxModel.forEach(element => {
       if(element.checked){
         this.project_utype.publish_utype = element.value;
+        this.project_utype.deadline =element.deadline;
         let projectJSON = JSON.stringify(this.project_utype);
         
-            console.log(this.project_utype);
+            //console.log(this.project_utype);
             let data_hex = this._service.String2Hex(projectJSON);
         
             this._service.publishToStream(this.bidStream, this.project_utype.putype_id, data_hex).then(data => {
