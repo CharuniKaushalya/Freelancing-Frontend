@@ -30,14 +30,18 @@ export class Login implements OnInit {
   success = "";
 
   constructor(private _service: MyService, fb: FormBuilder, public authService: AuthService, private _router: Router) {
-    this.isResetPass = false;
-    this.form = fb.group({
-      'email': ['', Validators.compose([Validators.required, Validators.minLength(4)])],
-      'password': ['', Validators.compose([Validators.required, Validators.minLength(4)])]
-    });
+    if (localStorage.getItem("user") == "" || localStorage.getItem("user") == undefined) {
+      this.isResetPass = false;
+      this.form = fb.group({
+        'email': ['', Validators.compose([Validators.required, Validators.minLength(4)])],
+        'password': ['', Validators.compose([Validators.required, Validators.minLength(4)])]
+      });
 
-    this.email = this.form.controls['email'];
-    this.password = this.form.controls['password'];
+      this.email = this.form.controls['email'];
+      this.password = this.form.controls['password'];  
+    } else {
+      this._router.navigate(['pages/dashboard']); 
+    }
   }
 
   ngOnInit() {

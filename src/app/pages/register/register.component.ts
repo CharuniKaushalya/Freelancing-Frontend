@@ -36,27 +36,30 @@ export class Register {
 
   userTypes = ['Freelancer', 'Client', 'QA', 'Consultant'];
 
-
   constructor(private _router: Router, public authService: AuthService, fb: FormBuilder, private _service: MyService) {
+    if (localStorage.getItem("user") == "" || localStorage.getItem("user") == undefined) {
+      this.user = new User();
 
-    this.user = new User();
+      this.form = fb.group({
+        'username': ['', Validators.compose([Validators.required, Validators.minLength(6)])],
+        'name': ['', Validators.compose([Validators.required, Validators.minLength(6)])],
+        'email': ['', Validators.compose([Validators.required, EmailValidator.validate])],
+        'passwords': fb.group({
+          'password': ['', Validators.compose([Validators.required, Validators.minLength(4)])],
+          'repeatPassword': ['', Validators.compose([Validators.required, Validators.minLength(4)])]
+        }, { validator: EqualPasswordsValidator.validate('password', 'repeatPassword') })
+      });
 
-    this.form = fb.group({
-      'username': ['', Validators.compose([Validators.required, Validators.minLength(6)])],
-      'name': ['', Validators.compose([Validators.required, Validators.minLength(6)])],
-      'email': ['', Validators.compose([Validators.required, EmailValidator.validate])],
-      'passwords': fb.group({
-        'password': ['', Validators.compose([Validators.required, Validators.minLength(4)])],
-        'repeatPassword': ['', Validators.compose([Validators.required, Validators.minLength(4)])]
-      }, { validator: EqualPasswordsValidator.validate('password', 'repeatPassword') })
-    });
-
-    this.username = this.form.controls['username'];
-    this.name = this.form.controls['name'];
-    this.email = this.form.controls['email'];
-    this.passwords = <FormGroup>this.form.controls['passwords'];
-    this.password = this.passwords.controls['password'];
-    this.repeatPassword = this.passwords.controls['repeatPassword'];
+      this.username = this.form.controls['username'];
+      this.name = this.form.controls['name'];
+      this.email = this.form.controls['email'];
+      this.passwords = <FormGroup>this.form.controls['passwords'];
+      this.password = this.passwords.controls['password'];
+      this.repeatPassword = this.passwords.controls['repeatPassword'];
+       
+    } else {
+      this._router.navigate(['pages/dashboard']);  
+    }
   }
 
   public onSubmit(values: Object): void {
