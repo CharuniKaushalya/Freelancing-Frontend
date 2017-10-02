@@ -33,9 +33,15 @@ export class ProjectDetails implements OnInit {
     fBid;
     qaBid;
 
+    isClient;
+
     constructor(private _service: MyService, private _route: ActivatedRoute, private _router: Router) {
         this._route.params.forEach((params: Params) => {
             if (params['project_id'] !== undefined) {
+
+                if(localStorage.getItem("userType")=="Client"){
+                    this.isClient = true;
+                }
                 let project_id = params['project_id'];
                 this._service.gettxoutdata(project_id.toString()).then(data => {
                     this.project = JSON.parse(this._service.Hex2String(data.toString()));
