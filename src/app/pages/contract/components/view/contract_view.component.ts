@@ -17,6 +17,7 @@ export class ContractView implements OnInit {
     contractStream: string = "contracts";
     contractStatusStream: string = "ContractStatus";
 
+    pending_contracts: Contract[] = [];
     active_contracts: Contract[] = [];
     completed_contracts: Contract[] = [];
 
@@ -39,16 +40,20 @@ export class ContractView implements OnInit {
 
                 this._service.listStreamKeyItems(this.contractStatusStream, element.txid).then(element => {
                     let lastStatus = element[element.length - 1];
-                    let status = JSON.parse(this._service.Hex2String(lastStatus.data.toString()));
-                    contract.status = status;
-                    contract.status.current_milestone_name = this.getCurrentMilestoneName(contract.milestones, status.current_milestone);
-                    contract.status.progress = this.getProgress(contract.milestones, contract.milestoneValues, status);
+                    let contract_status = JSON.parse(this._service.Hex2String(lastStatus.data.toString()));
+                    contract.status = contract_status;
+                    //contract.status.current_milestone_name = this.getCurrentMilestoneName(contract.milestones, contract_status.current_milestone);
+                    //contract.status.progress = this.getProgress(contract.milestones, contract.milestoneValues, contract_status);
 
-                    if (contract.milestones + 1 == status.current_milestone && status.milestone_state == 'C') {
-                        this.completed_contracts.unshift(contract);
+                    if (contract_status.status == "Pending") {
+                        console.log(contract);
+                        this.pending_contracts.unshift(contract);
 
-                    } else {
+                    } else if(contract_status.status == "Active") {
                         this.active_contracts.unshift(contract);
+
+                    } else if(contract_status.status == "Completed") {
+                        this.completed_contracts.unshift(contract);
                     }
                 });
             });
@@ -58,35 +63,35 @@ export class ContractView implements OnInit {
     ngOnInit() {
     }
 
-    getCurrentMilestoneName(milestones: number, currentMilestone: number): string {
-        let name = 'Milestone_';
+    // getCurrentMilestoneName(milestones: number, currentMilestone: number): string {
+    //     let name = 'Milestone_';
+    //
+    //     if (currentMilestone == milestones + 1) {
+    //         if (milestones == 0) {
+    //             name = 'Working';
+    //
+    //         } else {
+    //             name = 'Finalizing';
+    //         }
+    //     } else {
+    //         name = name + currentMilestone.toString();
+    //     }
+    //     return name;
+    // }
 
-        if (currentMilestone == milestones + 1) {
-            if (milestones == 0) {
-                name = 'Working';
-
-            } else {
-                name = 'Finalizing';
-            }
-        } else {
-            name = name + currentMilestone.toString();
-        }
-        return name;
-    }
-
-    getProgress(milestones: number, milestoneValues: any, status: ContractStatus): number {
-        let progress = 0;
-
-        if (milestones + 1 == status.current_milestone && status.milestone_state == 'C') {
-            progress = 100;
-
-        } else {
-            for (let i = 0; i < status.current_milestone - 1; i++) {
-                progress += Number(milestoneValues[i].value);
-            }
-        }
-        return progress;
-    }
+    // getProgress(milestones: number, milestoneValues: any, status: ContractStatus): number {
+    //     let progress = 0;
+    //
+    //     if (milestones + 1 == status.current_milestone && status.milestone_state == 'C') {
+    //         progress = 100;
+    //
+    //     } else {
+    //         for (let i = 0; i < status.current_milestone - 1; i++) {
+    //             progress += Number(milestoneValues[i].value);
+    //         }
+    //     }
+    //     return progress;
+    // }
 
     getSelectedContract(id: string): Contract {
         return (this.active_contracts.concat(this.completed_contracts)).find(x => x.contract_id === id);

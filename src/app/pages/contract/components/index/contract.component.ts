@@ -1,15 +1,16 @@
-import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
-import { MyService } from "../../../../theme/services/backend/service";
-import { Router, ActivatedRoute, Params } from '@angular/router';
+import {Component, EventEmitter, Input, OnInit, Output} from '@angular/core';
+import {MyService} from "../../../../theme/services/backend/service";
+import {Router, ActivatedRoute, Params} from '@angular/router';
+import {NgbModal} from '@ng-bootstrap/ng-bootstrap';
 
 import 'rxjs/add/operator/filter';
 import 'rxjs/add/operator/debounceTime';
 import 'rxjs/add/operator/map';
 
-import { Contract } from "../../../../theme/models/contract";
-import { Project } from "../../../../theme/models/project";
-import { User } from "../../../../theme/models/user";
-import { ContractStatus } from "../../../../theme/models/contractStatus";
+import {Contract} from "../../../../theme/models/contract";
+import {Project} from "../../../../theme/models/project";
+import {User} from "../../../../theme/models/user";
+import {ContractStatus} from "../../../../theme/models/contractStatus";
 
 @Component({
     selector: 'my-contract',
@@ -27,7 +28,7 @@ export class MyContract implements OnInit {
     projctsStream: string = "Projects";
     userstream: string = "Users";
 
-    hasQA = false; 
+    hasQA = false;
 
     fromAddresses = null;
     toAddresses = null;
@@ -35,14 +36,28 @@ export class MyContract implements OnInit {
     permissions = "receive";
     projects: Project[] = [];
 
-    assets = ['USD', 'BTC'];
     contract_types = ['Developer', 'QA', 'Consultant'];
     no_of_milestone = ['0', '1', '2', '3', '4', '5'];
     milestone_init_values = ['50', '35', '25', '20', '15'];
     milestone_values = [];
     final_payment = '100%';
+    qa_final_payment = '100%';
 
-    public listOfObjects = [
+    freelancer_username = '';
+    qa_username = '';
+
+    assets = [
+        {
+            asset_name: 'USD',
+            available_balance: 0
+        },
+        {
+            asset_name: 'BTC',
+            available_balance: 0
+        }
+    ];
+
+    public freelancerMilestones = [
         {
             id: 1,
             name: 'Milestone_1',
@@ -85,7 +100,50 @@ export class MyContract implements OnInit {
         }
     ];
 
-    constructor(private _router: Router, private _route: ActivatedRoute, private _service: MyService) {
+    public qaMilestones = [
+        {
+            id: 1,
+            name: 'Milestone_1',
+            value: 0,
+            deadline: '',
+            task: '',
+            edit: false
+        },
+        {
+            id: 2,
+            name: 'Milestone_2',
+            value: 0,
+            deadline: '',
+            task: '',
+            edit: false
+        },
+        {
+            id: 3,
+            name: 'Milestone_3',
+            value: 0,
+            deadline: '',
+            task: '',
+            edit: false
+        },
+        {
+            id: 4,
+            name: 'Milestone_4',
+            value: 0,
+            deadline: '',
+            task: '',
+            edit: false
+        },
+        {
+            id: 5,
+            name: 'Milestone_5',
+            value: 0,
+            deadline: '',
+            task: '',
+            edit: false
+        }
+    ];
+
+    constructor(private _router: Router, private _route: ActivatedRoute, private _service: MyService, private modalService: NgbModal) {
         this._route.params.forEach((params: Params) => {
             if (params['fBid'] !== undefined) {
                 let fBid = params['fBid'];
@@ -115,18 +173,21 @@ export class MyContract implements OnInit {
                     let user: User;
                     user = JSON.parse(this._service.Hex2String(data[0].data.toString()));
                     this.contract.freelancer = user.address;
+                    this.contract.freelancer_email = f_email.toString();
+                    this.freelancer_username = user.username;
                 });
 
-                if (params['qaBid'] !== undefined && params['qaBid'] !== 1) {
-                    this.hasQA=true
+                if (params['qaBid'] != 0) {
+                    this.hasQA = true;
                     let qaBid = params['qaBid'];
                     let qa_email = qaBid.split("/")[1];
                     _service.listStreamKeyItems(this.userstream, qa_email.toString()).then(data => {
                         let user: User;
                         user = JSON.parse(this._service.Hex2String(data[0].data.toString()));
                         this.qa_contract.freelancer = user.address;
+                        this.qa_contract.freelancer_email = qa_email.toString();
+                        this.qa_username = user.username;
                     });
-
                 }
             }
             else {
@@ -157,21 +218,47 @@ export class MyContract implements OnInit {
 
             }
         });
+        this.getAvailableBalance();
     }
 
     ngOnInit() {
     }
 
-    onClickFromAddress(address: string) {
-        this._service.getaddressbalances(address).then(data => {
-            this.balances = data;
+    getAvailableBalance() {
+
+        let user = new User();
+        this._service.listStreamKeyItems(this.userstream, localStorage.getItem('email')).then(data => {
+            user = JSON.parse(this._service.Hex2String(data[0].data.toString()));
+
+            this._service.getAddressBalances(user.address, 'False').then(balances => {
+
+                if (balances[0].name == "USD") {
+                    this.assets[0].available_balance = balances[0].qty;
+                    this.assets[1].available_balance = balances[1].qty;
+
+                } else {
+                    this.assets[0].available_balance = balances[1].qty;
+                    this.assets[1].available_balance = balances[0].qty;
+                }
+            });
+            this.contract.client = user.address;
+            this.qa_contract.client = user.address;
+
+            this.contract.client_email = user.email;
+            this.qa_contract.client_email = user.email;
         });
     }
 
     updateSelectedValue(event: string): void {
 
-        let sum = 0;
         let val = JSON.parse(event);
+        this.updateMilestonesSelectedValue(val);
+        this.updateMilestonesSelectedValue_QA(val);
+    }
+
+    updateMilestonesSelectedValue(val: number): void {
+
+        let sum = 0;
         let percentage1 = String(Number(this.milestone_init_values[val - 1]) - 5);
         let percentage2 = String(this.milestone_init_values[val - 1]);
         let percentage3 = String(Number(this.milestone_init_values[val - 1]) + 5);
@@ -180,54 +267,133 @@ export class MyContract implements OnInit {
 
         for (let num = 0; num < 5; num++) {
             if (num >= val) {
-                this.listOfObjects[num].edit = false;
-                this.listOfObjects[num].value = 0;
+                this.freelancerMilestones[num].edit = false;
+                this.freelancerMilestones[num].value = 0;
             }
             else {
-                if (this.listOfObjects[num].value != Number(percentage1) && this.listOfObjects[num].value != Number(percentage2)
-                    && this.listOfObjects[num].value != Number(percentage3)) {
-                    this.listOfObjects[num].value = 0;
+                if (this.freelancerMilestones[num].value != Number(percentage1) && this.freelancerMilestones[num].value != Number(percentage2)
+                    && this.freelancerMilestones[num].value != Number(percentage3)) {
+                    this.freelancerMilestones[num].value = 0;
                 }
-                this.listOfObjects[num].edit = true;
+                this.freelancerMilestones[num].edit = true;
             }
-            sum += Number(this.listOfObjects[num].value);
+            sum += Number(this.freelancerMilestones[num].value);
         }
         sum = 100 - sum;
         this.final_payment = String(sum + '%');
+    }
+
+    updateMilestonesSelectedValue_QA(val: number): void {
+
+        let sum = 0;
+        let percentage1 = String(Number(this.milestone_init_values[val - 1]) - 5);
+        let percentage2 = String(this.milestone_init_values[val - 1]);
+        let percentage3 = String(Number(this.milestone_init_values[val - 1]) + 5);
+        this.milestone_values = [percentage1, percentage2, percentage3];
+        this.qa_contract.milestones = val;
+
+        for (let num = 0; num < 5; num++) {
+            if (num >= val) {
+                this.qaMilestones[num].edit = false;
+                this.qaMilestones[num].value = 0;
+            }
+            else {
+                if (this.qaMilestones[num].value != Number(percentage1) && this.qaMilestones[num].value != Number(percentage2)
+                    && this.qaMilestones[num].value != Number(percentage3)) {
+                    this.qaMilestones[num].value = 0;
+                }
+                this.qaMilestones[num].edit = true;
+            }
+            sum += Number(this.qaMilestones[num].value);
+        }
+        sum = 100 - sum;
+        this.qa_final_payment = String(sum + '%');
     }
 
     updateFinalPayment(event: string): void {
         let sum = 0;
 
         for (let num = 0; num < 5; num++) {
-            sum += Number(this.listOfObjects[num].value);
+            sum += Number(this.freelancerMilestones[num].value);
         }
         sum = 100 - sum;
         this.final_payment = String(sum + '%');
     }
 
+    updateFinalPayment_QA(event: string): void {
+        let sum = 0;
+
+        for (let num = 0; num < 5; num++) {
+            sum += Number(this.qaMilestones[num].value);
+        }
+        sum = 100 - sum;
+        this.qa_final_payment = String(sum + '%');
+    }
+
     saveContract() {
 
         let key = this.contract.projectName;
-        this.contract.milestoneValues = this.listOfObjects.filter(function (attr) {
+        this.contract.milestoneValues = this.freelancerMilestones.filter(function (attr) {
             delete attr.edit;
             return true;
         }).slice(0, this.contract.milestones);
 
         let contractJSON = JSON.stringify(this.contract);
+        let data_hex = this._service.String2Hex(contractJSON);
         console.log(contractJSON);
 
+        let qa_data_hex;
+        if (this.hasQA) {
+            this.qa_contract.milestoneValues = this.qaMilestones.filter(function (attr) {
+                delete attr.edit;
+                return true;
+            }).slice(0, this.qa_contract.milestones);
 
-        let data_hex = this._service.String2Hex(contractJSON);
+            let qa_contractJSON = JSON.stringify(this.qa_contract);
+            qa_data_hex = this._service.String2Hex(qa_contractJSON);
+            console.log(qa_contractJSON);
+        }
+
+        let hasEnoughAssets = false;
+        let requested_amount = Number(this.contract.amount);
+
+        if (this.hasQA) {
+            requested_amount += Number(this.qa_contract.amount);
+        }
+
+        if (this.contract.asset == 'USD') {
+            if (requested_amount < this.assets[0].available_balance)
+                hasEnoughAssets = true;
+
+        } else {
+            if (requested_amount < this.assets[1].available_balance)
+                hasEnoughAssets = true;
+        }
 
 
-        this._service.publishToStream(this.contractStream, key, data_hex).then(data => {
-            console.log("Contract saved");
-            console.log(data);
+        if (hasEnoughAssets) {
+            this._service.publishToStream(this.contractStream, key, data_hex).then(data => {
+                this.saveContractStatus(data);
+                console.log("Freelancer Contract saved");
+                console.log(data);
 
-            this.saveContractStatus(data);
-            this._router.navigate(['/pages/contract/contract_view'])
-        });
+                if (this.hasQA) {
+                    this._service.publishToStream(this.contractStream, key, qa_data_hex).then(data => {
+                        this.saveContractStatus(data);
+                        console.log("QA Contract saved");
+                        console.log(data);
+                    });
+                }
+
+                this._service.lockAssetsFrom(this.contract.client, this.contract.asset, requested_amount.toString()).then(data => {
+                    console.log("Assets Locked");
+                    console.log(data);
+                });
+                this._router.navigate(['/pages/contract/contract_view'])
+            });
+        } else {
+            $('#myModal').modal('show');
+        }
     }
 
     saveContractStatus(id: string) {
@@ -236,8 +402,7 @@ export class MyContract implements OnInit {
 
         /* setting the contract state attributes */
         contractStatus.contract_id = key;
-        contractStatus.current_milestone = 1;
-        contractStatus.milestone_state = 'W';
+        contractStatus.status = "Pending";
 
         /* saving contract state to the blockchain */
         let contractStatusJSON = JSON.stringify(contractStatus);
