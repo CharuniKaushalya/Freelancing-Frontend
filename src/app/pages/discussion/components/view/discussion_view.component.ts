@@ -1,10 +1,13 @@
-import {Component, OnInit} from '@angular/core';
+import {Component, EventEmitter, Input, OnInit, Output} from '@angular/core';
 import {MyService} from "../../../../theme/services/backend/service";
 import {DataService} from "../../../../theme/services/data/data.service";
-import {Router} from '@angular/router';
+import { Router, Params, ActivatedRoute } from '@angular/router';
 
 import {Contract} from "../../../../theme/models/contract";
 import {ContractStatus} from "../../../../theme/models/contractStatus";
+
+import { Discussion } from "../../../../theme/models/discussion";
+import { AuthService } from '../../../../providers/auth.service';
 
 @Component({
     selector: 'discussion_view',
@@ -14,88 +17,108 @@ import {ContractStatus} from "../../../../theme/models/contractStatus";
 
 export class DiscussionView implements OnInit {
 
-    contractStream: string = "Contracts";
-    contractStatusStream: string = "ContractStatus";
+    @Input() discussion: Discussion;
+    
 
-    active_contracts: Contract[] = [];
-    completed_contracts: Contract[] = [];
+    @Output() close = new EventEmitter();
+    
+    discussionStream: string = "discussion";
 
-    constructor(private _router: Router, private _service: MyService, private data: DataService) {
+    contract: Contract;
 
-        _service.listStreamItems(this.contractStream).then(data => {
+    user_email: string;
+    discussions: Discussion[] = [];
+
+    
+
+    /*constructor(private _router: Router, private _service: MyService, public authService: AuthService) {
+
+        this.discussion = new Discussion();
+        
+
+        this.authService.getAuth().authState.subscribe(user => {
+            console.log(user);
+            if (user == null) {
+              this.user_email = '';
+            } else {
+              this.user_email = user.email;
+            }
+        });
+
+        _service.listStreamItems(this.discussionStream).then(data => {
             data.forEach(element => {
-                let contract: Contract;
-                if (element.data.txid == null) {
-                    contract = JSON.parse(this._service.Hex2String(element.data.toString()));
-
-                } else {
-                    _service.gettxoutdata(element.data.txid).then(largedata => {
-                        contract = JSON.parse(this._service.Hex2String(largedata.toString()));
-                    })
-                }
-                contract.contract_id = element.txid;
-                contract.client = element.publishers[0];
-                contract.status = new ContractStatus();
-
-                this._service.listStreamKeyItems(this.contractStatusStream, element.txid).then(element => {
-                    let lastStatus = element[element.length - 1];
-                    let status = JSON.parse(this._service.Hex2String(lastStatus.data.toString()));
-                    contract.status = status;
-                    contract.status.current_milestone_name = this.getCurrentMilestoneName(contract.milestones, status.current_milestone);
-                    contract.status.progress = this.getProgress(contract.milestones, contract.milestoneValues, status);
-
-                    if (contract.milestones + 1 == status.current_milestone && status.milestone_state == 'C') {
-                        this.completed_contracts.unshift(contract);
-
-                    } else {
-                        this.active_contracts.unshift(contract);
+                let discussion: Discussion;
+                let key = this.contract.contract_id;
+                _service.gettxoutdata(element.txid).then(largedata => {
+                    discussion = JSON.parse(this._service.Hex2String(largedata.toString()));
+                    if (discussion.user && discussion.user == localStorage.getItem("user")) {
+                        discussion.discussion_id = element.txid;
+                       
+                        this.discussions.push(discussion);
                     }
+
+                }).catch(error => {
+                    console.log(error.message);
                 });
             });
+        }).catch(error => {
+            console.log(error.message);
+        });
+
+        
+
+    }*/
+
+
+    constructor(private _service: MyService, private _route: ActivatedRoute, private _router: Router) {
+        this._route.params.forEach((params: Params) => {
+            if (params['contract_id'] !== undefined) {
+                let discussion_id = params['contract_id'];
+                let discussion: Discussion;
+                this.discussion = new Discussion();
+                this._service.gettxoutdata(discussion_id.toString()).then(data => {
+                    this.discussion = JSON.parse(this._service.Hex2String(data.toString()));
+                    this.discussion.discussion_id = discussion_id;
+                    this.discussions.push(discussion);
+                }).catch(error => {
+                    console.log(error.message);
+                });
+
+
+               
+
+
+            } else {
+
+            }
         });
     }
 
     ngOnInit() {
     }
 
-    getCurrentMilestoneName(milestones: number, currentMilestone: number): string {
-        let name = 'Milestone_';
+   
+    // onChangeBudgetType(value: any) {
+    //     this.project.budget.type = value;
+    // }
 
-        if (currentMilestone == milestones + 1) {
-            if (milestones == 0) {
-                name = 'Working';
+    save() {
+        
+        this.discussion.user = this.user_email;
+        let key = this.contract.contract_id;
+        let projectJSON = JSON.stringify(this.discussion)
 
-            } else {
-                name = 'Finalizing';
-            }
-        } else {
-            name = name + currentMilestone.toString();
-        }
-        return name;
+        let data_hex = this._service.String2Hex(projectJSON)
+
+        this._service.publishToStream(this.discussionStream, key, data_hex).then(data => {
+            console.log("saved");
+            // console.log(data);
+
+            this._router.navigate(['/pages/discussion/discussion_view'])
+        }).catch(error => {
+            console.log(error.message);
+        });
     }
 
-    getProgress(milestones: number, milestoneValues: any, status: ContractStatus): number {
-        let progress = 0;
-
-        if (milestones + 1 == status.current_milestone && status.milestone_state == 'C') {
-            progress = 100;
-
-        } else {
-            for (let i = 0; i < status.current_milestone - 1; i++) {
-                progress += Number(milestoneValues[i].value);
-            }
-        }
-        return progress;
-    }
-
-    getSelectedContract(id: string): Contract {
-        return (this.active_contracts.concat(this.completed_contracts)).find(x => x.contract_id === id);
-    }
-
-    goToContract(id: string) {
-        let contract = this.getSelectedContract(id);
-        this.data.saveData(contract);
-        let link = ['/pages/contract/contract_details', id];
-        this._router.navigate(link);
-    }
+   
 }

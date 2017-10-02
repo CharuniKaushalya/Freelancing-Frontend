@@ -3,7 +3,6 @@ import { Routes, RouterModule } from '@angular/router';
 import { Discussion } from './discussion.component';
 import { DiscussionView } from './components/view/discussion_view.component';
 
-
 // noinspection TypeScriptValidateTypes
 const routes: Routes = [
   {
@@ -13,7 +12,8 @@ const routes: Routes = [
       
       { path: 'discussion_view', 
         component: DiscussionView
-         }
+      }
+
     ]
   }
 ];
