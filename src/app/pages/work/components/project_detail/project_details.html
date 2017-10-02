@@ -3,7 +3,7 @@
 
         <div class="col-sm-12">
             <ba-card cardTitle="{{project?.projectName}}" baCardClass="with-scroll table-panel">
-
+                <p> {{project?.description}}</p>
                 <div *ngIf="project?.skills">
                     <h4>Required Skills: </h4>
                     <button *ngFor="let skill of project.skills" type="button" class="btn btn-default btn-md" style="background-color: #776e6e;color: #ffffff;cursor:default;">{{skill}}</button>
@@ -18,63 +18,66 @@
                     </div>
                 </div>
                 <br><br>
+
                 <div *ngIf="freelancer_bids?.length!=0">
                     <button class="btn btn-info btn-md" style="cursor:default;">{{freelancer_bids?.length}} Freelancer Bids</button>
                     <button class="btn btn-success btn-md" style="cursor:default;">Avg Bid - {{freelancer_bidsum/freelancer_bids?.length}}{{project?.budget?.type}}</button>
                     <button class="btn btn-default btn-md" style="cursor:default;">
                         Budget - From {{project?.budget?.min}} to {{project?.budget?.max}} {{project?.budget?.type}}
-                    </button>
-                    <ba-card cardTitle="Current Freelancer Bids" baCardClass="with-scroll table-panel">
-                        <table class="table table-condensed">
-                            <thead>
-                                <tr>
-                                    <th></th>
-                                    <th>User</th>
-                                    <th>Amount</th>
-                                    <th>Delivery Time</th>
-                                    <th>Actions</th>
-                                </tr>
-                            </thead>
-                            <tbody>
-                                <tr *ngFor="let bid of freelancer_bids">
-                                    <td>
-                                        <br>
-                                        <div *ngIf="selectFreelnacer==false">
-                                            <font size="5" color="#209e91"><i class="fa fa-product-hunt"></i></font>
-                                        </div>
-                                        <div *ngIf="selectFreelnacer==true">
-                                            <input name='selectFreelnacerGroup' type='radio' [id]='fBid' [value]='bid.bid_id' [(ngModel)]='fBid' />
-                                        </div>
-                                    </td>
-                                    <td><br>
-                                        <a style="cursor:pointer" (click)="goToUser(bid.user_id)">
-                                            <h3>{{bid.user_name}}</h3>
-                                        </a>
-                                        <p>{{bid.user_email}}</p>
-                                    </td>
-                                    <td><br>{{bid.bid_amount}}
-                                    </td>
-                                    <td><br>{{bid.deliver_time}}
-                                    </td>
-                                    <td>
-                                        <br>
-                                        <div class="row">
-                                            <br><button (click)="contact_fumction(bid.user_id)" type="button" class="btn btn-primary  btn-sm"><i class="fa fa-phone"></i>  Contact</button>
-                                        </div>
-                                    </td>
-                                </tr>
-                            </tbody>
-                        </table>
-                    </ba-card>
-                    <div *ngIf="!selectFreelnacer">
-                        <a class="text-success" style="cursor:pointer" (click)="selectFreelnacer=true">
-                            <h5><i class="fa fa-check-square-o" aria-hidden="true"></i> Select Freelancer</h5>
-                        </a>
-                    </div>
-                    <div *ngIf="selectFreelnacer">
-                        <a class="text-warning" style="cursor:pointer" (click)="selectFreelnacer=false">
-                            <h5><i class="fa fa-check-square-o" aria-hidden="true"></i> Deselect Freelancer</h5>
-                        </a>
+                        </button>
+                    <div *ngIf="isClient">
+                        <ba-card cardTitle="Current Freelancer Bids" baCardClass="with-scroll table-panel">
+                            <table class="table table-condensed">
+                                <thead>
+                                    <tr>
+                                        <th></th>
+                                        <th>User</th>
+                                        <th>Amount</th>
+                                        <th>Delivery Time</th>
+                                        <th>Actions</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <tr *ngFor="let bid of freelancer_bids">
+                                        <td>
+                                            <br>
+                                            <div *ngIf="selectFreelnacer==false">
+                                                <font size="5" color="#209e91"><i class="fa fa-product-hunt"></i></font>
+                                            </div>
+                                            <div *ngIf="selectFreelnacer==true">
+                                                <input name='selectFreelnacerGroup' type='radio' [id]='fBid' [value]='bid.bid_id' [(ngModel)]='fBid' />
+                                            </div>
+                                        </td>
+                                        <td><br>
+                                            <a style="cursor:pointer" (click)="goToUser(bid.user_id)">
+                                                <h3>{{bid.user_name}}</h3>
+                                            </a>
+                                            <p>{{bid.user_email}}</p>
+                                        </td>
+                                        <td><br>{{bid.bid_amount}}
+                                        </td>
+                                        <td><br>{{bid.deliver_time}}
+                                        </td>
+                                        <td>
+                                            <br>
+                                            <div class="row">
+                                                <br><button (click)="contact_fumction(bid.user_id)" type="button" class="btn btn-primary  btn-sm"><i class="fa fa-phone"></i>  Contact</button>
+                                            </div>
+                                        </td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                        </ba-card>
+                        <div *ngIf="!selectFreelnacer">
+                            <a class="text-success" style="cursor:pointer" (click)="selectFreelnacer=true">
+                                <h5><i class="fa fa-check-square-o" aria-hidden="true"></i> Select Freelancer</h5>
+                            </a>
+                        </div>
+                        <div *ngIf="selectFreelnacer">
+                            <a class="text-warning" style="cursor:pointer" (click)="selectFreelnacer=false">
+                                <h5><i class="fa fa-check-square-o" aria-hidden="true"></i> Deselect Freelancer</h5>
+                            </a>
+                        </div>
                     </div>
                 </div>
                 <br><br>
@@ -84,64 +87,66 @@
                     <button class="btn btn-success btn-md" style="cursor:default;">Avg Bid - {{qa_bidsum/qa_bids?.length}}{{project?.budget?.type}}</button>
                     <button class="btn btn-default btn-md" style="cursor:default;">
                         Budget - From {{project?.budget?.min}} to {{project?.budget?.max}} {{project?.budget?.type}}
-                    </button>
-                    <ba-card cardTitle="Current QA Bids" baCardClass="with-scroll table-panel">
-                        <table class="table table-condensed">
-                            <thead>
-                                <tr>
-                                    <th></th>
-                                    <th>User</th>
-                                    <th>Amount</th>
-                                    <th>Delivery Time</th>
-                                    <th>Actions</th>
-                                </tr>
-                            </thead>
-                            <tbody>
-                                <tr *ngFor="let bid of qa_bids">
-                                    <td>
-                                        <br>
-                                        <div *ngIf="selectQA==false">
-                                            <font size="5" color="#209e91"><i class="fa fa-product-hunt"></i></font>
-                                        </div>
-                                        <div *ngIf="selectQA==true">
-                                            <input name='selectQAGroup' type='radio' [id]='qaBid' [value]='bid.bid_id' [(ngModel)]='qaBid' />
-                                        </div>
-                                    </td>
-                                    <td><br>
-                                        <a style="cursor:pointer" (click)="goToUser(bid.user_id)">
-                                            <h3>{{bid.user_name}}</h3>
-                                        </a>
-                                        <p>{{bid.user_email}}</p>
-                                    </td>
-                                    <td><br>{{bid.bid_amount}}
-                                    </td>
-                                    <td><br>{{bid.deliver_time}}
-                                    </td>
-                                    <td>
-                                        <br>
-                                        <div class="row">
-                                            <button (click)="contact_fumction(bid.user_id)" type="button" class="btn btn-primary  btn-sm">Create Contract</button>
-                                            <br><button (click)="contact_fumction(bid.user_id)" type="button" class="btn btn-primary  btn-sm">Contact</button>
-                                        </div>
-                                    </td>
-                                </tr>
-                            </tbody>
-                        </table>
-                    </ba-card>
-                    <div *ngIf="!selectQA">
-                        <a class="text-success" style="cursor:pointer" (click)="selectQA=true">
-                            <h5><i class="fa fa-check-square-o" aria-hidden="true"></i> Select QA</h5>
-                        </a>
-                    </div>
-                    <div *ngIf="selectQA">
-                        <a class="text-warning" style="cursor:pointer" (click)="selectQA=false">
-                            <h5><i class="fa fa-check-square-o" aria-hidden="true"></i> Deselect QA</h5>
-                        </a>
+                        </button>
+                    <div *ngIf="isClient">
+                        <ba-card cardTitle="Current QA Bids" baCardClass="with-scroll table-panel">
+                            <table class="table table-condensed">
+                                <thead>
+                                    <tr>
+                                        <th></th>
+                                        <th>User</th>
+                                        <th>Amount</th>
+                                        <th>Delivery Time</th>
+                                        <th>Actions</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <tr *ngFor="let bid of qa_bids">
+                                        <td>
+                                            <br>
+                                            <div *ngIf="selectQA==false">
+                                                <font size="5" color="#209e91"><i class="fa fa-product-hunt"></i></font>
+                                            </div>
+                                            <div *ngIf="selectQA==true">
+                                                <input name='selectQAGroup' type='radio' [id]='qaBid' [value]='bid.bid_id' [(ngModel)]='qaBid' />
+                                            </div>
+                                        </td>
+                                        <td><br>
+                                            <a style="cursor:pointer" (click)="goToUser(bid.user_id)">
+                                                <h3>{{bid.user_name}}</h3>
+                                            </a>
+                                            <p>{{bid.user_email}}</p>
+                                        </td>
+                                        <td><br>{{bid.bid_amount}}
+                                        </td>
+                                        <td><br>{{bid.deliver_time}}
+                                        </td>
+                                        <td>
+                                            <br>
+                                            <div class="row">
+                                                <button (click)="contact_fumction(bid.user_id)" type="button" class="btn btn-primary  btn-sm">Create Contract</button>
+                                            </div>
+                                        </td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                        </ba-card>
+                        <div *ngIf="!selectQA">
+                            <a class="text-success" style="cursor:pointer" (click)="selectQA=true">
+                                <h5><i class="fa fa-check-square-o" aria-hidden="true"></i> Select QA</h5>
+                            </a>
+                        </div>
+                        <div *ngIf="selectQA">
+                            <a class="text-warning" style="cursor:pointer" (click)="selectQA=false">
+                                <h5><i class="fa fa-check-square-o" aria-hidden="true"></i> Deselect QA</h5>
+                            </a>
+                        </div>
                     </div>
                 </div>
                 <br><br>
-
-                <button (click)="goToContract()" type="button" class="btn btn-primary btn-lg pull-right"><i class="fa fa-edit"></i>  Create Contract</button>
+                <div *ngIf="isClient">
+                    <button (click)="goToContract()" type="button" class="btn btn-primary btn-lg pull-right"><i class="fa fa-edit"></i>  Create Contract</button>
+                </div>
             </ba-card>
         </div>
     </div>
