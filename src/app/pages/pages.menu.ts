@@ -16,6 +16,41 @@ export const PAGES_MENU = [
         }
       },
       {
+        path: 'users',
+        data: {
+          menu: {
+            title: 'Profile',
+            icon: 'fa fa-user',
+            selected: false,
+            expanded: false,
+            order: 250,
+            hidden: true,
+          }
+        },
+        children: [
+          {
+            path: 'profile',
+            data: {
+              menu: {
+                title: 'MY Profile',
+                pathMatch: 'prefix',
+                hidden: true,
+              }
+            }
+          },
+          {
+            path: 'wallet',
+            data: {
+              menu: {
+                title: 'My Wallet',
+                pathMatch: 'prefix',
+                hidden: true,
+              }
+            }
+          },
+        ]
+      },
+      {
         path: 'discussion',
         data: {
           menu: {

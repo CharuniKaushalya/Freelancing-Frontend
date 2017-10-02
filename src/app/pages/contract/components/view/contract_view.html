@@ -4,7 +4,10 @@
         <div class="col-sm-12">
             <ul class="nav nav-tabs">
                 <li class="nav-item">
-                    <a class="nav-link active" data-toggle="tab" href="#active_contracts">Active Contracts</a>
+                    <a class="nav-link active" data-toggle="tab" href="#pending_contracts">Pending Contracts</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" data-toggle="tab" href="#active_contracts">Active Contracts</a>
                 </li>
                 <li class="nav-item">
                     <a class="nav-link" data-toggle="tab" href="#completed_contracts">Completed Contracts</a>
@@ -12,7 +15,55 @@
             </ul>
             <br>
             <div class="tab-content">
-                <div id="active_contracts" class="tab-pane active">
+                <div id="pending_contracts" class="tab-pane active">
+                    <div class="col-sm-12">
+                        <ba-card cardTitle="Pending Contract Details" baCardClass="with-scroll table-panel">
+                            <div>
+                                <table class="table table-condensed">
+                                    <thead>
+                                    <tr>
+                                        <th></th>
+                                        <th>Project Name</th>
+                                        <th>Contract Type</th>
+                                        <th>Client/Freelancer</th>
+                                        <th>Amount</th>
+                                        <th>Status</th>
+                                    </tr>
+                                    </thead>
+                                    <tbody>
+                                    <tr *ngFor="let contract of pending_contracts">
+                                        <td>
+                                            <br>
+                                            <font size="5" color="#209e91"><i class="fa fa-product-hunt"></i></font>
+                                        </td>
+                                        <td>
+                                            <br>
+                                            <a style="cursor:pointer" (click)="goToContract(contract.contract_id)">
+                                                <h3>{{contract.projectName}}</h3>
+                                            </a>
+                                            <p>{{contract.description}}</p>
+                                        </td>
+                                        <td>
+                                            <br>{{contract.type}}
+                                        </td>
+                                        <td>
+                                            <br>{{contract.freelancer}}
+                                        </td>
+                                        <td>
+                                            <br>{{contract.amount}} {{contract.asset}}
+                                        </td>
+                                        <td>
+                                            <br>
+                                            <button class="btn btn-primary" (click)="confirmContract()">Confirm</button>
+                                        </td>
+                                    </tr>
+                                    </tbody>
+                                </table>
+                            </div>
+                        </ba-card>
+                    </div>
+                </div>
+                <div id="active_contracts" class="tab-pane fade">
                     <div class="col-sm-12">
                         <ba-card cardTitle="Active Contract Details" baCardClass="with-scroll table-panel">
                             <div>

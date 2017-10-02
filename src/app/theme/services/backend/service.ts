@@ -204,6 +204,14 @@ export class MyService {
         return this.callAPI('sendasset', 'get', params, null, null);
     }
 
+    lockAssetsFrom(address: string, asset: string, qty: string) {
+        let params: URLSearchParams = new URLSearchParams();
+        params.set('address', address);
+        params.set('asset', asset);
+        params.set('qty', qty);
+        return this.callAPI('preparelockunspentfrom', 'get', params, null, null);
+    }
+
     callAPI(url: string, httpMethod: string, params: URLSearchParams, headers: Headers, body: string): Promise<any> {
         switch (httpMethod) {
 

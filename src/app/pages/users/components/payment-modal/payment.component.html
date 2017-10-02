@@ -1,0 +1,53 @@
+<div class="modal-content">
+  <div class="modal-header">
+    <h4 class="modal-title">{{modalHeader}}</h4>
+    <button class="close" aria-label="Close" (click)="closeModal()">
+      <span aria-hidden="true">&times;</span>
+    </button>
+  </div>
+  <div class="modal-body">
+    
+    <div class="paymentCont">
+      <div class="headingWrap">
+          <h3 class="headingTop text-center">Select Your Payment Method</h3>	
+          <p class="text-center">Current support only PayPal</p>
+      </div>  
+      <div class="paymentWrap">
+        <div class="btn-group paymentBtnGroup btn-group-justified" data-toggle="buttons">
+            <div class="row">
+                <div class="col-md-12">
+            <form #form class="form-inline" name="_xclick" action="https://www.sandbox.paypal.com/cgi-bin/webscr" method="post">
+              <input type="hidden" name="cmd" value="_xclick">
+              <input type="hidden" name="business" value="blockwork.cse@gmail.com">
+              <input type="hidden" name="currency_code" value="USD">
+              <input type="hidden" name="item_name" value="Paypal demo charge">
+              <input name="item_number" type="hidden" value="0001"/>
+              <input type="hidden" name="amount" value="1">
+              <input type="hidden" name="first_name" value="Charuni">
+              <input type="hidden" name="email" value="{{useremail}}">
+              <input type="hidden" name="return" value="http://localhost:4200/#/pages/dashboard" />
+              <input type="hidden" name="cancel_return" value="http://localhost:4200/#/pages/dashboard" />
+              <input type="hidden" name="custom" value={{title}}>
+              <!--pass your notification URL
+                https://www.paypal.com/cgi-bin/webscr
+              -->
+              <input name="notify_url" value="http://blockwork.projects.mrt.ac.lk/payment.php" type="hidden"><br/><br/>
+              <input (click)="form.submit()" type="image" src="https://www.paypalobjects.com/webstatic/en_US/i/buttons/PP_credit_logo_h_200x51.png" border="0"
+                          name="submit" alt="Make payments with PayPal - it's fast, free and secure!"/>
+              <img alt="" width="1" height="1"
+                          src="https://www.paypalobjects.com/en_US/i/scr/pixel.gif" >
+            </form>
+          </div>
+            <div class="col-md-12">
+                <img style=" margin-top:50px;width: 200px;height: 100px;" src="assets/img/py-logo.svg" alt="James Lee" />
+            </div>
+        </div>
+             
+            </div>        
+      </div>
+    </div>
+  </div>
+  <div class="modal-footer">
+    <!--<button class="btn btn-primary confirm-btn" (click)="closeModal()">Save changes</button>-->
+  </div>
+</div>
