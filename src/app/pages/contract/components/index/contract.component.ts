@@ -36,7 +36,7 @@ export class MyContract implements OnInit {
     permissions = "receive";
     projects: Project[] = [];
 
-    contract_types = ['Developer', 'QA', 'Consultant'];
+    contract_types = ['Freelancer', 'QA', 'Consultant'];
     no_of_milestone = ['0', '1', '2', '3', '4', '5'];
     milestone_init_values = ['50', '35', '25', '20', '15'];
     milestone_values = [];
@@ -159,7 +159,7 @@ export class MyContract implements OnInit {
                 _service.gettxoutdata(project_id).then(largedata => {
                     let project = JSON.parse(this._service.Hex2String(largedata.toString()));
                     this.contract.projectName = project.projectName;
-                    this.contract.type = "Developer";
+                    this.contract.type = "Freelancer";
                     this.contract.description = project.description;
                     this.contract.asset = project.budget.type;
 
@@ -372,17 +372,21 @@ export class MyContract implements OnInit {
 
 
         if (hasEnoughAssets) {
-            this._service.publishToStream(this.contractStream, key, data_hex).then(data => {
-                this.saveContractStatus(data);
-                console.log("Freelancer Contract saved");
-                console.log(data);
+            this._service.publishToStream(this.contractStream, key, data_hex).then(f_data => {
+                console.log("Freelancer Contract Saved");
+                console.log(f_data);
 
                 if (this.hasQA) {
-                    this._service.publishToStream(this.contractStream, key, qa_data_hex).then(data => {
-                        this.saveContractStatus(data);
-                        console.log("QA Contract saved");
-                        console.log(data);
+                    this._service.publishToStream(this.contractStream, key, qa_data_hex).then(qa_data => {
+                        console.log("QA Contract Saved");
+                        console.log(qa_data);
+
+                        this.saveContractStatus(f_data, qa_data);
+                        this.saveContractStatus(qa_data, f_data);
                     });
+
+                } else {
+                    this.saveContractStatus(f_data, null);
                 }
 
                 this._service.lockAssetsFrom(this.contract.client, this.contract.asset, requested_amount.toString()).then(data => {
@@ -396,13 +400,14 @@ export class MyContract implements OnInit {
         }
     }
 
-    saveContractStatus(id: string) {
-        let key = id;
+    saveContractStatus(key_id: string, link_id: string) {
+        let key = key_id;
         let contractStatus = new ContractStatus();
 
         /* setting the contract state attributes */
         contractStatus.contract_id = key;
         contractStatus.status = "Pending";
+        contractStatus.contract_link = link_id;
 
         /* saving contract state to the blockchain */
         let contractStatusJSON = JSON.stringify(contractStatus);
@@ -411,9 +416,8 @@ export class MyContract implements OnInit {
         let data_hex = this._service.String2Hex(contractStatusJSON);
 
         this._service.publishToStream(this.contractStatusStream, key, data_hex).then(data => {
-            console.log("Contract status saved");
+            console.log("Contract Status Saved");
             console.log(data);
         });
     }
-
 }
