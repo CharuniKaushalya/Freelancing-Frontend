@@ -91,32 +91,31 @@
                                     </td>
                                 </tr>
                                 <tr *ngIf="!isCompleted">
-                                    <td colspan=5 *ngIf="contract.status.milestone_state=='W'">
+                                    <td colspan=5 *ngIf="contract.status.milestone_state=='Uncompleted' && userType=='Freelancer'">
                                         <br>
                                         <button class="btn btn-primary  btn-sm float-sm-right" type="button"
-                                                (click)="stateBtnClicked('R')">Complete
+                                                (click)="stateBtnClicked('Working')">Start Working
                                         </button>
                                         <br><br>
                                     </td>
-                                    <td colspan=5 *ngIf="contract.status.milestone_state=='R'">
-                                        <br>
-                                        <button class="btn btn-primary  btn-sm float-sm-right" style="width: 110px"
-                                                type="button" (click)="stateBtnClicked('W')">
-                                            Request Redo
-                                        </button>
-                                        <br>
-                                        <button class="btn btn-primary  btn-sm float-sm-right" style="width: 110px"
-                                                type="button" (click)="stateBtnClicked('P')">
-                                            Accepted & Paid
-                                        </button>
-                                    </td>
-                                    <td colspan=5 *ngIf="contract.status.milestone_state=='P'">
+                                    <td colspan=5 *ngIf="contract.status.milestone_state=='Working' && userType=='Freelancer'">
                                         <br>
                                         <button class="btn btn-primary  btn-sm float-sm-right" type="button"
-                                                (click)="stateBtnClicked('C')">
-                                            Payment Accepted
+                                                (click)="stateBtnClicked('Reviewing')">Work Completed
                                         </button>
                                         <br><br>
+                                    </td>
+                                    <td colspan=5 *ngIf="contract.status.milestone_state=='Reviewing' && userType=='QA'">
+                                        <br>
+                                        <button class="btn btn-primary  btn-sm float-sm-right" style="width: 110px"
+                                                type="button" (click)="stateBtnClicked('Completed')">
+                                            QA Successful
+                                        </button>
+                                        <br>
+                                        <button class="btn btn-primary  btn-sm float-sm-right" style="width: 110px"
+                                                type="button" (click)="stateBtnClicked('Working')">
+                                            QA Failed
+                                        </button>
                                     </td>
                                 </tr>
                                 </tbody>
