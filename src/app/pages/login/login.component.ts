@@ -50,8 +50,8 @@ export class Login implements OnInit {
       this.authService.signIn(this.email.value, this.password.value).then((data) => {
         if (data.emailVerified) { 
           this._service.listStreamKeyItems(this.userStream, this.email.value).then(data => {
-            let u: User = JSON.parse(this._service.Hex2String(data[0].data.toString()));
-            localStorage.setItem("userType", u.usertype);
+            let u: User = JSON.parse(this._service.Hex2String(data[data.length-1].data.toString()));
+            localStorage.setItem("userType", u.type);
           }).catch(error => {
             console.log(error.message);
           });

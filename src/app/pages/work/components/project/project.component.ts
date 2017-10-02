@@ -38,7 +38,7 @@ export class MyProjects implements OnInit {
                             console.log(element);
                             let putype: ProjectUserType = JSON.parse(this._service.Hex2String(element.data.toString()));
                             console.log( putype.publish_utype);
-                            if(localStorage.getItem("user_type") == putype.publish_utype){
+                            if(localStorage.getItem("userType") == putype.publish_utype){
                                 if(putype.deadline && 
                                     this.datePipe.transform(putype.deadline, 'yyyy-MM-dd') >= this.datePipe.transform(this.today, 'yyyy-MM-dd')){
                                     console.log("selected");

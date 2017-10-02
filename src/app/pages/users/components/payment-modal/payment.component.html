@@ -20,14 +20,15 @@
               <input type="hidden" name="cmd" value="_xclick">
               <input type="hidden" name="business" value="blockwork.cse@gmail.com">
               <input type="hidden" name="currency_code" value="USD">
-              <input type="hidden" name="item_name" value="Paypal demo charge">
-              <input name="item_number" type="hidden" value="0001"/>
-              <input type="hidden" name="amount" value="1">
+              <input type="hidden" name="item_name" value="{{address}}">
+              <input name="item_number" type="hidden" value="0010"/>
+              <input type="hidden" name="amount" value="{{amount}}">
               <input type="hidden" name="first_name" value="Charuni">
+              <input type="hidden" name="address" value="{{address}}">
               <input type="hidden" name="email" value="{{useremail}}">
-              <input type="hidden" name="return" value="http://localhost:4200/#/pages/dashboard" />
+              <input type="hidden" name="return" value="http://localhost:4200/#/pages/users/wallet/{{profile_id}}" />
               <input type="hidden" name="cancel_return" value="http://localhost:4200/#/pages/dashboard" />
-              <input type="hidden" name="custom" value={{title}}>
+              <input type="hidden" name="custom" value={{address}}>
               <!--pass your notification URL
                 https://www.paypal.com/cgi-bin/webscr
               -->

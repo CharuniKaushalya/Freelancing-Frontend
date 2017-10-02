@@ -26,7 +26,7 @@ export class Dashboard implements OnInit {
         "user-portfolio", "user-work", "bid", "project_user_type"];
 
     constructor(private _router: Router, private _service: MyService, private modalService: NgbModal) {
-        console.log(localStorage.getItem("user_type"));
+        console.log(localStorage.getItem("userType"));
         _service.listStreamItems(this.projctsStream).then(data => {
             data.forEach(element => {
                 let project: Project;
@@ -35,12 +35,10 @@ export class Dashboard implements OnInit {
                     project.project_id = element.txid;
                     project.client = element.publishers[0];
                     this._service.listStreamKeyItems(this.projctUtypeStream, project.project_id).then(data => {
-                        console.log(data);
                         data.forEach(element => {
-                            console.log(element);
                             let putype: ProjectUserType = JSON.parse(this._service.Hex2String(element.data.toString()));
                             console.log(putype.publish_utype);
-                            if (localStorage.getItem("user_type") == putype.publish_utype) {
+                            if (localStorage.getItem("userType") == putype.publish_utype) {
                                 this.projects.push(project);
                             }
                             //edu.edu_id = element.txid;

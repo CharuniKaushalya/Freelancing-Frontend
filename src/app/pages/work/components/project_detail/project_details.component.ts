@@ -56,7 +56,7 @@ export class ProjectDetails implements OnInit {
                             bid = JSON.parse(this._service.Hex2String(element.data.toString()));
                             _service.listStreamKeyItems(this.userstream, bid.user_email.toString()).then(data => {
                                 let user: User;
-                                user = JSON.parse(this._service.Hex2String(data[0].data.toString()));
+                                user = JSON.parse(this._service.Hex2String(data[data.length-1].data.toString()));
                                 bid.user_type = user.type;
                                 bid.user_name = user.name;
                                 bid.user_id = data[0].txid;
