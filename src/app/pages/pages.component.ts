@@ -46,10 +46,9 @@ export class Pages {
       this.auth = user;
       if (this.auth != null) {
         this._service.listStreamKeyItems(this.userStream, this.auth.email).then(data => {
-          if(data[0]){
-            let user = JSON.parse(this._service.Hex2String(data[0].data.toString()));
+          if(data[data.length-1]){
+            let user = JSON.parse(this._service.Hex2String(data[data.length-1].data.toString()));
             let array = null;
-            localStorage.setItem("user_type", user.type);
             console.log(data);
             this.addUserProfile(data[0].txid);
             this._pri.getData().then((data) => {

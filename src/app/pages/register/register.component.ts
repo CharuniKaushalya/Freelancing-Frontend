@@ -176,7 +176,7 @@ export class Register {
         u.address = address;
 
         this._service.publishToStream(this.userStream, u.email, this._service.String2Hex(JSON.stringify(u))).then(data => {
-          localStorage.setItem("userType", this.user.usertype);
+          localStorage.setItem("userType", this.user.type);
           console.log("saved");
           setTimeout(() => {
             this.form.reset();
