@@ -44,13 +44,14 @@ export class Pages {
   constructor(public _pri: privilegeService, private _menuService: BaMenuService, public authService: AuthService, private _service: MyService, ) {
     this.authService.getAuth().authState.subscribe(user => {
       this.auth = user;
+      
       if (this.auth != null) {
         this._service.listStreamKeyItems(this.userStream, this.auth.email).then(data => {
           if(data[data.length-1]){
             let user = JSON.parse(this._service.Hex2String(data[data.length-1].data.toString()));
             let array = null;
-            console.log(data);
-            this.addUserProfile(data[0].txid);
+            localStorage.setItem("userType", user.type);
+            this.addUserProfile(data[data.length-1].txid);
             this._pri.getData().then((data) => {
               this.previleges = data;
 
