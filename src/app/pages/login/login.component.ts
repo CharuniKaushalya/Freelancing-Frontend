@@ -1,4 +1,4 @@
-import { Component, Input } from '@angular/core';
+import { Component, Input, OnInit } from '@angular/core';
 import { FormGroup, AbstractControl, FormBuilder, Validators } from '@angular/forms';
 import { Router } from '@angular/router';
 import { AuthService } from '../../providers/auth.service';
@@ -12,7 +12,7 @@ import { User } from "../../theme/models/user";
   styleUrls: ['./login.scss'],
   providers: [MyService]
 })
-export class Login {
+export class Login implements OnInit {
 
   public form: FormGroup;
   public email: AbstractControl;
@@ -40,18 +40,22 @@ export class Login {
     this.password = this.form.controls['password'];
   }
 
+  ngOnInit() {
+
+  }
+
   public onSubmit(values: Object): void {
     this.submitted = true;
     if (this.form.valid) {
       this.authService.signIn(this.email.value, this.password.value).then((data) => {
-        if (data.emailVerified) {
+        if (data.emailVerified) { 
           this._service.listStreamKeyItems(this.userStream, this.email.value).then(data => {
             let u: User = JSON.parse(this._service.Hex2String(data[0].data.toString()));
             localStorage.setItem("userType", u.usertype);
           }).catch(error => {
             console.log(error.message);
           });
-          this._router.navigate(['pages/dashboard']);
+          this._router.navigate(['pages/dashboard']);   
         } else {
           this.error = "Please verify your email address";
           setTimeout(() => {

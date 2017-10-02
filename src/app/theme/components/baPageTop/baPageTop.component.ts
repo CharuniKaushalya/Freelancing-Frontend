@@ -4,11 +4,13 @@ import { Router } from '@angular/router';
 import { GlobalState } from '../../../global.state';
 
 import { AuthService } from '../../../providers/auth.service';
+import { MyService } from "../../services/backend/service";
 
 @Component({
   selector: 'ba-page-top',
   templateUrl: './baPageTop.html',
-  styleUrls: ['./baPageTop.scss']
+  styleUrls: ['./baPageTop.scss'],
+  providers: [MyService]
 })
 export class BaPageTop {
 
@@ -16,11 +18,12 @@ export class BaPageTop {
   public isMenuCollapsed: boolean = false;
 
   private isLoggedIn: Boolean;
-  user_displayName:string;
+  user_displayName: string;
   user_email: string;
   private auth: any;
 
-  constructor(private _state: GlobalState, public authService: AuthService, private _router: Router) {
+  constructor(private _state: GlobalState, private _service: MyService, public authService: AuthService,
+    private _router: Router) {
     this._state.subscribe('menu.isCollapsed', (isCollapsed) => {
       this.isMenuCollapsed = isCollapsed;
     });
@@ -45,7 +48,9 @@ export class BaPageTop {
   }
 
   logout() {
-    this.authService.signOut();
+    
+      this.authService.signOut();
+
     this._router.navigate(['login']);
   }
 
