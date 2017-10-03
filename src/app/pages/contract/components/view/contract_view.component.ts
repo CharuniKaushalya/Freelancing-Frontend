@@ -98,4 +98,10 @@ export class ContractView implements OnInit {
         let link = ['/pages/contract/contract_details', id];
         this._router.navigate(link);
     }
+    goToDisscussion(id: string) {
+        let contract = this.getSelectedContract(id);
+        this.data.saveData(contract);
+        let link = ['/pages/discussion/discussion_view', id];
+        this._router.navigate(link);
+    }
 }

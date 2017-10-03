@@ -116,6 +116,14 @@
                                         <td>
                                             <br>{{contract.amount}} {{contract.asset}}
                                         </td>
+                                         <td>
+                                            <br>
+                                            <a style="cursor:pointer"
+                                               (click)="goToDisscussion(contract.contract_id)"> Discussion
+                                                
+                                            </a>
+                                           
+                                        </td>
                                     </tr>
                                     </tbody>
                                 </table>
