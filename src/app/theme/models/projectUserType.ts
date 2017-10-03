@@ -6,4 +6,5 @@ export class ProjectUserType {
     user_email:string;
     project_id:string;
     publish_utype:String;
+    deadline: string;
 }

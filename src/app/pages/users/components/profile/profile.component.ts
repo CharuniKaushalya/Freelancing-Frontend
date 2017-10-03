@@ -137,22 +137,40 @@ export class Profile implements OnInit {
         const activeModal = this.modalService.open(SkillModal, { size: 'sm' });
         activeModal.componentInstance.modalHeader = 'Add Skill';
         activeModal.componentInstance.userkey = this.userkey;
+        activeModal.result
+        .then((d) => {
+            this.loadSkills(this.userkey);
+        });
     }
 
     eduModalShow(): void {
         const activeModal = this.modalService.open(EducationModal, { size: 'lg' });
         activeModal.componentInstance.modalHeader = 'Add Education';
         activeModal.componentInstance.userkey = this.userkey;
+        activeModal.result
+        .then((d) => {
+            this.loadEdu(this.userkey);
+        });
+
     }
     projModalShow(): void {
         const activeModal = this.modalService.open(PortfolioModal, { size: 'lg' });
         activeModal.componentInstance.modalHeader = 'Add Item';
         activeModal.componentInstance.userkey = this.userkey;
+        activeModal.result
+        .then((d) => {
+            this.loadProj(this.userkey);
+        });
     }
     workModalShow(): void {
         const activeModal = this.modalService.open(WorkModal, { size: 'lg' });
         activeModal.componentInstance.modalHeader = 'Add Employeement';
         activeModal.componentInstance.userkey = this.userkey;
+        activeModal.result
+        .then((d) => {
+            this.loadWork(this.userkey);
+        });
+       // .then((r) => { console.log(r);  }, (error) => { console.log("eeee"); });
     }
 
     goToDash() {
@@ -160,5 +178,42 @@ export class Profile implements OnInit {
         this._router.navigate(link);
     }
 
+    public loadSkills(userkey: string) {
+        this._service.listStreamKeyItems(this.skillsStream, userkey).then(data => {
+            console.log(data);
+            let skill = JSON.parse(this._service.Hex2String(data[data.length-1].data.toString()));
+            skill.forEach(element => {
+                console.log(element);
+                this.skills.push(element);
+            });
 
+        });
+    }
+
+    loadEdu(userkey: string) {
+        this._service.listStreamKeyItems(this.eduStream, userkey).then(data => {
+            let edu: Education = JSON.parse(this._service.Hex2String(data[data.length-1].data.toString()));
+            edu.edu_id = data[data.length-1].txid;
+            this.educations.push(edu);
+
+        });
+    }
+
+    loadProj(userkey: string) {
+        this._service.listStreamKeyItems(this.projStream, userkey).then(data => {
+            let protfolio: Portfolio = JSON.parse(this._service.Hex2String(data[data.length-1].data.toString()));
+            protfolio.item_id= data[data.length-1].txid;
+            this.portfolios.push(protfolio);
+
+        });
+    }
+  
+    loadWork(userkey: string) {
+        this._service.listStreamKeyItems(this.workStream, userkey).then(data => {
+            let work: Employment = JSON.parse(this._service.Hex2String(data[data.length-1].data.toString()));
+            work.emp_id = data[data.length-1].txid;
+            this.employments.push(work);
+
+        });
+    }
 }

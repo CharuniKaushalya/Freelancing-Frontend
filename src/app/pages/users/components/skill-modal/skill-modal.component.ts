@@ -5,6 +5,7 @@ import 'rxjs/add/operator/debounceTime';
 import 'rxjs/add/operator/map';
 import { MyService } from "../../../../theme/services/backend/service";
 import { Skill } from "../../../../theme/models/skill";
+import { Profile } from '../profile/profile.component';
 
 @Component({
   selector: 'add-service-modal',
@@ -30,7 +31,7 @@ export class SkillModal implements OnInit {
       data.forEach(element => {
         console.log(element);
         console.log(element.key);
-        let skill: Skill = JSON.parse(this._service.Hex2String(element.data.toString()));
+        let skill:Skill = JSON.parse(this._service.Hex2String(element.data.toString()));
         this.myitems.push(skill.name);
 
       });
@@ -38,17 +39,15 @@ export class SkillModal implements OnInit {
     });
   }
 
-  ngOnInit() { }
+  ngOnInit() {}
 
   closeModal() {
     this.activeModal.close();
     console.log(this.userkey);
     let key = this.userkey;
     let skillJSON = JSON.stringify(this.items);
-    console.log(skillJSON);
 
     let data_hex = this._service.String2Hex(skillJSON);
-    console.log(data_hex);
     // console.log(this.Hex2String(data_hex));  
 
     this._service.publishToStream(this.userSkillsStream, key, data_hex).then(data => {
@@ -56,10 +55,10 @@ export class SkillModal implements OnInit {
     }).catch(error => {
       console.log(error.message);
     });
-    location.reload();
+    //location.reload();
   }
 
   onItemAdded(item) {
-    this.items.push(item.value);
-  }
+        this.items.push(item.value);
+    }
 }

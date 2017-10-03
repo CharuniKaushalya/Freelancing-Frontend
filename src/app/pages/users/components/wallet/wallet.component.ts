@@ -1,5 +1,7 @@
 import { Component, OnInit } from '@angular/core';
+import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
 import { MyService } from "../../../../theme/services/backend/service";
+import { PaymentModal } from '../payment-modal/payment.component';
 import { TreeModel } from 'ng2-tree';
 import { Router } from '@angular/router';
 
@@ -31,7 +33,7 @@ export class Wallet implements OnInit {
         }
     ];
 
-    constructor(private _router: Router, private _service: MyService) {
+    constructor(private _router: Router, private _service: MyService,  private modalService: NgbModal) {
         this._service.listStreamKeyItems(this.userStream, localStorage.getItem('email')).then(data => {
             this.user = JSON.parse(this._service.Hex2String(data[0].data.toString()));
 
@@ -95,5 +97,15 @@ export class Wallet implements OnInit {
     goToUser(id: string) {
         let link = ['/pages/users/profile', id];
         this._router.navigate(link);
+    }
+
+    paymentModalShow(): void {
+        const activeModal = this.modalService.open(PaymentModal, { size: 'sm' });
+        activeModal.componentInstance.modalHeader = '';
+        activeModal.componentInstance.userkey = "key";
+        activeModal.result
+        .then((d) => {
+            console.log("result");
+        });
     }
 }

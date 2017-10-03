@@ -113,7 +113,6 @@ export class WorkModal implements OnInit {
     }).catch(error => {
       console.log(error.message);
     });
-    location.reload();
   }
 
   public getValue(obj: ICountry) {

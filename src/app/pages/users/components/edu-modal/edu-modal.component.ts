@@ -107,7 +107,6 @@ export class EducationModal implements OnInit {
     }).catch(error => {
       console.log(error.message);
     });
-    location.reload();
   }
 
   public getValue(obj: ICountry) {

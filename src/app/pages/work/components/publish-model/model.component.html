@@ -10,7 +10,25 @@
 
       <div class="container">
           <div class="row">
+              <div class="col-sm-12">
               <ba-multi-checkbox [(ngModel)]="checkboxModel" [propertiesMapping]="checkboxPropertiesMapping"></ba-multi-checkbox>
+              </div>
+              <div class="col-sm-12">
+                  <div class="form-group">
+                    <div  *ngIf="checkboxModel[0].checked==true">
+                      <label for="inputFirstName">Deadline - Consultant</label>
+                      <input type="date" class="form-control"  name="deadline_con" [(ngModel)] ="checkboxModel[0].deadline" min="{{today | date:'yyyy-MM-dd'}}"  value="today | date:'yyyy-MM-dd'" required>
+                    </div>
+                    <div  *ngIf="checkboxModel[1].checked==true">
+                      <label for="inputFirstName">Deadline - Freelancer/QA</label>
+                      <input type="date" class="form-control" name="deadline_free"  [(ngModel)] ="checkboxModel[1].deadline"  min="{{today | date:'yyyy-MM-dd'}}" >
+                    </div> 
+                    <div  *ngIf="checkboxModel[2].checked==true && checkboxModel[1].checked==false ">
+                        <label for="inputFirstName">Deadline - QA</label>
+                        <input type="date" class="form-control" name="deadline_qa"  [(ngModel)] ="checkboxModel[2].deadline"  min="{{today | date:'yyyy-MM-dd'}}" >
+                      </div>
+                  </div>
+                </div>
             </div>
           <div class="form-group">
             <button type="submit" class="btn btn-primary btn-md pull-right" (click)="onSubmit()">Publish</button>

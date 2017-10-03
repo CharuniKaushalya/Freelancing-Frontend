@@ -78,7 +78,6 @@ export class PortfolioModal implements OnInit {
     }).catch(error => {
       console.log(error.message);
     });
-    location.reload();
   }
 
 
