@@ -3,7 +3,7 @@ import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
 import { MyService } from "../../../../theme/services/backend/service";
 import { PaymentModal } from '../payment-modal/payment.component';
 import { TreeModel } from 'ng2-tree';
-import { Router } from '@angular/router';
+import { Router, Params, ActivatedRoute } from '@angular/router';
 
 import { User } from "../../../../theme/models/user";
 
@@ -16,6 +16,7 @@ import { User } from "../../../../theme/models/user";
 export class Wallet implements OnInit {
 
     userStream: string = "Users";
+    user_id: string = "";
     user = new User();
 
     assets = [
@@ -33,10 +34,9 @@ export class Wallet implements OnInit {
         }
     ];
 
-    constructor(private _router: Router, private _service: MyService,  private modalService: NgbModal) {
-        this._service.listStreamKeyItems(this.userStream, localStorage.getItem('email')).then(data => {
-            this.user = JSON.parse(this._service.Hex2String(data[0].data.toString()));
-
+    constructor(private _router: Router, private _route: ActivatedRoute, private _service: MyService,  private modalService: NgbModal) {
+        this._service.listStreamKeyItems(this.userStream, localStorage.getItem('user')).then(data => {
+            this.user = JSON.parse(this._service.Hex2String(data[data.length-1].data.toString()));
             this._service.getAddressBalances(this.user.address, 'False').then(unlocked_balances => {
 
                 if (unlocked_balances[0].name == "USD") {
@@ -70,6 +70,11 @@ export class Wallet implements OnInit {
     }
 
     ngOnInit() {
+        this._route.params.forEach((params: Params) => {
+            if (params['user_id'] !== undefined) {
+                this.user_id = params['user_id'];
+            }
+        });
     }
 
     getAsset(asset: string) {
@@ -102,7 +107,8 @@ export class Wallet implements OnInit {
     paymentModalShow(): void {
         const activeModal = this.modalService.open(PaymentModal, { size: 'sm' });
         activeModal.componentInstance.modalHeader = '';
-        activeModal.componentInstance.userkey = "key";
+        activeModal.componentInstance.amount = this.assets[0].requested_amount;
+        activeModal.componentInstance.profile_id = this.user_id;
         activeModal.result
         .then((d) => {
             console.log("result");

@@ -37,33 +37,34 @@ export class Register {
   userTypes = ['Freelancer', 'Client', 'QA', 'Consultant'];
 
   constructor(private _router: Router, public authService: AuthService, fb: FormBuilder, private _service: MyService) {
+    if (localStorage.getItem("user") == "" || localStorage.getItem("user") == undefined) {
+      this.user = new User();
 
-    this.user = new User();
+      this.form = fb.group({
+        'username': ['', Validators.compose([Validators.required, Validators.minLength(6)])],
+        'name': ['', Validators.compose([Validators.required, Validators.minLength(6)])],
+        'email': ['', Validators.compose([Validators.required, EmailValidator.validate])],
+        'passwords': fb.group({
+          'password': ['', Validators.compose([Validators.required, Validators.minLength(4)])],
+          'repeatPassword': ['', Validators.compose([Validators.required, Validators.minLength(4)])]
+        }, { validator: EqualPasswordsValidator.validate('password', 'repeatPassword') })
+      });
 
-    this.form = fb.group({
-      'username': ['', Validators.compose([Validators.required, Validators.minLength(6)])],
-      'name': ['', Validators.compose([Validators.required, Validators.minLength(6)])],
-      'email': ['', Validators.compose([Validators.required, EmailValidator.validate])],
-      'passwords': fb.group({
-        'password': ['', Validators.compose([Validators.required, Validators.minLength(4)])],
-        'repeatPassword': ['', Validators.compose([Validators.required, Validators.minLength(4)])]
-      }, { validator: EqualPasswordsValidator.validate('password', 'repeatPassword') })
-    });
-
-    this.username = this.form.controls['username'];
-    this.name = this.form.controls['name'];
-    this.email = this.form.controls['email'];
-    this.passwords = <FormGroup>this.form.controls['passwords'];
-    this.password = this.passwords.controls['password'];
-    this.repeatPassword = this.passwords.controls['repeatPassword'];
+      this.username = this.form.controls['username'];
+      this.name = this.form.controls['name'];
+      this.email = this.form.controls['email'];
+      this.passwords = <FormGroup>this.form.controls['passwords'];
+      this.password = this.passwords.controls['password'];
+      this.repeatPassword = this.passwords.controls['repeatPassword'];
+       
+    } else {
+      this._router.navigate(['pages/dashboard']);  
+    }
   }
 
   public onSubmit(values: Object): void {
     this.submitted = true;
     if (this.form.valid) {
-
-      // console.log(values);
-      // console.log(this.user);
 
       this.authService.signUp(this.email.value, this.password.value).then((data) => {
 
@@ -72,43 +73,20 @@ export class Register {
           this.error = "";
           this.success = "Please check your email " + this.user.email + " to verify your Account";
 
-          this._service.getNewAddress().then(address => {
-            console.log("new address - " + address);
+          let key = this.user.email;
+          let userJSON = JSON.stringify(this.user);
+          let data_hex = this._service.String2Hex(userJSON);
 
-            this._service.grantPermissions(address).then(data => {
-              console.log("Granted permission");
-
-              this._service.sendAsset(address, 'USD', '0').then(data => {
-                console.log(data);
-              }).catch(error => {
-                console.log(error.message);
-              });
-
-              this._service.sendAsset(address, 'BTC', '0').then(data => {
-                console.log(data);
-              }).catch(error => {
-                console.log(error.message);
-              });
-            }).catch(error => {
-              console.log(error.message);
-            });
-
-            let key = this.user.email;
-            this.user.address = address;
-            let userJSON = JSON.stringify(this.user);
-            let data_hex = this._service.String2Hex(userJSON);
-
-            this._service.publishToStream(this.userStream, key, data_hex).then(data => {
-              localStorage.setItem("userType", this.user.usertype);
-              console.log("saved");
-              setTimeout(() => {
-                this.form.reset();
-                this.authService.signOut();
-              }, 250);
-            }).catch(error => {
-              console.log(error.message);
-            });
-
+          this._service.checkchain().then(check => {
+            console.log(check._body)
+            if (check._body == "no") {
+              this.nodeAddressGrant(data_hex);
+            }
+            else {
+              this.createAnotherUser(data_hex);
+            }
+          }).catch(error => {
+            this.error = error.message;
           });
 
         }).catch(error => {
@@ -149,16 +127,69 @@ export class Register {
     this._router.navigate(link);
   }
 
-  nodeAddressGrant() {
+  nodeAddressGrant(data_hex: string) {
     this._service.node().then(data => {
       this.node_address = data._body;
-      console.log(this.node_address)
-      this._service.grantInRegister(this.node_address).then(data => {
+
+      let u: User = JSON.parse(this._service.Hex2String(data_hex.toString()));
+      u.address = this.node_address;
+      console.log(u);
+      this._service.grantInRegister(u.address, this._service.String2Hex(JSON.stringify(u)), u.email).then(data => {
         console.log("successfully initiated blockchain");
         console.log(data);
       }).catch(error => {
         this.error = error.message;
-      })
+      });
+    });
+    setTimeout(() => {
+      this.form.reset();
+      this.authService.signOut();
+    }, 250);
+  }
+
+  createAnotherUser(data_hex: string) {
+    this._service.startchain().then(start => {
+      console.log("chain started");
+
+      this._service.getNewAddress().then(address => {
+        console.log("new address - " + address);
+
+        this._service.grantPermissions(address).then(data => {
+          console.log("Granted permission " + data);
+
+          // this._service.sendAsset(address, 'USD', '0').then(data => {
+          //   console.log(data);
+          // }).catch(error => {
+          //   console.log(error.message);
+          // });
+
+          // this._service.sendAsset(address, 'BTC', '0').then(data => {
+          //   console.log(data);
+          // }).catch(error => {
+          //   console.log(error.message);
+          // });
+        }).catch(error => {
+          console.log(error.message);
+        });
+
+        let u: User = JSON.parse(this._service.Hex2String(data_hex.toString()));
+        u.address = address;
+
+        this._service.publishToStream(this.userStream, u.email, this._service.String2Hex(JSON.stringify(u))).then(data => {
+          localStorage.setItem("userType", this.user.type);
+          console.log("saved");
+          setTimeout(() => {
+            this.form.reset();
+            this.authService.signOut();
+          }, 250);
+        }).catch(error => {
+          console.log(error.message);
+        });
+
+      });
+    }).catch(error => {
+      this.error = error.message;
     });
   }
+
 }

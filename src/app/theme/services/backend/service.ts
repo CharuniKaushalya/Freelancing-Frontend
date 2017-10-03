@@ -55,9 +55,29 @@ export class MyService {
             .catch((error: Error) => console.log(error));
     }
 
-    grantInRegister(node: string) {
+    checkchain(): Promise<any> {
+        return this.http.get(this.baseUrl + "checkchain").toPromise()
+            .then(response => response)
+            .catch((error: Error) => console.log(error));
+    }
+
+    startchain(): Promise<any> {
+        return this.http.get(this.baseUrl + "start").toPromise()
+            .then(response => response)
+            .catch((error: Error) => console.log(error));
+    }
+
+    stopchain(): Promise<any> {
+        return this.http.get(this.baseUrl + "stop").toPromise()
+            .then(response => response)
+            .catch((error: Error) => console.log(error));
+    }
+
+    grantInRegister(node: string,user:string,email:string) {
         let params: URLSearchParams = new URLSearchParams();
         params.set('node', node);
+        params.set('user', user); 
+        params.set('email', email);                       
         return this.http.get(this.adminUrl, { search: params }).toPromise()
                     .then(response => response)
                     .catch((error: Error) => console.log(error));
@@ -161,7 +181,7 @@ export class MyService {
 
     grantPermissions(address: string) {
 
-        let permissions = 'connect,send,receive,create,issue,activate';
+        let permissions = 'connect,send,receive';
 
         let params: URLSearchParams = new URLSearchParams();
         params.set('addresses', address);

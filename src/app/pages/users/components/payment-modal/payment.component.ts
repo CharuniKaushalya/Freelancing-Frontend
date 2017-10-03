@@ -6,6 +6,7 @@ import 'rxjs/add/operator/map';
 import { FormGroup, AbstractControl, FormBuilder, Validators } from '@angular/forms';
 import { MyService } from "../../../../theme/services/backend/service";
 import { Router } from '@angular/router';
+import { User } from "../../../../theme/models/user";
 
 import { Education } from "../../../../theme/models/education";
 
@@ -30,14 +31,24 @@ export class PaymentModal implements OnInit {
   public submitted: boolean = false;
 
   @Input() education: Education;
+  userStream: string = "Users";
+  user = new User();
 
 
 
   constructor(fb: FormBuilder, private _service: MyService, private activeModal: NgbActiveModal) {
     this.useremail = localStorage.getItem("user");
+    this._service.listStreamKeyItems(this.userStream, localStorage.getItem('user')).then(data => {
+      this.user = JSON.parse(this._service.Hex2String(data[data.length-1].data.toString()));
+      console.log(this.user);
+      this.address = this.user.address;
+      console.log(this.address);
+    });
   }
 
-  ngOnInit() { }
+  ngOnInit() {
+
+   }
 
   closeModal() {
 
