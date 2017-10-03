@@ -23,7 +23,7 @@ export class ContractDetails {
     userType;
 
     constructor(private _service: MyService, private data: DataService, private _route: ActivatedRoute, private _router: Router) {
-        this.userType = localStorage.getItem("user_type");
+        this.userType = localStorage.getItem("userType");
         this.contract = data.getData();
 
         delete this.contract.status.current_milestone_name;
@@ -113,9 +113,9 @@ export class ContractDetails {
     stateBtnClicked(nextState: string) {
         this.contract.status.milestone_state = nextState;
 
-        // if (nextState == 'Completed') {
-        //     this.pay();
-        // }
+        if (nextState == 'Completed') {
+            this.pay();
+        }
 
         if (nextState == 'Completed' && this.contract.milestones + 1 != this.contract.status.current_milestone) {
             this.contract.milestoneValues[this.contract.status.current_milestone - 1].state = this.getStateName(nextState);
@@ -139,6 +139,7 @@ export class ContractDetails {
     }
 
     saveContractStatus() {
+
         let key = this.contract.contract_id;
         let contractStatus = this.contract.status;
 
@@ -157,18 +158,22 @@ export class ContractDetails {
 
     saveLinkedContractStatus() {
 
-        let contractStatus = this.contract.status;
-        let key = contractStatus.contract_link;
+        let linkedContractStatus = new ContractStatus();
 
-        contractStatus.contract_link = this.contract.contract_id;
-        contractStatus.contract_id = key;
+        let key = this.contract.status.contract_link;
+
+        linkedContractStatus.contract_id = this.contract.status.contract_link;
+        linkedContractStatus.contract_link = this.contract.status.contract_id;
+        linkedContractStatus.current_milestone = this.contract.status.current_milestone;
+        linkedContractStatus.milestone_state = this.contract.status.milestone_state;
+        linkedContractStatus.status = this.contract.status.status;
 
         /* saving contract state to the blockchain */
-        let contractStatusJSON = JSON.stringify(contractStatus);
-        let data_hex = this._service.String2Hex(contractStatusJSON);
+        let linkedContractStatusJSON = JSON.stringify(linkedContractStatus);
+        let data_hex = this._service.String2Hex(linkedContractStatusJSON);
 
         console.log("QA");
-        console.log(contractStatusJSON);
+        console.log(linkedContractStatusJSON);
 
         this._service.publishToStream(this.contractStatusStream, key, data_hex).then(data => {
             console.log(data);
@@ -179,82 +184,53 @@ export class ContractDetails {
     pay(): void {
 
         let locked_amount_usd = 0;
-        let locked_amount_btc = 0;
+
         this._service.getAddressBalances(this.contract.client.address, 'True').then(total_balances => {
 
-            if (total_balances[0].name == "USD") {
+            if (total_balances.length == 1) {
                 locked_amount_usd = total_balances[0].qty;
-                locked_amount_btc = total_balances[1].qty;
-
-            } else {
-                locked_amount_usd = total_balances[1].qty;
-                locked_amount_btc = total_balances[0].qty;
             }
 
             this._service.getAddressBalances(this.contract.client.address, 'False').then(unlocked_balances => {
 
-                if (total_balances[0].name == "USD") {
+                if (unlocked_balances.length == 1) {
                     locked_amount_usd = locked_amount_usd - unlocked_balances[0].qty;
-                    locked_amount_btc = locked_amount_btc - unlocked_balances[1].qty;
-
-                } else {
-                    locked_amount_usd = locked_amount_usd - unlocked_balances[1].qty;
-                    locked_amount_btc = locked_amount_btc - unlocked_balances[0].qty;
                 }
-                console.log("Locked USD = " + locked_amount_usd);
-                console.log("Locked BTC = " + locked_amount_btc);
 
-                // this._service.unlockAllAssets().then(data => {
-                //     console.log(data);
+                console.log("Locked USD = " + locked_amount_usd);
+
+                this._service.unlockAllAssets().then(data => {
+                    console.log(data);
                     console.log("Assets unlocked");
 
                     let payment1 = this.getMilestonePayment(this.contract);
-
-                    if (this.contract.asset == "USD") {
-                        locked_amount_usd -= payment1;
-
-                    } else {
-                        locked_amount_btc -= payment1;
-                    }
+                    locked_amount_usd = locked_amount_usd - payment1;
 
                     this._service.sendAssetFrom(this.contract.client.address, this.contract.freelancer.address, this.contract.asset, payment1.toString()).then(data => {
 
                         console.log(data);
-                        console.log("Paid " + this.contract.type);
+                        console.log("Paid " + this.contract.type + " " + payment1);
 
                         if (this.hasLinkedContract) {
+
                             let payment2 = this.getMilestonePayment(this.linkedContract);
-
-                            if (this.contract.asset == "USD") {
-                                locked_amount_usd -= payment2;
-
-                            } else {
-                                locked_amount_btc -= payment2;
-                            }
+                            locked_amount_usd = locked_amount_usd - payment2;
 
                             this._service.sendAssetFrom(this.linkedContract.client, this.linkedContract.freelancer, this.linkedContract.asset, payment2.toString()).then(data => {
 
                                 console.log(data);
-                                console.log("Paid " + this.contract.type);
+                                console.log("Paid " + this.linkedContract.type + " " + payment2);
 
-                                let lock_amount;
+                                console.log("Lock amount = " + locked_amount_usd);
 
-                                if (this.contract.asset == "USD") {
-                                    lock_amount = locked_amount_usd;
-
-                                } else {
-                                    lock_amount = locked_amount_btc;
-                                }
-                                console.log("Lock amount = " + lock_amount);
-
-                                this._service.lockAssetsFrom(this.contract.client, this.contract.asset, lock_amount.toString()).then(data => {
+                                this._service.lockAssetsFrom(this.contract.client.address, this.contract.asset, locked_amount_usd.toString()).then(data => {
                                     console.log("Assets Locked");
                                     console.log(data);
                                 });
                             });
                         }
                     });
-                // });
+                });
             });
         });
     }
@@ -274,7 +250,6 @@ export class ContractDetails {
             }
         }
         payment = Math.round(Number(contract.amount) * percentage / 100);
-        console.log("Payment = " + payment);
         return payment;
     }
 

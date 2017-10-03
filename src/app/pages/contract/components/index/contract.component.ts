@@ -38,6 +38,7 @@ export class MyContract implements OnInit {
 
     contract_types = ['Freelancer', 'QA', 'Consultant'];
     no_of_milestone = ['0', '1', '2', '3', '4', '5'];
+    assets = ['USD', 'BTC'];
     milestone_init_values = ['50', '35', '25', '20', '15'];
     milestone_values = [];
     final_payment = '100%';
@@ -45,17 +46,7 @@ export class MyContract implements OnInit {
 
     freelancer_username = '';
     qa_username = '';
-
-    assets = [
-        {
-            asset_name: 'USD',
-            available_balance: 0
-        },
-        {
-            asset_name: 'BTC',
-            available_balance: 0
-        }
-    ];
+    available_balance = 0;
 
     public freelancerMilestones = [
         {
@@ -171,10 +162,10 @@ export class MyContract implements OnInit {
 
                 _service.listStreamKeyItems(this.userstream, f_email.toString()).then(data => {
                     let user: User;
-                    user = JSON.parse(this._service.Hex2String(data[0].data.toString()));
+                    user = JSON.parse(this._service.Hex2String(data[data.length - 1].data.toString()));
                     this.contract.freelancer = user.address;
                     this.contract.freelancer_email = f_email.toString();
-                    this.freelancer_username = user.username;
+                    this.freelancer_username = user.name;
                 });
 
                 if (params['qaBid'] != 0) {
@@ -183,10 +174,10 @@ export class MyContract implements OnInit {
                     let qa_email = qaBid.split("/")[1];
                     _service.listStreamKeyItems(this.userstream, qa_email.toString()).then(data => {
                         let user: User;
-                        user = JSON.parse(this._service.Hex2String(data[0].data.toString()));
+                        user = JSON.parse(this._service.Hex2String(data[data.length - 1].data.toString()));
                         this.qa_contract.freelancer = user.address;
                         this.qa_contract.freelancer_email = qa_email.toString();
-                        this.qa_username = user.username;
+                        this.qa_username = user.name;
                     });
                 }
             }
@@ -228,17 +219,13 @@ export class MyContract implements OnInit {
 
         let user = new User();
         this._service.listStreamKeyItems(this.userstream, localStorage.getItem('email')).then(data => {
-            user = JSON.parse(this._service.Hex2String(data[0].data.toString()));
+            user = JSON.parse(this._service.Hex2String(data[data.length - 1].data.toString()));
 
             this._service.getAddressBalances(user.address, 'False').then(balances => {
 
-                if (balances[0].name == "USD") {
-                    this.assets[0].available_balance = balances[0].qty;
-                    this.assets[1].available_balance = balances[1].qty;
-
-                } else {
-                    this.assets[0].available_balance = balances[1].qty;
-                    this.assets[1].available_balance = balances[0].qty;
+                console.log(balances);
+                if (balances.length == 1) {
+                    this.available_balance = balances[0].qty;
                 }
             });
             this.contract.client = user.address;
@@ -340,7 +327,6 @@ export class MyContract implements OnInit {
 
         let contractJSON = JSON.stringify(this.contract);
         let data_hex = this._service.String2Hex(contractJSON);
-        console.log(contractJSON);
 
         let qa_data_hex;
         if (this.hasQA) {
@@ -351,7 +337,6 @@ export class MyContract implements OnInit {
 
             let qa_contractJSON = JSON.stringify(this.qa_contract);
             qa_data_hex = this._service.String2Hex(qa_contractJSON);
-            console.log(qa_contractJSON);
         }
 
         let hasEnoughAssets = false;
@@ -361,15 +346,8 @@ export class MyContract implements OnInit {
             requested_amount += Number(this.qa_contract.amount);
         }
 
-        if (this.contract.asset == 'USD') {
-            if (requested_amount < this.assets[0].available_balance)
-                hasEnoughAssets = true;
-
-        } else {
-            if (requested_amount < this.assets[1].available_balance)
-                hasEnoughAssets = true;
-        }
-
+        if (requested_amount < this.available_balance)
+            hasEnoughAssets = true;
 
         if (hasEnoughAssets) {
             this._service.publishToStream(this.contractStream, key, data_hex).then(f_data => {
@@ -411,13 +389,13 @@ export class MyContract implements OnInit {
 
         /* saving contract state to the blockchain */
         let contractStatusJSON = JSON.stringify(contractStatus);
-        console.log(contractStatusJSON);
+        console.log(contractStatus);
 
         let data_hex = this._service.String2Hex(contractStatusJSON);
 
         this._service.publishToStream(this.contractStatusStream, key, data_hex).then(data => {
-            console.log("Contract Status Saved");
             console.log(data);
+            console.log("Contract Status Saved");
         });
     }
 }

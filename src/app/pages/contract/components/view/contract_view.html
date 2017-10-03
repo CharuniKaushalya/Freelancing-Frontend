@@ -225,13 +225,11 @@
                                         <td>
                                             <br>{{contract.amount}} {{contract.asset}}
                                         </td>
-                                         <td>
+                                        <td>
                                             <br>
-                                            <a style="cursor:pointer"
-                                               (click)="goToDisscussion(contract.contract_id)"> Discussion
-                                                
-                                            </a>
-                                           
+                                            <button class="btn btn-primary"
+                                                    (click)="goToDisscussion(contract.contract_id)">Discussion
+                                            </button>
                                         </td>
                                     </tr>
                                     </tbody>

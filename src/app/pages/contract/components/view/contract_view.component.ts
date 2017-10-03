@@ -28,7 +28,7 @@ export class ContractView implements OnInit {
 
     constructor(private _router: Router, private _service: MyService, private data: DataService) {
 
-        this.userType = localStorage.getItem("user_type");
+        this.userType = localStorage.getItem("userType");
         this.userEmail = localStorage.getItem("email");
 
         _service.listStreamItems(this.contractStream).then(data => {
@@ -48,12 +48,12 @@ export class ContractView implements OnInit {
                 contract.freelancer = new User();
 
                 this._service.listStreamKeyItems(this.userstream, contract.client_email).then(data => {
-                    if (data[0] != undefined)
-                        contract.client = JSON.parse(this._service.Hex2String(data[0].data.toString()));
+                    if (data[data.length - 1] != undefined)
+                        contract.client = JSON.parse(this._service.Hex2String(data[data.length - 1].data.toString()));
 
                     this._service.listStreamKeyItems(this.userstream, contract.freelancer_email).then(data => {
-                        if (data[0] != undefined)
-                            contract.freelancer = JSON.parse(this._service.Hex2String(data[0].data.toString()));
+                        if (data[data.length - 1] != undefined)
+                            contract.freelancer = JSON.parse(this._service.Hex2String(data[data.length - 1].data.toString()));
                     });
                 });
 
@@ -144,12 +144,24 @@ export class ContractView implements OnInit {
         }
     }
 
+    setNewStatusForActivatedContracts(contract: Contract) {
+
+        contract.status.status = "Active";
+        contract.status.current_milestone = 1;
+        contract.status.milestone_state = "Uncompleted";
+
+        contract.status.current_milestone_name =
+            this.getCurrentMilestoneName(contract.milestones, contract.status.current_milestone, contract.status.milestone_state);
+        contract.status.progress = this.getProgress(contract.milestones, contract.milestoneValues, contract.status);
+        this.active_contracts.push(contract);
+    }
+
     confirmContract(id: string): void {
         let contract = this.getSelectedContract(id);
 
         if (contract.status.contract_link == null) {
             this.changeContractStatus(id, "Active");
-            this.active_contracts.push(contract);
+            this.setNewStatusForActivatedContracts(contract);
             this.pending_contracts = this.pending_contracts.filter(function (cnt) {
                 return cnt.contract_id !== id;
             });
@@ -167,7 +179,7 @@ export class ContractView implements OnInit {
                     this.changeContractStatus(id, "Active");
 
                     contract.status.status = "Active";
-                    this.active_contracts.push(contract);
+                    this.setNewStatusForActivatedContracts(contract);
                     this.pending_contracts = this.pending_contracts.filter(function (cnt) {
                         return cnt.contract_id !== id;
                     });
@@ -234,6 +246,7 @@ export class ContractView implements OnInit {
         let link = ['/pages/contract/contract_details', id];
         this._router.navigate(link);
     }
+
     goToDisscussion(id: string) {
         let contract = this.getSelectedContract(id);
         this.data.saveData(contract);

@@ -1,11 +1,11 @@
-import { Component, OnInit } from '@angular/core';
-import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
-import { MyService } from "../../../../theme/services/backend/service";
-import { PaymentModal } from '../payment-modal/payment.component';
-import { TreeModel } from 'ng2-tree';
-import { Router, Params, ActivatedRoute } from '@angular/router';
+import {Component, OnInit} from '@angular/core';
+import {NgbModal} from '@ng-bootstrap/ng-bootstrap';
+import {MyService} from "../../../../theme/services/backend/service";
+import {PaymentModal} from '../payment-modal/payment.component';
+import {TreeModel} from 'ng2-tree';
+import {Router, Params, ActivatedRoute} from '@angular/router';
 
-import { User } from "../../../../theme/models/user";
+import {User} from "../../../../theme/models/user";
 
 @Component({
     selector: 'wallet',
@@ -34,29 +34,21 @@ export class Wallet implements OnInit {
         }
     ];
 
-    constructor(private _router: Router, private _route: ActivatedRoute, private _service: MyService,  private modalService: NgbModal) {
+    constructor(private _router: Router, private _route: ActivatedRoute, private _service: MyService, private modalService: NgbModal) {
         this._service.listStreamKeyItems(this.userStream, localStorage.getItem('user')).then(data => {
-            this.user = JSON.parse(this._service.Hex2String(data[data.length-1].data.toString()));
+            this.user = JSON.parse(this._service.Hex2String(data[data.length - 1].data.toString()));
             this._service.getAddressBalances(this.user.address, 'False').then(unlocked_balances => {
 
-                if (unlocked_balances[0].name == "USD") {
-                    this.assets[0].available_balance = unlocked_balances[0].qty;
-                    this.assets[1].available_balance = unlocked_balances[1].qty;
 
-                } else {
-                    this.assets[0].available_balance = unlocked_balances[1].qty;
-                    this.assets[1].available_balance = unlocked_balances[0].qty;
+                if (unlocked_balances.length == 1) {
+                    console.log();
+                    this.assets[0].available_balance = unlocked_balances[0].qty;
                 }
 
                 this._service.getAddressBalances(this.user.address, 'True').then(total_balances => {
-
-                    if (total_balances[0].name == "USD") {
+                    console.log();
+                    if (unlocked_balances.length == 1) {
                         this.assets[0].locked_amount = total_balances[0].qty - this.assets[0].available_balance;
-                        this.assets[1].locked_amount = total_balances[1].qty - this.assets[1].available_balance;
-
-                    } else {
-                        this.assets[0].locked_amount = total_balances[1].qty - this.assets[0].available_balance;
-                        this.assets[1].locked_amount = total_balances[0].qty - this.assets[1].available_balance;
                     }
                 }).catch(error => {
                     console.log(error.message);
@@ -78,6 +70,16 @@ export class Wallet implements OnInit {
     }
 
     getAsset(asset: string) {
+
+        // this._service.lockAssetsFrom(this.user.address, "USD", "130").then(data => {
+        //     console.log("Assets Locked");
+        //     console.log(data);
+        // });
+
+        // this._service.unlockAllAssets().then(data => {
+        //     console.log("Assets UnLocked");
+        //     console.log(data);
+        // });
 
         if (asset == "USD") {
             this._service.sendAsset(this.user.address, asset, this.assets[0].requested_amount.toString()).then(data => {
@@ -105,13 +107,13 @@ export class Wallet implements OnInit {
     }
 
     paymentModalShow(): void {
-        const activeModal = this.modalService.open(PaymentModal, { size: 'sm' });
+        const activeModal = this.modalService.open(PaymentModal, {size: 'sm'});
         activeModal.componentInstance.modalHeader = '';
         activeModal.componentInstance.amount = this.assets[0].requested_amount;
         activeModal.componentInstance.profile_id = this.user_id;
         activeModal.result
-        .then((d) => {
-            console.log("result");
-        });
+            .then((d) => {
+                console.log("result");
+            });
     }
 }

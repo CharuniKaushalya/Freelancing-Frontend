@@ -44,7 +44,7 @@
                     <div class="d-inline-block col-sm-3">
                         <select [(ngModel)]="contract.asset" [ngModelOptions]="{standalone: true}" class="form-control"
                                 name="asset" id="asset">
-                            <option *ngFor="let asset of assets" [ngValue]="asset.asset_name">{{asset.asset_name}}</option>
+                            <option *ngFor="let asset of assets" [ngValue]="asset">{{asset}}</option>
                         </select>
                     </div>
                 </div>
@@ -155,7 +155,7 @@
                     <div class="d-inline-block col-sm-3">
                         <select [(ngModel)]="qa_contract.asset" [ngModelOptions]="{standalone: true}"
                                 class="form-control" name="qa_asset" id="qa_asset">
-                            <option *ngFor="let asset of assets" [ngValue]="asset.asset_name">{{asset.asset_name}}</option>
+                            <option *ngFor="let asset of assets" [ngValue]="asset">{{asset}}</option>
                         </select>
                     </div>
                 </div>
