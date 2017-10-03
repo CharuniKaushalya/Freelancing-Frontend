@@ -25,7 +25,10 @@
                                         <th></th>
                                         <th>Project Name</th>
                                         <th>Contract Type</th>
-                                        <th>Client/Freelancer</th>
+                                        <th>
+                                            <div *ngIf="userType == 'Client'">Freelancer</div>
+                                            <div *ngIf="userType == 'Freelancer' || userType == 'QA'">Client</div>
+                                        </th>
                                         <th>Amount</th>
                                         <th>Status</th>
                                     </tr>
@@ -47,14 +50,62 @@
                                             <br>{{contract.type}}
                                         </td>
                                         <td>
-                                            <br>{{contract.freelancer}}
+                                            <br>
+                                            <div *ngIf="userType == 'Client'">{{contract.freelancer.username}}</div>
+                                            <div *ngIf="userType == 'Freelancer' || userType == 'QA'">
+                                                {{contract.client.username}}
+                                            </div>
                                         </td>
                                         <td>
                                             <br>{{contract.amount}} {{contract.asset}}
                                         </td>
                                         <td>
                                             <br>
-                                            <button class="btn btn-primary" (click)="confirmContract()">Confirm</button>
+                                            <div *ngIf="userType == 'Client' && contract.status.status == 'Pending'">
+                                                <button class="btn btn-primary"
+                                                        (click)="cancelContract(contract.contract_id)">Cancel
+                                                </button>
+                                            </div>
+                                            <div *ngIf="userType == 'Client' && contract.status.status == 'Confirmed'">
+                                                Waiting for
+                                                <div class="d-inline-block" *ngIf="contract.type == 'Freelancer'">QA
+                                                </div>
+                                                <div class="d-inline-block" *ngIf="contract.type == 'QA'">Freelancer
+                                                </div>
+                                                conformation
+                                            </div>
+                                            <div *ngIf="userType == 'Freelancer' && contract.status.status == 'Pending'">
+                                                <button class="btn btn-primary"
+                                                        (click)="confirmContract(contract.contract_id)">Confirm
+                                                </button>
+                                                <button class="btn btn-primary"
+                                                        (click)="cancelContract(contract.contract_id)">Cancel
+                                                </button>
+                                            </div>
+                                            <div *ngIf="userType == 'Freelancer' && contract.status.status == 'Confirmed'">
+                                                Waiting for
+                                                <div class="d-inline-block" *ngIf="contract.type == 'Freelancer'">QA
+                                                </div>
+                                                <div class="d-inline-block" *ngIf="contract.type == 'QA'">Freelancer
+                                                </div>
+                                                conformation
+                                            </div>
+                                            <div *ngIf="userType == 'QA' && contract.status.status == 'Pending'">
+                                                <button class="btn btn-primary"
+                                                        (click)="confirmContract(contract.contract_id)">Confirm
+                                                </button>
+                                                <button class="btn btn-primary"
+                                                        (click)="cancelContract(contract.contract_id)">Cancel
+                                                </button>
+                                            </div>
+                                            <div *ngIf="userType == 'QA' && contract.status.status == 'Confirmed'">
+                                                Waiting for
+                                                <div class="d-inline-block" *ngIf="contract.type == 'Freelancer'">QA
+                                                </div>
+                                                <div class="d-inline-block" *ngIf="contract.type == 'QA'">Freelancer
+                                                </div>
+                                                conformation
+                                            </div>
                                         </td>
                                     </tr>
                                     </tbody>
@@ -135,7 +186,10 @@
                                         <th></th>
                                         <th>Project Name</th>
                                         <th>Contract Type</th>
-                                        <th>Client/Freelancer</th>
+                                        <th>
+                                            <div *ngIf="userType == 'Client'">Freelancer</div>
+                                            <div *ngIf="userType == 'Freelancer' || userType == 'QA'">Client</div>
+                                        </th>
                                         <th>Deadline</th>
                                         <th>Amount</th>
                                     </tr>
@@ -159,7 +213,11 @@
                                             <br>{{contract.type}}
                                         </td>
                                         <td>
-                                            <br>{{contract.freelancer}}
+                                            <br>
+                                            <div *ngIf="userType == 'Client'">{{contract.freelancer.username}}</div>
+                                            <div *ngIf="userType == 'Freelancer' || userType == 'QA'">
+                                                {{contract.client.username}}
+                                            </div>
                                         </td>
                                         <td>
                                             <br>{{contract.deadline}}
@@ -167,12 +225,34 @@
                                         <td>
                                             <br>{{contract.amount}} {{contract.asset}}
                                         </td>
+                                         <td>
+                                            <br>
+                                            <a style="cursor:pointer"
+                                               (click)="goToDisscussion(contract.contract_id)"> Discussion
+                                                
+                                            </a>
+                                           
+                                        </td>
                                     </tr>
                                     </tbody>
                                 </table>
                             </div>
                         </ba-card>
                         <br><br><br><br>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <!-- Modal -->
+        <div class="modal fade" id="myModal" role="dialog">
+            <div class="modal-dialog modal-sm">
+                <div class="modal-content">
+                    <div class="modal-header"></div>
+                    <div class="modal-body">
+                        <h4 class="text-center">Linked contract also been cancelled</h4>
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
                     </div>
                 </div>
             </div>

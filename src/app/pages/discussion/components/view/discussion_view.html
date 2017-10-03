@@ -19,14 +19,13 @@
                     <div class="col-sm-12">
                         <ba-card cardTitle="Discussions" baCardClass="with-scroll table-panel">
                             <div>
-                               <div class="questions">
-        <h5>1.What is Lorem Ipsum?</h5>
-            <p>Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book.</p>
-          </div>
-       <div class="questions">
-        <h5>2.What is Lorem Ipsum dummy text ever since the 1500s?</h5>
-          <p>Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book.</p>
-       </div> 
+                            <div *ngFor="let discussion of discussions">
+                               <div class="questions" >
+                            <h5>{{discussion.title}}</h5>
+                                <p>{{discussion.question}}</p>
+                                <a href="#answer" style="float: right;"> Reply</a>
+                              </div>
+                            </div>
                             </div>
 
                         </ba-card>
@@ -36,21 +35,23 @@
                     <div class="col-sm-12">
                         <form>
     <div class="form-group">
-      <input class="form-control" name="title" type="text" placeholder="Title">
+      <input class="form-control" [(ngModel)]="discussion.title" [ngModelOptions]="{standalone: true}" name="title" type="text" placeholder="Title">
     </div>
        
       <div class="form-group">
-          <textarea class="form-control" rows="20" name="description" id="description" placeholder="Description"></textarea>
+          <textarea class="form-control" [(ngModel)]="discussion.question" [ngModelOptions]="{standalone: true}" rows="20" name="description" id="description" placeholder="Description"></textarea>
       </div>
       
        <div class="form-group">
               <div class="col-sm-offset-2 col-sm-9">
-                  <button class="btn btn-primary" (click)="saveDiscussion()">SAVE</button>
+                  <button class="btn btn-primary btn-lg" (click)="save()">Post Question</button>
               </div>
        </div>
     </form>
                     </div>
                 </div>
+
+
                
             </div>
         </div>

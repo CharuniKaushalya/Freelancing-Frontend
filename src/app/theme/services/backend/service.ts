@@ -212,6 +212,19 @@ export class MyService {
         return this.callAPI('preparelockunspentfrom', 'get', params, null, null);
     }
 
+    unlockAllAssets() {
+        let params: URLSearchParams = new URLSearchParams();
+        return this.callAPI('lockunspent', 'get', params, null, null);
+    }
+
+    sendAssetFrom(from_address: string, to_address: string, asset: string, qty: string) {
+        let params: URLSearchParams = new URLSearchParams();
+        params.set('from_address', from_address);
+        params.set('to_address',to_address);
+        params.set('asset', asset);
+        params.set('qty', qty);
+        return this.callAPI('sendassetfrom', 'get', params, null, null);
+    }
     callAPI(url: string, httpMethod: string, params: URLSearchParams, headers: Headers, body: string): Promise<any> {
         switch (httpMethod) {
 
