@@ -10,9 +10,8 @@ const routes: Routes = [
     component: Discussion,
     children: [
       
-      { path: 'discussion_view', 
-        component: DiscussionView
-      }
+      
+      { path: 'discussion_view/:contract_id', component: DiscussionView }
 
     ]
   }
