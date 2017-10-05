@@ -30,7 +30,7 @@ export class Login implements OnInit {
   success = "";
 
   constructor(private _service: MyService, fb: FormBuilder, public authService: AuthService, private _router: Router) {
-    if (localStorage.getItem("user") == "" || localStorage.getItem("user") == undefined) {
+    if (localStorage.getItem("email") == "" || localStorage.getItem("email") == undefined) {
       this.isResetPass = false;
       this.form = fb.group({
         'email': ['', Validators.compose([Validators.required, Validators.minLength(4)])],

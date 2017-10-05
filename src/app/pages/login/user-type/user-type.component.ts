@@ -25,17 +25,16 @@ export class UserTypeComponent implements OnInit {
     this._route.params.forEach((params: Params) => {
       if (params['email'] !== undefined) {
         let email = params['email'];
-        this._service.listStreamItems(this.userStream).then(data => {
-          data.forEach(element => {
-            if (element.key == email) {
+        this._service.listStreamKeyItems(this.userStream,email).then(data => {
+            if (data.length!=0) {
               let u: User;
-              this._service.gettxoutdata(element.txid).then(largedata => {
+              this._service.gettxoutdata(data[data.length-1].txid).then(largedata => {
                 u = JSON.parse(this._service.Hex2String(largedata.toString()));
                 localStorage.setItem("userType", u.usertype);
               })
-              this._router.navigate([''])
+              this._router.navigate(['pages/dashboard'])
             }
-          });
+         
         }).catch(error => {
           console.log(error.message);
         });
