@@ -26,7 +26,7 @@ export class Dashboard implements OnInit {
         "user-portfolio", "user-work", "bid", "project_user_type"];
 
     constructor(private _router: Router, private _service: MyService, private modalService: NgbModal) {
-        if (localStorage.getItem("user") == "" || localStorage.getItem("user") == undefined) {
+        if (localStorage.getItem("email") == "" || localStorage.getItem("email") == undefined) {
             this._router.navigate(['login']);
         } else {
             console.log(localStorage.getItem("userType"));

@@ -14,7 +14,7 @@ export class AuthService {
       console.log(user);
       this.user = user;
       if (user) {
-        localStorage.setItem("user", user.email);
+        localStorage.setItem("email", user.email);
       }
     });
   }
@@ -44,7 +44,7 @@ export class AuthService {
   }
 
   signOut() {
-    localStorage.setItem("user", "");
+    localStorage.setItem("email", "");
     localStorage.setItem("userType", "");
     return this.afAuth.auth.signOut();
   }

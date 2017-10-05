@@ -37,7 +37,7 @@ export class Register {
   userTypes = ['Freelancer', 'Client', 'QA', 'Consultant'];
 
   constructor(private _router: Router, public authService: AuthService, fb: FormBuilder, private _service: MyService) {
-    if (localStorage.getItem("user") == "" || localStorage.getItem("user") == undefined) {
+    if (localStorage.getItem("email") == "" || localStorage.getItem("email") == undefined) {
       this.user = new User();
 
       this.form = fb.group({
@@ -86,7 +86,7 @@ export class Register {
               this.createAnotherUser(data_hex);
             }
           }).catch(error => {
-            this.error = error.message;
+            console.log(error.message);
           });
 
         }).catch(error => {
@@ -138,7 +138,7 @@ export class Register {
         console.log("successfully initiated blockchain");
         console.log(data);
       }).catch(error => {
-        this.error = error.message;
+        console.log(error.message);
       });
     });
     setTimeout(() => {
@@ -188,7 +188,7 @@ export class Register {
 
       });
     }).catch(error => {
-      this.error = error.message;
+      console.log(error.message);
     });
   }
 
