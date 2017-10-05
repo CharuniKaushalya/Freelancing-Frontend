@@ -37,8 +37,8 @@ export class PaymentModal implements OnInit {
 
 
   constructor(fb: FormBuilder, private _service: MyService, private activeModal: NgbActiveModal) {
-    this.useremail = localStorage.getItem("user");
-    this._service.listStreamKeyItems(this.userStream, localStorage.getItem('user')).then(data => {
+    this.useremail = localStorage.getItem("email");
+    this._service.listStreamKeyItems(this.userStream, localStorage.getItem('email')).then(data => {
       this.user = JSON.parse(this._service.Hex2String(data[data.length-1].data.toString()));
       console.log(this.user);
       this.address = this.user.address;

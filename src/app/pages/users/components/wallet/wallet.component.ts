@@ -35,7 +35,7 @@ export class Wallet implements OnInit {
     ];
 
     constructor(private _router: Router, private _route: ActivatedRoute, private _service: MyService, private modalService: NgbModal) {
-        this._service.listStreamKeyItems(this.userStream, localStorage.getItem('user')).then(data => {
+        this._service.listStreamKeyItems(this.userStream, localStorage.getItem('email')).then(data => {
             this.user = JSON.parse(this._service.Hex2String(data[data.length - 1].data.toString()));
             this._service.getAddressBalances(this.user.address, 'False').then(unlocked_balances => {
 

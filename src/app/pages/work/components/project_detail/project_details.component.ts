@@ -50,7 +50,7 @@ export class ProjectDetails implements OnInit {
                     console.log(error.message);
                 });
 
-                let bid_key = project_id + "/" + localStorage.getItem("user");
+                let bid_key = project_id + "/" + localStorage.getItem("email");
 
                 _service.listStreamItems(this.bidStream).then(data => {
                     data.forEach(element => {

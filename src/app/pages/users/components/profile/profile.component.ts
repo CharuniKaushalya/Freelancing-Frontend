@@ -60,7 +60,7 @@ export class Profile implements OnInit {
             console.log(error.message);
         });
 
-        this.useremail = localStorage.getItem("user");
+        this.useremail = localStorage.getItem("email");
     }
 
 

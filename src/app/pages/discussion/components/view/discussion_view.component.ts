@@ -52,7 +52,7 @@ export class DiscussionView implements OnInit {
                 let key = this.contract.contract_id;
                 _service.gettxoutdata(element.txid).then(largedata => {
                     discussion = JSON.parse(this._service.Hex2String(largedata.toString()));
-                    if (discussion.user && discussion.user == localStorage.getItem("user")) {
+                    if (discussion.user && discussion.user == localStorage.getItem("email")) {
                         discussion.discussion_id = element.txid;
                        
                         this.discussions.push(discussion);
@@ -106,7 +106,7 @@ export class DiscussionView implements OnInit {
                 console.log(element.txid);
                 _service.gettxoutdata(element.txid).then(largedata => {
                     discussion = JSON.parse(this._service.Hex2String(largedata.toString()));
-                    if (discussion.user && discussion.user == localStorage.getItem("user")) {
+                    if (discussion.user && discussion.user == localStorage.getItem("email")) {
                         discussion.discussion_id = element.txid;
                        
                         this.discussions.push(discussion);

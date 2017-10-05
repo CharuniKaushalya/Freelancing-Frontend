@@ -27,7 +27,7 @@ export class MyWork {
             data.forEach(element => {
                 let bid_key = element.key;
 
-                if (localStorage.getItem("user") == bid_key.split("/")[1]) {
+                if (localStorage.getItem("email") == bid_key.split("/")[1]) {
                     let project_id = bid_key.split("/")[0];
                     _service.getstreamitem(this.projectsStream, project_id).then(projectdata => {
                         let project: Project;
