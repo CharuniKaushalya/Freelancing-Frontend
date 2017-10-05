@@ -117,6 +117,18 @@
                                             QA Failed
                                         </button>
                                     </td>
+                                    <td colspan=5 *ngIf="contract.status.milestone_state=='Reviewing' && userType=='Client' && !hasLinkedContract">
+                                        <br>
+                                        <button class="btn btn-primary  btn-sm float-sm-right" style="width: 110px"
+                                                type="button" (click)="stateBtnClicked('Completed')">
+                                            QA Successful
+                                        </button>
+                                        <br>
+                                        <button class="btn btn-primary  btn-sm float-sm-right" style="width: 110px"
+                                                type="button" (click)="stateBtnClicked('Working')">
+                                            QA Failed
+                                        </button>
+                                    </td>
                                 </tr>
                                 </tbody>
                             </table>
