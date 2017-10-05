@@ -346,7 +346,7 @@ export class MyContract implements OnInit {
             requested_amount += Number(this.qa_contract.amount);
         }
 
-        if (requested_amount < this.available_balance)
+        if (requested_amount <= this.available_balance)
             hasEnoughAssets = true;
 
         if (hasEnoughAssets) {
