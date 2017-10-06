@@ -61,7 +61,7 @@
                 <div class="form-group">
                     <label for="min_qty" class="col-sm-4">Minimum Amount</label>
                     <label for="max_qty" class="col-sm-4">Maximum Amount</label>
-                    <label for="max_qty" class="col-sm-3">Type</label>
+                    <label for="cur_type" class="col-sm-3">Type</label>
                     <div class="row">
                         <div class="col-sm-4">
                             <input [(ngModel)]="project.budget.min" [ngModelOptions]="{standalone: true}" class="form-control" name="min_qty" id="min_qty"
@@ -73,11 +73,40 @@
                                 min=0 type="number">
                         </div>
                         <div class="col-sm-3">
-                            <select [(ngModel)]="project.budget.type" [ngModelOptions]="{standalone: true}" class="form-control" id="cur_type">
+                            <select [(ngModel)]="project.budget.type" [ngModelOptions]="{standalone: true}" class="form-control" name="cur_type" id="cur_type">
                                 <option *ngFor="let cur_type of cur_types" [ngValue]="cur_type">
                                     {{cur_type}}
                                 </option>
                             </select>
+                        </div>
+                    </div>
+
+                </div>
+                <br>
+                <div class="row">
+                    <ba-checkbox [(ngModel)]="needQA" [ngModelOptions]="{standalone: true}" ></ba-checkbox> Need a QA?
+                </div>
+                <br>
+                <div *ngIf="needQA==1" class="form-group">
+                    <label for="min_qty_qa" class="col-sm-4">QA Minimum Amount</label>
+                    <label for="max_qty_qa" class="col-sm-4">QA Maximum Amount</label>
+                    <label for="cur_type_qa" class="col-sm-3">Type</label>
+                    <div class="row">
+                        <div class="col-sm-4">
+                            <input [(ngModel)]="project.qabudget.min" [ngModelOptions]="{standalone: true}" class="form-control" name="min_qty_qa" id="min_qty_qa"
+                                min=0 type="number">
+                        </div>
+
+                        <div class="col-sm-4">
+                            <input [(ngModel)]="project.qabudget.max" [ngModelOptions]="{standalone: true}" class="form-control" name="max_qty_qa" id="max_qty_qa"
+                                min=0 type="number">
+                        </div>
+                        <div class="col-sm-3">
+                            <select [(ngModel)]="project.qabudget.type" [ngModelOptions]="{standalone: true}" class="form-control" name="cur_type_qa" id="cur_type_qa">
+                                <option *ngFor="let cur_type_qa of cur_types" [ngValue]="cur_type_qa">
+                                        {{cur_type_qa}}
+                                    </option>
+                                </select>
                         </div>
                     </div>
                 </div>

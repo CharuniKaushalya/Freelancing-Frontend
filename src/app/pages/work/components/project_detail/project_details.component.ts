@@ -34,6 +34,7 @@ export class ProjectDetails implements OnInit {
     qaBid;
 
     isClient;
+    message:string;
 
     constructor(private _service: MyService, private _route: ActivatedRoute, private _router: Router) {
         this._route.params.forEach((params: Params) => {
@@ -109,12 +110,27 @@ export class ProjectDetails implements OnInit {
     }
 
     goToContract() {
-        if(this.qaBid == undefined) {
-            this.qaBid = 0;
+        if(this.fBid == undefined) {
+            this.message = "Please select a freelancer for create a new contract..";
+            $('#modal1').modal('show');
+        }else{
+            if(this.qaBid == undefined) {
+                this.message = "Are you sure want to proceed without a QA?";
+                $('#modal2').modal('show');
+            }else{
+                console.log(this.fBid)  //key of freelancer bid ----> project_id/user_email
+                console.log(this.qaBid) // key of QA bid------> project_id/user_email
+                let link = ['/pages/contract/mycontract', this.fBid, this.qaBid];
+                this._router.navigate(link);
+            }
         }
-        console.log(this.fBid)  //key of freelancer bid ----> project_id/user_email
-        console.log(this.qaBid) // key of QA bid------> project_id/user_email
+    }
+
+    setYesQaBid(){
+        this.qaBid = 0;
         let link = ['/pages/contract/mycontract', this.fBid, this.qaBid];
         this._router.navigate(link);
     }
+
+
 }
