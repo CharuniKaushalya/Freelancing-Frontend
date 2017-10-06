@@ -32,7 +32,7 @@ export class ProjectNew implements OnInit {
     @Output() close = new EventEmitter();
     addtionalFiles: FileList;
     encodedFiles: DownloadFile[] = [];
-    projctsStream: string = "projects";
+    projectsStream: string = "projects";
 
     skill_items = [];
     skillsStream = "skills";
@@ -113,9 +113,9 @@ export class ProjectNew implements OnInit {
 
         let data_hex = this._service.String2Hex(projectJSON)
 
-        this._service.publishToStream(this.projctsStream, key, data_hex).then(data => {
+        this._service.publishToStream(this.projectsStream, key, data_hex).then(data => {
             console.log("saved");
-            // console.log(data);
+            console.log(data);
 
             this._router.navigate(['/pages/work/posted_projects'])
         }).catch(error => {
@@ -128,11 +128,4 @@ export class ProjectNew implements OnInit {
         console.log(this.skills);
     }
 
-    // addQABudget(e){
-    //     if(e.target.checked){
-                  
-    //     }else{
-    //         this.project.qabudget = this.qabudget; 
-    //     }
-    // }
 }

@@ -1,11 +1,12 @@
-import {Component, OnInit} from '@angular/core';
-import {MyService} from "../../../../theme/services/backend/service";
-import {DataService} from "../../../../theme/services/data/data.service";
-import {Router} from '@angular/router';
+import { Component, OnInit } from '@angular/core';
+import { MyService } from "../../../../theme/services/backend/service";
+import { DataService } from "../../../../theme/services/data/data.service";
+import { Router } from '@angular/router';
 
-import {Contract} from "../../../../theme/models/contract";
-import {ContractStatus} from "../../../../theme/models/contractStatus";
-import {User} from "../../../../theme/models/user";
+import { Contract } from "../../../../theme/models/contract";
+import { ContractStatus } from "../../../../theme/models/contractStatus";
+import { ProjectStatus } from "../../../../theme/models/projectStatus";
+import { User } from "../../../../theme/models/user";
 
 @Component({
     selector: 'contract_view',
@@ -18,6 +19,7 @@ export class ContractView implements OnInit {
     contractStream: string = "contracts";
     contractStatusStream: string = "ContractStatus";
     userstream: string = "Users";
+    projectStatusStream: string = "ProjectStatus";
 
     pending_contracts: Contract[] = [];
     active_contracts: Contract[] = [];
@@ -165,6 +167,7 @@ export class ContractView implements OnInit {
             this.pending_contracts = this.pending_contracts.filter(function (cnt) {
                 return cnt.contract_id !== id;
             });
+            this.updateProjectStatus(id, "Closed");
 
         } else {
             this._service.listStreamKeyItems(this.contractStatusStream, contract.status.contract_link).then(element => {
@@ -184,6 +187,8 @@ export class ContractView implements OnInit {
                         return cnt.contract_id !== id;
                     });
                     this.changeStateOfLinkedContract(linked_contract_status, "Active");
+                    this.updateProjectStatus(id, "Closed");
+
 
                 } else if (linked_contract_status.status == "Cancelled") {
 
@@ -213,6 +218,22 @@ export class ContractView implements OnInit {
         this._service.publishToStream(this.contractStatusStream, key, data_hex).then(data => {
             console.log("Contract status saved");
             console.log(data);
+        });
+    }
+
+    updateProjectStatus(id: string, status: string) {
+        let projectStatus: ProjectStatus = new ProjectStatus();
+        projectStatus.project_id = id;
+        projectStatus.status = status;
+        projectStatus.user_email = localStorage.getItem("email");
+
+        let statusJSON = JSON.stringify(projectStatus);
+        let data_hex = this._service.String2Hex(statusJSON);
+
+        this._service.publishToStream(this.projectStatusStream, projectStatus.project_id, data_hex).then(data => {
+            console.log(projectStatus.status + "saved");
+        }).catch(error => {
+            console.log(error.message);
         });
     }
 
