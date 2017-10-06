@@ -126,31 +126,71 @@ export class ContractView implements OnInit {
 
 
         let contract = this.getSelectedContract(id);
+        let locked_amount_usd = 0;
 
-        this.changeContractStatus(id, "Cancelled");
-        this.pending_contracts = this.pending_contracts.filter(function (cnt) {
-            return cnt.contract_id !== id;
-        });
-        this.cancelled_contracts.push(contract);
+        this._service.getAddressBalances(contract.client.address, 'True').then(total_balances => {
 
-        if (contract.status.contract_link != null) {
-            this._service.listStreamKeyItems(this.contractStatusStream, contract.status.contract_link).then(element => {
-                let linked_contract_status = JSON.parse(this._service.Hex2String((element[element.length - 1]).data.toString()));
+            if (total_balances.length == 1) {
+                locked_amount_usd = total_balances[0].qty;
+            }
 
-                this.changeStateOfLinkedContract(linked_contract_status, "Cancelled");
-                let linked_contract = this.getSelectedContract(linked_contract_status.contract_id);
+            this._service.getAddressBalances(contract.client.address, 'False').then(unlocked_balances => {
 
-                if (linked_contract != undefined) {
-                    this.pending_contracts = this.pending_contracts.filter(function (cnt) {
-                        return cnt.contract_id !== linked_contract_status.contract_id;
-                    });
-                    this.cancelled_contracts.push(linked_contract);
+                if (unlocked_balances.length == 1) {
+                    locked_amount_usd = locked_amount_usd - unlocked_balances[0].qty;
                 }
-                console.log("Contract Cancelled");
+
+                console.log("Locked USD = " + locked_amount_usd);
+
+                this._service.unlockAllAssets().then(data => {
+                    console.log(data);
+                    console.log("Assets unlocked");
+
+                    this.changeContractStatus(id, "Cancelled");
+                    this.pending_contracts = this.pending_contracts.filter(function (cnt) {
+                        return cnt.contract_id !== id;
+                    });
+                    this.cancelled_contracts.push(contract);
+                    console.log("Contract Cancelled");
+
+                    let payment1 = contract.amount;
+                    locked_amount_usd = locked_amount_usd - Number(payment1);
+
+                    if (contract.status.contract_link != null) {
+                        this._service.listStreamKeyItems(this.contractStatusStream, contract.status.contract_link).then(element => {
+                            let linked_contract_status = JSON.parse(this._service.Hex2String((element[element.length - 1]).data.toString()));
+
+                            this.changeStateOfLinkedContract(linked_contract_status, "Cancelled");
+                            let linked_contract = this.getSelectedContract(linked_contract_status.contract_id);
+
+                            if (linked_contract != undefined) {
+                                this.pending_contracts = this.pending_contracts.filter(function (cnt) {
+                                    return cnt.contract_id !== linked_contract_status.contract_id;
+                                });
+                                this.cancelled_contracts.push(linked_contract);
+                            }
+                            console.log("Contract Cancelled");
+
+                            let payment2 = linked_contract.amount;
+                            locked_amount_usd = locked_amount_usd - Number(payment2);
+
+                            this._service.lockAssetsFrom(contract.client.address, contract.asset, locked_amount_usd.toString()).then(data => {
+                                console.log("Assets Locked");
+                                console.log(data);
+                            });
+                        });
+                        if (this.userType == "Client")
+                            $('#myModal').modal('show');
+
+                    } else {
+                        this._service.lockAssetsFrom(contract.client.address, contract.asset, locked_amount_usd.toString()).then(data => {
+                            console.log("Assets Locked");
+                            console.log(data);
+                        });
+                    }
+                });
             });
-            if (this.userType == "Client")
-                $('#myModal').modal('show');
-        }
+        });
     }
 
     setNewStatusForActivatedContracts(contract: Contract) {

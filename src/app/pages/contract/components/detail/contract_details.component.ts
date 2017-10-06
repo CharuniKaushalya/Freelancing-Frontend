@@ -228,6 +228,12 @@ export class ContractDetails {
                                     console.log(data);
                                 });
                             });
+
+                        } else {
+                            this._service.lockAssetsFrom(this.contract.client.address, this.contract.asset, locked_amount_usd.toString()).then(data => {
+                                console.log("Assets Locked");
+                                console.log(data);
+                            });
                         }
                     });
                 });
