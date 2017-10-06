@@ -20,6 +20,7 @@ export class ContractView implements OnInit {
     contractStatusStream: string = "ContractStatus";
     userstream: string = "Users";
     projectStatusStream: string = "ProjectStatus";
+    projectStream: string = "projects";
 
     pending_contracts: Contract[] = [];
     active_contracts: Contract[] = [];
@@ -160,41 +161,46 @@ export class ContractView implements OnInit {
 
     confirmContract(id: string): void {
         let contract = this.getSelectedContract(id);
+        this._service.listStreamKeyItems(this.projectStream, contract.projectName).then(p => {
 
-        if (contract.status.contract_link == null) {
-            this.changeContractStatus(id, "Active");
-            this.setNewStatusForActivatedContracts(contract);
-            this.pending_contracts = this.pending_contracts.filter(function (cnt) {
-                return cnt.contract_id !== id;
-            });
-            this.updateProjectStatus(id, "Closed");
-
-        } else {
-            this._service.listStreamKeyItems(this.contractStatusStream, contract.status.contract_link).then(element => {
-                let linked_contract_status = JSON.parse(this._service.Hex2String((element[element.length - 1]).data.toString()));
-
-                console.log(linked_contract_status);
-                if (linked_contract_status.status == "Pending") {
-                    this.changeContractStatus(id, "Confirmed");
-                    contract.status.status = "Confirmed";
-
-                } else if (linked_contract_status.status == "Confirmed") {
+            if (p[p.length - 1] != undefined) {
+                let project_id = p[p.length - 1].txid;
+                if (contract.status.contract_link == null) {
                     this.changeContractStatus(id, "Active");
-
-                    contract.status.status = "Active";
                     this.setNewStatusForActivatedContracts(contract);
                     this.pending_contracts = this.pending_contracts.filter(function (cnt) {
                         return cnt.contract_id !== id;
                     });
-                    this.changeStateOfLinkedContract(linked_contract_status, "Active");
-                    this.updateProjectStatus(id, "Closed");
+                    this.updateProjectStatus(project_id, "Closed");
+
+                } else {
+                    this._service.listStreamKeyItems(this.contractStatusStream, contract.status.contract_link).then(element => {
+                        let linked_contract_status = JSON.parse(this._service.Hex2String((element[element.length - 1]).data.toString()));
+
+                        console.log(linked_contract_status);
+                        if (linked_contract_status.status == "Pending") {
+                            this.changeContractStatus(id, "Confirmed");
+                            contract.status.status = "Confirmed";
+
+                        } else if (linked_contract_status.status == "Confirmed") {
+                            this.changeContractStatus(id, "Active");
+
+                            contract.status.status = "Active";
+                            this.setNewStatusForActivatedContracts(contract);
+                            this.pending_contracts = this.pending_contracts.filter(function (cnt) {
+                                return cnt.contract_id !== id;
+                            });
+                            this.changeStateOfLinkedContract(linked_contract_status, "Active");
+                            this.updateProjectStatus(project_id, "Closed");
 
 
-                } else if (linked_contract_status.status == "Cancelled") {
+                        } else if (linked_contract_status.status == "Cancelled") {
 
+                        }
+                    });
                 }
-            });
-        }
+            }
+        });
     }
 
     changeContractStatus(id: string, state: string): void {

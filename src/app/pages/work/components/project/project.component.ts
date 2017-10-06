@@ -7,6 +7,7 @@ import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
 import { BidModelComponent } from '../bid-model/bid-model.component';
 import { Project } from "../../../../theme/models/project";
 import { ProjectUserType } from "../../../../theme/models/projectUserType";
+import { ProjectStatus } from "../../../../theme/models/projectStatus";
 
 @Component({
     selector: 'my-projects',
@@ -18,41 +19,50 @@ import { ProjectUserType } from "../../../../theme/models/projectUserType";
 export class MyProjects implements OnInit {
     custom_search = false;
     projctsStream: string = "projects";
-    bidStream:string = "bid";
+    bidStream: string = "bid";
     projects: Project[] = [];
     projctUtypeStream: string = "project_user_type";
+    projectStatusStream: string = "ProjectStatus";
     today: number = Date.now();
 
-    constructor(private _router: Router, private _service: MyService, private modalService: NgbModal, private datePipe: DatePipe,) {
+    constructor(private _router: Router, private _service: MyService, private modalService: NgbModal, private datePipe: DatePipe, ) {
         _service.listStreamItems(this.projctsStream).then(data => {
             data.forEach(element => {
                 let project: Project;
                 _service.gettxoutdata(element.txid).then(largedata => {
                     project = JSON.parse(this._service.Hex2String(largedata.toString()));
-                    project.project_id = element.txid;
-                    project.client = element.publishers[0];
-                    //this.projects.push(project);
-                    this._service.listStreamKeyItems(this.projctUtypeStream, project.project_id).then(data => {
-                        console.log(data);
-                        data.forEach(element => {
-                            console.log(element);
-                            let putype: ProjectUserType = JSON.parse(this._service.Hex2String(element.data.toString()));
-                            console.log( putype.publish_utype);
-                            if(localStorage.getItem("userType") == putype.publish_utype){
-                                if(putype.deadline && 
-                                    this.datePipe.transform(putype.deadline, 'yyyy-MM-dd') >= this.datePipe.transform(this.today, 'yyyy-MM-dd')){
-                                    console.log("selected");
-                                    this.projects.push(project);
-                                }
-                              
-                            }
-                            //edu.edu_id = element.txid;
-                            //this.educations.push(edu);
-                        });
 
-                    }).catch(error => {
-                        console.log(error.message);
+                    _service.listStreamKeyItems(this.projectStatusStream, element.txid).then(pstatus => {
+                        
+                        if (pstatus[pstatus.length - 1] != undefined) {
+                            let projectStatus: ProjectStatus = JSON.parse(this._service.Hex2String(pstatus[pstatus.length - 1].data.toString()));
+                            if (projectStatus.status == "Open") {
+                                project.project_id = element.txid;
+                                project.client = element.publishers[0];
+                                this._service.listStreamKeyItems(this.projctUtypeStream, project.project_id).then(data => {
+                                    console.log(data);
+                                    data.forEach(element => {
+                                        console.log(element);
+                                        let putype: ProjectUserType = JSON.parse(this._service.Hex2String(element.data.toString()));
+                                        console.log(putype.publish_utype);
+                                        if (localStorage.getItem("userType") == putype.publish_utype) {
+                                            if (putype.deadline &&
+                                                this.datePipe.transform(putype.deadline, 'yyyy-MM-dd') >= this.datePipe.transform(this.today, 'yyyy-MM-dd')) {
+                                                console.log("selected");
+                                                this.projects.push(project);
+                                            }
+                                        }
+                                        //edu.edu_id = element.txid;
+                                        //this.educations.push(edu);
+                                    });
+
+                                }).catch(error => {
+                                    console.log(error.message);
+                                });
+                            }
+                        }
                     });
+
                 }).catch(error => {
                     console.log(error.message);
                 });
