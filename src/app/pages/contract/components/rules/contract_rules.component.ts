@@ -2,9 +2,7 @@ import {Component, OnInit} from '@angular/core';
 import {MyService} from "../../../../theme/services/backend/service";
 import {Router} from '@angular/router';
 
-import {Contract} from "../../../../theme/models/contract";
-import {ContractStatus} from "../../../../theme/models/contractStatus";
-import {User} from "../../../../theme/models/user";
+import {ContractRulesModel} from "../../../../theme/models/contractRulesModel";
 
 @Component({
     selector: 'contract_rules',
@@ -14,25 +12,30 @@ import {User} from "../../../../theme/models/user";
 
 export class ContractRules implements OnInit {
 
+    contractRulesStream: string = "ContractRules";
+    contractRulesModel = new ContractRulesModel();
     redos = [3, 4, 5];
-    redo = 3;
-
-    freelancer_pay_reduce_percentage = 5;
-    qa_pay_reduce_percentage = 5;
-
-    freelancer_contract_cancel_days_high = 10;
-    qa_contract_cancel_days_high = 5;
-    freelancer_contract_cancel_days_low = 5;
-    qa_contract_cancel_days_low = 3;
-    freelancer_rf_payment_percentage = 50;
-
-    project_worth_mark = 500;
 
     constructor(private _router: Router, private _service: MyService) {
+        _service.listStreamItems(this.contractRulesStream).then(data => {
 
-
+            this.contractRulesModel = JSON.parse(this._service.Hex2String(data[data.length -1].data));
+        });
     }
 
     ngOnInit() {
+    }
+
+    saveRules(): void {
+        let key = localStorage.getItem("email");
+
+        let contractRulesJSON = JSON.stringify(this.contractRulesModel);
+        console.log(this.contractRulesModel);
+
+        let data_hex = this._service.String2Hex(contractRulesJSON);
+        this._service.publishToStream(this.contractRulesStream, key, data_hex).then(data => {
+            console.log(data);
+            console.log("Contract Rules Saved");
+        });
     }
 }

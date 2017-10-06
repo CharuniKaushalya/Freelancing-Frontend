@@ -12,7 +12,7 @@
                             <div class="form-group">
                                 <p class="d-inline-block">A client can apply for a redo</p>
                                 <div class="d-inline-block col-sm-2">
-                                    <select [(ngModel)]="redo" [ngModelOptions]="{standalone: true}"
+                                    <select [(ngModel)]="contractRulesModel.redo" [ngModelOptions]="{standalone: true}"
                                             class="form-control"
                                             name="redo" id="redo">
                                         <option *ngFor="let redo of redos" [ngValue]="redo">
@@ -28,7 +28,7 @@
                                 <p class="d-inline-block">If a freelancer fail all the redo requests after QA
                                     testing and project was QA tested by the client, freelancer will get paid </p>
                                 <div class="d-inline-block col-sm-2">
-                                    <input [(ngModel)]="freelancer_rf_payment_percentage"
+                                    <input [(ngModel)]="contractRulesModel.freelancer_rf_payment_percentage"
                                            [ngModelOptions]="{standalone: true}"
                                            class="form-control" type="number"
                                            name="freelancer_rf_payment" id="freelancer_rf_payment">
@@ -48,7 +48,7 @@
                                 <p class="d-inline-block">If a freelancer fail to meet a milestone deadline,
                                     freelancers's milestone pay will be reduced by </p>
                                 <div class="d-inline-block col-sm-2">
-                                    <input [(ngModel)]="freelancer_pay_reduce_percentage"
+                                    <input [(ngModel)]="contractRulesModel.freelancer_pay_reduce_percentage"
                                            [ngModelOptions]="{standalone: true}"
                                            class="form-control" type="number"
                                            name="freelancer_pay_reduce" id="freelancer_pay_reduce">
@@ -59,13 +59,13 @@
                                 <p class="d-inline-block">If a freelancer fail to meet a milestone deadline for a
                                     project worth over $</p>
                                 <div class="d-inline-block col-sm-2">
-                                    <input [(ngModel)]="project_worth_mark"
+                                    <input [(ngModel)]="contractRulesModel.project_worth_mark"
                                            [ngModelOptions]="{standalone: true}" class="form-control" type="number"
                                            name="project_worth_mark1" id="project_worth_mark1">
                                 </div>
                                 <p class="d-inline-block"> and don't submit work done after </p>
                                 <div class="d-inline-block col-sm-2">
-                                    <input [(ngModel)]="freelancer_contract_cancel_days_high"
+                                    <input [(ngModel)]="contractRulesModel.freelancer_contract_cancel_days_high"
                                            [ngModelOptions]="{standalone: true}" class="form-control" type="number"
                                            name="freelancer_contract_cancel_high" id="freelancer_contract_cancel_high">
                                 </div>
@@ -75,13 +75,13 @@
                                 <p class="d-inline-block">If a freelancer fail to meet a milestone deadline for a
                                     project worth less than $</p>
                                 <div class="d-inline-block col-sm-2">
-                                    <input [(ngModel)]="project_worth_mark"
+                                    <input [(ngModel)]="contractRulesModel.project_worth_mark"
                                            [ngModelOptions]="{standalone: true}" class="form-control" type="number"
                                            name="project_worth_mark2" id="project_worth_mark2">
                                 </div>
                                 <p class="d-inline-block"> and don't submit work done after </p>
                                 <div class="d-inline-block col-sm-2">
-                                    <input [(ngModel)]="freelancer_contract_cancel_days_low"
+                                    <input [(ngModel)]="contractRulesModel.freelancer_contract_cancel_days_low"
                                            [ngModelOptions]="{standalone: true}" class="form-control" type="number"
                                            name="freelancer_contract_cancel_low" id="freelancer_contract_cancel_low">
                                 </div>
@@ -97,7 +97,7 @@
                                 <p class="d-inline-block">If a QA fail to meet a milestone deadline,
                                     freelancers's milestone pay will be reduced by </p>
                                 <div class="d-inline-block col-sm-2">
-                                    <input [(ngModel)]="qa_pay_reduce_percentage"
+                                    <input [(ngModel)]="contractRulesModel.qa_pay_reduce_percentage"
                                            [ngModelOptions]="{standalone: true}"
                                            class="form-control" type="number" name="qa_pay_reduce" id="qa_pay_reduce">
                                 </div>
@@ -107,13 +107,13 @@
                                 <p class="d-inline-block">If a QA fail to meet a milestone deadline for a
                                     project worth over $</p>
                                 <div class="d-inline-block col-sm-2">
-                                    <input [(ngModel)]="project_worth_mark"
+                                    <input [(ngModel)]="contractRulesModel.project_worth_mark"
                                            [ngModelOptions]="{standalone: true}" class="form-control" type="number"
                                            name="project_worth_mark3" id="project_worth_mark3">
                                 </div>
                                 <p class="d-inline-block">and don't submit work done after </p>
                                 <div class="d-inline-block col-sm-2">
-                                    <input [(ngModel)]="qa_contract_cancel_days_high"
+                                    <input [(ngModel)]="contractRulesModel.qa_contract_cancel_days_high"
                                            [ngModelOptions]="{standalone: true}"
                                            class="form-control" type="number"
                                            name="qa_contract_cancel_high" id="qa_contract_cancel_high">
@@ -124,13 +124,13 @@
                                 <p class="d-inline-block">If a QA fail to meet a milestone deadline for a
                                     project worth less than $</p>
                                 <div class="d-inline-block col-sm-2">
-                                    <input [(ngModel)]="project_worth_mark"
+                                    <input [(ngModel)]="contractRulesModel.project_worth_mark"
                                            [ngModelOptions]="{standalone: true}" class="form-control" type="number"
                                            name="project_worth_mark4" id="project_worth_mark4">
                                 </div>
                                 <p class="d-inline-block">and don't submit work done after </p>
                                 <div class="d-inline-block col-sm-2">
-                                    <input [(ngModel)]="qa_contract_cancel_days_low"
+                                    <input [(ngModel)]="contractRulesModel.qa_contract_cancel_days_low"
                                            [ngModelOptions]="{standalone: true}"
                                            class="form-control" type="number"
                                            name="qa_contract_cancel_low" id="qa_contract_cancel_low">
@@ -145,6 +145,12 @@
                     </div>
                 </div>
             </ba-card>
+            <br><br>
+        </div>
+        <div class="col-sm-12">
+            <div class="form-group">
+                <button class="btn btn-primary float-right" (click)="saveRules()">Save Rules</button>
+            </div>
             <br><br><br><br>
         </div>
     </div>

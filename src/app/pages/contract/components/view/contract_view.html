@@ -12,6 +12,9 @@
                 <li class="nav-item">
                     <a class="nav-link" data-toggle="tab" href="#completed_contracts">Completed Contracts</a>
                 </li>
+                <li class="nav-item">
+                    <a class="nav-link" data-toggle="tab" href="#cancelled_contracts">Cancelled Contracts</a>
+                </li>
             </ul>
             <br>
             <div class="tab-content">
@@ -230,6 +233,64 @@
                                             <button class="btn btn-primary"
                                                     (click)="goToDisscussion(contract.contract_id)">Discussion
                                             </button>
+                                        </td>
+                                    </tr>
+                                    </tbody>
+                                </table>
+                            </div>
+                        </ba-card>
+                        <br><br><br><br>
+                    </div>
+                </div>
+                <div id="cancelled_contracts" class="tab-pane fade">
+                    <div class="col-sm-12">
+                        <ba-card cardTitle="Cancelled Contract Details"
+                                 baCardClass="with-scroll table-panel">
+                            <div>
+                                <table class="table table-condensed">
+                                    <thead>
+                                    <tr>
+                                        <th></th>
+                                        <th>Project Name</th>
+                                        <th>Contract Type</th>
+                                        <th>
+                                            <div *ngIf="userType == 'Client'">Freelancer</div>
+                                            <div *ngIf="userType == 'Freelancer' || userType == 'QA'">Client</div>
+                                        </th>
+                                        <th>Deadline</th>
+                                        <th>Amount</th>
+                                    </tr>
+                                    </thead>
+                                    <tbody>
+                                    <tr *ngFor="let contract of cancelled_contracts">
+                                        <td>
+                                            <br>
+                                            <font size="5" color="#209e91"><i
+                                                    class="fa fa-product-hunt"></i></font>
+                                        </td>
+                                        <td>
+                                            <br>
+                                            <a style="cursor:pointer"
+                                               (click)="goToContract(contract.contract_id)">
+                                                <h3>{{contract.projectName}}</h3>
+                                            </a>
+                                            <p>{{contract.description}}</p>
+                                        </td>
+                                        <td>
+                                            <br>{{contract.type}}
+                                        </td>
+                                        <td>
+                                            <br>
+                                            <div *ngIf="userType == 'Client'">{{contract.freelancer.username}}</div>
+                                            <div *ngIf="userType == 'Freelancer' || userType == 'QA'">
+                                                {{contract.client.username}}
+                                            </div>
+                                        </td>
+                                        <td>
+                                            <br>{{contract.deadline}}
+                                        </td>
+                                        <td>
+                                            <br>{{contract.amount}} {{contract.asset}}
                                         </td>
                                     </tr>
                                     </tbody>

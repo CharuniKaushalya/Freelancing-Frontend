@@ -25,6 +25,7 @@ export class ContractView implements OnInit {
     pending_contracts: Contract[] = [];
     active_contracts: Contract[] = [];
     completed_contracts: Contract[] = [];
+    cancelled_contracts: Contract[] = [];
 
     userType;
     userEmail;
@@ -79,6 +80,9 @@ export class ContractView implements OnInit {
 
                         } else if (contract_status.status == "Completed") {
                             this.completed_contracts.unshift(contract);
+
+                        } else if (contract_status.status == "Cancelled") {
+                            this.cancelled_contracts.unshift(contract);
                         }
                     }
                 });
@@ -127,18 +131,20 @@ export class ContractView implements OnInit {
         this.pending_contracts = this.pending_contracts.filter(function (cnt) {
             return cnt.contract_id !== id;
         });
+        this.cancelled_contracts.push(contract);
 
         if (contract.status.contract_link != null) {
             this._service.listStreamKeyItems(this.contractStatusStream, contract.status.contract_link).then(element => {
                 let linked_contract_status = JSON.parse(this._service.Hex2String((element[element.length - 1]).data.toString()));
 
                 this.changeStateOfLinkedContract(linked_contract_status, "Cancelled");
+                let linked_contract = this.getSelectedContract(linked_contract_status.contract_id);
 
-                console.log(this.getSelectedContract(linked_contract_status.contract_id));
-                if (this.getSelectedContract(linked_contract_status.contract_id) != undefined) {
+                if (linked_contract != undefined) {
                     this.pending_contracts = this.pending_contracts.filter(function (cnt) {
                         return cnt.contract_id !== linked_contract_status.contract_id;
                     });
+                    this.cancelled_contracts.push(linked_contract);
                 }
                 console.log("Contract Cancelled");
             });
