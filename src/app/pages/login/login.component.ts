@@ -57,6 +57,7 @@ export class Login implements OnInit {
             let u: User = JSON.parse(this._service.Hex2String(data[data.length-1].data.toString()));
             localStorage.setItem("userType", u.type);
             localStorage.setItem("email", u.email);
+            localStorage.setItem("address", u.address);
           }).catch(error => {
             console.log(error.message);
           });

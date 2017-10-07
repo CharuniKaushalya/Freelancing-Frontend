@@ -52,6 +52,7 @@ export class Pages {
             let array = null;
             console.log(user);
             localStorage.setItem("userType", user.type);
+            localStorage.setItem("address", user.address);
             this.addUserProfile(data[data.length-1].txid);
             this._pri.getData().then((data) => {
               this.previleges = data;

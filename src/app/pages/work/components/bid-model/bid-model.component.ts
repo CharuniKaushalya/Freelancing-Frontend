@@ -61,12 +61,12 @@ export class BidModelComponent implements OnInit {
   ngOnInit() {
     this._service.gettxoutdata(this.key).then(largedata => {
       let project: Project = JSON.parse(this._service.Hex2String(largedata.toString()));
-      console.log(largedata, project);
+      //console.log(largedata, project);
       this.project = project;
       this._service.listStreamKeyItems(this.userStream, project.user).then(data => {
         if(data[data.length-1]){
           let user: User = JSON.parse(this._service.Hex2String(data[data.length-1].data.toString()));
-          console.log(user);
+          //console.log(user);
           this.client = user.address;
         }
       }).catch(error => {
@@ -91,17 +91,29 @@ export class BidModelComponent implements OnInit {
 
       this._service.encrypt(this.client, JSON.stringify(this.bidValues)).then(data => {
         this.activeModal.close();
-        console.log(data);
+        //console.log(data);
         this.bid.data = data.data;
-        let bidJSON = JSON.stringify(this.bid);
-        let data_hex = this._service.String2Hex(bidJSON);
-        this._service.publishToStream(this.bidStream, this.bid.bid_id, data_hex).then(data => {
-          this.activeModal.close();
-          this._router.navigate(['/pages/work/my_work'])
+        console.log(localStorage.getItem("address"));
+        this._service.sign(localStorage.getItem("address"), JSON.stringify(this.bidValues)).then(data => {
+          if(data.sign){
+            this.bid.signature = data.sign;
+          }
+          let bidJSON = JSON.stringify(this.bid);
+  
+          let data_hex = this._service.String2Hex(bidJSON);
+          this._service.publishToStream(this.bidStream, this.bid.bid_id, data_hex).then(data => {
+            this.activeModal.close();
+            this._router.navigate(['/pages/work/my_work'])
+          }).catch(error => {
+            console.log(error.message);
+          });
+          this._service.verify(localStorage.getItem("address"), data.sign,JSON.stringify(this.bidValues)).then(data => {
+              console.log(data);
+          });
         }).catch(error => {
           console.log(error.message);
         });
-        //this._router.navigate(['/pages/work/my_work'])
+        this._router.navigate(['/pages/work/my_work'])
       }).catch(error => {
         console.log(error.message);
       });
