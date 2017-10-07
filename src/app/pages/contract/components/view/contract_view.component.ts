@@ -3,10 +3,12 @@ import { MyService } from "../../../../theme/services/backend/service";
 import { DataService } from "../../../../theme/services/data/data.service";
 import { Router } from '@angular/router';
 
+import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
 import { Contract } from "../../../../theme/models/contract";
 import { ContractStatus } from "../../../../theme/models/contractStatus";
 import { ProjectStatus } from "../../../../theme/models/projectStatus";
 import { User } from "../../../../theme/models/user";
+import { ReviewModelComponent } from '../review-model/review-model.component';
 
 @Component({
     selector: 'contract_view',
@@ -21,6 +23,7 @@ export class ContractView implements OnInit {
     userstream: string = "Users";
     projectStatusStream: string = "ProjectStatus";
     projectStream: string = "projects";
+    reviewStream: string = "user-review";
 
     pending_contracts: Contract[] = [];
     active_contracts: Contract[] = [];
@@ -30,7 +33,7 @@ export class ContractView implements OnInit {
     userType;
     userEmail;
 
-    constructor(private _router: Router, private _service: MyService, private data: DataService) {
+    constructor(private _router: Router, private _service: MyService, private data: DataService, private modalService: NgbModal) {
 
         this.userType = localStorage.getItem("userType");
         this.userEmail = localStorage.getItem("email");
@@ -311,6 +314,21 @@ export class ContractView implements OnInit {
             console.log("Linked contract status saved");
             console.log(data);
         });
+    }
+
+    rModalShow(contract_id: string): void {
+        this._service.listStreamKeyItems(this.reviewStream, contract_id).then(reviewd => {
+            if (reviewd[reviewd.length - 1] != undefined) {
+                console.log("reviewd");
+                $('#rmodal').modal('show');
+            } else {
+                console.log("not reviewd");
+                const activeModal = this.modalService.open(ReviewModelComponent, { size: 'lg' });
+                activeModal.componentInstance.modalHeader = 'Make a review about your work experience!!';
+                activeModal.componentInstance.key = contract_id;
+            }
+        });
+
     }
 
     goToContract(id: string) {
