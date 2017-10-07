@@ -11,4 +11,5 @@ export class Bid {
     user_type: string;
     user_name: string;
     data: string;
+    signature: string;
 }

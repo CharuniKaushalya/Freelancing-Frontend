@@ -53,7 +53,7 @@ export class ProjectDetails implements OnInit {
                 });
 
                 let bid_key = project_id + "/" + localStorage.getItem("email");
-
+                let bid_data: BidValues;
                 _service.listStreamItems(this.bidStream).then(data => {
                     data.forEach(element => {
                         let bid_key = element.key;
@@ -62,43 +62,56 @@ export class ProjectDetails implements OnInit {
 
                             let bid: Bid;
                             let client : string ="";
+                            let bid_data: BidValues;
                             bid = JSON.parse(this._service.Hex2String(element.data.toString()));
+                            console.log(bid);
                             this._service.listStreamKeyItems("Users", this.project.user).then(data => {
                                 if(data[data.length-1]){
                                   let user: User = JSON.parse(this._service.Hex2String(data[data.length-1].data.toString()));
                                   client = user.address;
-                                  if(bid.data && client){
-                                    this._service.decrypt(client, bid.data).then(data => {
-                                        if(data.data){
-                                            let bid_data:BidValues = JSON.parse(data.data);
+                                  if(bid.data && client && client == localStorage.getItem("address")){
+                                    this._service.decrypt(client, bid.data).then(decrptdata => {
+                                        if(decrptdata.data){
+                                            bid_data = JSON.parse(decrptdata.data);
                                             bid.bid_amount = bid_data.bid_amount
                                             bid.deliver_time = bid_data.deliver_time;
                                         }
-                                      });
+                                        _service.listStreamKeyItems(this.userstream, bid.user_email.toString()).then(data => {
+                                            let user: User;
+                                            user = JSON.parse(this._service.Hex2String(data[data.length-1].data.toString()));
+                                            bid.user_type = user.type;
+                                            bid.user_name = user.name;
+                                            bid.user_id = data[0].txid;
+                                            if(bid.signature){
+                                                this._service.verify(user.address, bid.signature,JSON.stringify(bid_data)).then(data => {
+                                                    if(data.verified){
+                                                        console.log("Data Verified : " , data.verified, "add bid sum here");
+                                                    }
+                                                }).catch(error => {
+                                                    console.log(error.message);
+                                                });
+                                            }
+                                            if (user.type == "Freelancer") {
+                                                this.freelancer_bidsum += bid.bid_amount;
+                                                this.freelancer_bids.push(bid);
+                                            }
+                                            else if (user.type == "QA") {
+                                                this.qa_bidsum += bid.bid_amount;
+                                                this.qa_bids.push(bid);
+                                            }
+                                        }).catch(error => {
+                                            console.log(error.message);
+                                        });
+                                    }).catch(error => {
+                                        console.log(error.message);
+                                    });
                                 }
                                  
                                 }
                               }).catch(error => {
                                 console.log(error.message);
                             });
-                            _service.listStreamKeyItems(this.userstream, bid.user_email.toString()).then(data => {
-                                let user: User;
-                                user = JSON.parse(this._service.Hex2String(data[data.length-1].data.toString()));
-                                bid.user_type = user.type;
-                                bid.user_name = user.name;
-                                bid.user_id = data[0].txid;
-                                console.log(bid)
-                                if (user.type == "Freelancer") {
-                                    this.freelancer_bidsum += bid.bid_amount;
-                                    this.freelancer_bids.push(bid);
-                                }
-                                else if (user.type == "QA") {
-                                    this.qa_bidsum += bid.bid_amount;
-                                    this.qa_bids.push(bid);
-                                }
-                            }).catch(error => {
-                                console.log(error.message);
-                            });
+                            
                         }
                     });
                     console.log(this.freelancer_bidsum);

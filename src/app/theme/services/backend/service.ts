@@ -93,6 +93,21 @@ export class MyService {
         return this.callAPI('decrypt', 'get', params, null, null);
     }
 
+    sign(address: string, data: string): Promise<any> {
+        let params: URLSearchParams = new URLSearchParams();
+        params.set('address', address);
+        params.set('data', data);
+        return this.callAPI('sign', 'get', params, null, null);
+    }
+
+    verify(address: string,signature: string,data: string): Promise<any> {
+        let params: URLSearchParams = new URLSearchParams();
+        params.set('address', address);
+        params.set('signature', signature);
+        params.set('data', data);
+        return this.callAPI('verify', 'get', params, null, null);
+    }
+
     grantInRegister(node: string,user:string,email:string) {
         let params: URLSearchParams = new URLSearchParams();
         params.set('node', node);
