@@ -79,6 +79,11 @@ export class UserTypeComponent implements OnInit {
       }).catch(error => {
         console.log(error.message);
       });
+      this._service.keygenerate(u.address).then(data => {
+        console.log("Key Generation " + data);
+      }).catch(error => {
+        console.log(error.message);
+      });
     });
     setTimeout(() => {
       this._router.navigate(['pages/dashboard'])
@@ -103,6 +108,12 @@ export class UserTypeComponent implements OnInit {
         // }).catch(error => {
         //   console.log(error.message);
         // });
+      }).catch(error => {
+        console.log(error.message);
+      });
+
+      this._service.keygenerate(address).then(data => {
+        console.log("Key Generation " + data);
       }).catch(error => {
         console.log(error.message);
       });
