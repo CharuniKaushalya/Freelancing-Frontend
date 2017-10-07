@@ -73,6 +73,26 @@ export class MyService {
             .catch((error: Error) => console.log(error));
     }
 
+    keygenerate(address: string): Promise<any> {
+        let params: URLSearchParams = new URLSearchParams();
+        params.set('address', address);
+        return this.callAPI('keygenerate', 'get', params, null, null);
+    }
+
+    encrypt(address: string, data: string): Promise<any> {
+        let params: URLSearchParams = new URLSearchParams();
+        params.set('address', address);
+        params.set('data', data);
+        return this.callAPI('encrypt', 'get', params, null, null);
+    }
+
+    decrypt(address: string,encrypted: string): Promise<any> {
+        let params: URLSearchParams = new URLSearchParams();
+        params.set('address', address);
+        params.set('encrypted', encrypted);
+        return this.callAPI('decrypt', 'get', params, null, null);
+    }
+
     grantInRegister(node: string,user:string,email:string) {
         let params: URLSearchParams = new URLSearchParams();
         params.set('node', node);
