@@ -1,6 +1,5 @@
 import { Component, OnInit } from '@angular/core';
 import { MyService } from "../../../../theme/services/backend/service";
-import { DataService } from "../../../../theme/services/data/data.service";
 import { Router } from '@angular/router';
 
 import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
@@ -33,7 +32,7 @@ export class ContractView implements OnInit {
     userType;
     userEmail;
 
-    constructor(private _router: Router, private _service: MyService, private data: DataService, private modalService: NgbModal) {
+    constructor(private _router: Router, private _service: MyService, private modalService: NgbModal) {
 
         this.userType = localStorage.getItem("userType");
         this.userEmail = localStorage.getItem("email");
@@ -333,15 +332,11 @@ export class ContractView implements OnInit {
     }
 
     goToContract(id: string) {
-        let contract = this.getSelectedContract(id);
-        this.data.saveData(contract);
         let link = ['/pages/contract/contract_details', id];
         this._router.navigate(link);
     }
 
     goToDisscussion(id: string) {
-        let contract = this.getSelectedContract(id);
-        this.data.saveData(contract);
         let link = ['/pages/discussion/discussion_view', id];
         this._router.navigate(link);
     }
