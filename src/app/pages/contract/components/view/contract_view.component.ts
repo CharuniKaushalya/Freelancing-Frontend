@@ -317,7 +317,8 @@ export class ContractView implements OnInit {
     }
 
     rModalShow(contract_id: string): void {
-        this._service.listStreamKeyItems(this.reviewStream, contract_id).then(reviewd => {
+        let review_id = contract_id+"/"+localStorage.getItem("email");
+        this._service.listStreamKeyItems(this.reviewStream, review_id).then(reviewd => {
             if (reviewd[reviewd.length - 1] != undefined) {
                 console.log("reviewd");
                 $('#rmodal').modal('show');

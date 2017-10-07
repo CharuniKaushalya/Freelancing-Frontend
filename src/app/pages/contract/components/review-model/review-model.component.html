@@ -1,3 +1,39 @@
-<p>
-  review-model works!
-</p>
+<div class="modal-content">
+  <div class="modal-header">
+    <h4 class="modal-title">{{modalHeader}}</h4>
+    <button class="close" aria-label="Close" (click)="closeModal()">
+      <span aria-hidden="true">&times;</span>
+    </button>
+  </div>
+
+  <div class="modal-body">
+
+
+    <form [formGroup]="form" (ngSubmit)="onSubmit(form.value)" class="form-horizontal">
+
+      <div class="container">
+
+        <div class="form-group" [ngClass]="{'has-error': (!rate.valid && rate.touched), 'has-success': (rate.valid && rate.touched)}">
+          
+          <rating [(ngModel)]="review.rate" [formControl]="rate" [max]="5" [required]="true"
+            [float]="true" [titles]="['one', 'two', 'three', 'four', 'five']">
+          </rating>
+
+        </div>
+
+        <div class="form-group" [ngClass]="{'has-error': (!description.valid && description.touched), 'has-success': (description.valid && description.touched)}">
+
+          <textarea [formControl]="description" class="form-control" [(ngModel)]="review.description" id="inputdescription" placeholder="Write your review here.."></textarea>
+
+        </div>
+
+      </div>
+      <hr>
+      <div class="form-group">
+        <button [disabled]="!form.valid" type="submit" class="btn btn-primary btn-md pull-right">Place Review</button>
+      </div>
+
+    </form>
+
+  </div>
+</div>

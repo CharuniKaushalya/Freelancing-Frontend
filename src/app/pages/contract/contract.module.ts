@@ -15,6 +15,8 @@ import { DataService } from "../../theme/services/data/data.service";
 import { ReviewModelComponent } from './components/review-model/review-model.component';
 import { NgbModalModule } from '@ng-bootstrap/ng-bootstrap';
 
+import {RatingModule} from "ng2-rating";
+
 @NgModule({
   imports: [
     CommonModule,
@@ -23,7 +25,8 @@ import { NgbModalModule } from '@ng-bootstrap/ng-bootstrap';
     NgaModule,
     NgbModalModule,
     TreeModule,
-    routing
+    routing,
+    RatingModule
   ],
   declarations: [
     Contract,

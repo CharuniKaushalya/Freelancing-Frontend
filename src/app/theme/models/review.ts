@@ -2,8 +2,9 @@
  * Review
  */
 export class Review {
-    public user_id : number;
-    public from_id: string;
+    public from : any;
+    public to: any;
 	public rate: number;    
-    public review: string;
+    public description: string;
+    public data :string;
 }
