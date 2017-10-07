@@ -12,6 +12,10 @@ import { ContractDetails } from './components/detail/contract_details.component'
 import { ContractRules } from './components/rules/contract_rules.component';
 
 import { DataService } from "../../theme/services/data/data.service";
+import { ReviewModelComponent } from './components/review-model/review-model.component';
+import { NgbModalModule } from '@ng-bootstrap/ng-bootstrap';
+
+import {RatingModule} from "ng2-rating";
 
 @NgModule({
   imports: [
@@ -19,15 +23,21 @@ import { DataService } from "../../theme/services/data/data.service";
     ReactiveFormsModule,
     FormsModule,
     NgaModule,
+    NgbModalModule,
     TreeModule,
-    routing
+    routing,
+    RatingModule
   ],
   declarations: [
     Contract,
     MyContract,
     ContractView,
     ContractDetails,
-    ContractRules
+    ContractRules,
+    ReviewModelComponent
+  ],
+  entryComponents: [
+    ReviewModelComponent
   ],
   providers: [
     DataService
