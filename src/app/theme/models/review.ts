@@ -7,4 +7,5 @@ export class Review {
 	public rate: number;    
     public description: string;
     public data :string;
+    public time:any;
 }

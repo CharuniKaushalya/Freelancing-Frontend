@@ -17,9 +17,9 @@
                 <br>
 
                 <div *ngIf="custom_search">
-                    <br>
+                    <br><label class="text-primary"><h5>Find Projects based on skills: </h5></label>
                     <tag-input style="padding-top: 0px;padding-bottom: 0px;padding-left: 0px;padding-right: 0px;" class="form-control" [ngModel]="skills"
-                        [ngModelOptions]="{standalone: true}" [secondaryPlaceholder]="'Type here to find'" [onlyFromAutocomplete]="true"
+                        [ngModelOptions]="{standalone: true}" [secondaryPlaceholder]="'Type here to find skills'" [onlyFromAutocomplete]="true"
                         (onAdd)="onItemAdded($event)" (onRemove)="onItemRemoved($event)" theme='bootstrap-default'>
                         <tag-input-dropdown [appendToBody]="false" [autocompleteItems]="skill_items">
                         </tag-input-dropdown>
