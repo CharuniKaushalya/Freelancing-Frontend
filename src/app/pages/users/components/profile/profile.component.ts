@@ -20,7 +20,7 @@ import { Employment } from "../../../../theme/models/employment";
 import { Portfolio } from "../../../../theme/models/portfolio";
 import { Review } from "../../../../theme/models/review";
 
-import {RatingModule,Rating} from "ng2-rating";
+import { RatingModule, Rating } from "ng2-rating";
 
 @Component({
     selector: 'profile',
@@ -49,8 +49,8 @@ export class Profile implements OnInit {
     useremail: string;
 
     reviews: Review[] = [];
-    sum_reviews=0;
-    avg_reviews;
+    sum_reviews = 0;
+    avg_reviews = 0;
 
     constructor(private _service: MyService,
         private _route: ActivatedRoute, private _router: Router, private modalService: NgbModal) {
@@ -70,15 +70,49 @@ export class Profile implements OnInit {
         });
 
         this.useremail = localStorage.getItem("email");
+        // this.reviews = [];
+        // this.sum_reviews = 0;
+        // this.avg_reviews = 0;
     }
 
 
     ngOnInit() {
+        
         this._route.params.forEach((params: Params) => {
             if (params['user_id'] !== undefined) {
                 let user_id = params['user_id'];
                 this._service.getstreamitem(this.userStream, user_id.toString()).then(data => {
                     if (data.error == undefined || !data.error) {
+                        this._service.listStreamItems(this.reviewStream).then(rdata => {
+                            rdata.forEach(element => {
+                                let r: Review;
+                                this._service.gettxoutdata(element.txid).then(largedata => {
+                                    r = JSON.parse(this._service.Hex2String(largedata.toString()));
+                                    
+                                    if (r.to == data.key) {
+
+                                        this._service.listStreamKeyItems(this.userStream, r.from).then(rkdata => {
+                                            if (rkdata[rkdata.length - 1]) {
+                                                let user = JSON.parse(this._service.Hex2String(rkdata[rkdata.length - 1].data.toString()));
+                                                user.user_id = rkdata[rkdata.length - 1].txid;
+                                                r.from = user;
+                                                r.time = element.blocktime;
+                                                this.sum_reviews += r.rate;
+                                                this.reviews.push(r);
+                                                this.avg_reviews = this.sum_reviews / this.reviews.length;
+                                            }
+                                        }).catch(error => {
+                                            console.log(error.message);
+                                        });
+                                    }
+                                }).catch(error => {
+                                    console.log(error.message);
+                                });
+                            });
+                        }).catch(error => {
+                            console.log(error.message);
+                        });
+
                         this._service.listStreamKeyItems(this.skillsStream, data.key).then(data => {
                             data.forEach(element => {
                                 let skill = JSON.parse(this._service.Hex2String(element.data.toString()));
@@ -134,35 +168,6 @@ export class Profile implements OnInit {
                     console.log(error.message);
                 });
 
-                this._service.listStreamItems(this.reviewStream).then(data => {
-                    data.forEach(element => {
-                        let r: Review;
-                        this._service.gettxoutdata(element.txid).then(largedata => {
-                            r = JSON.parse(this._service.Hex2String(largedata.toString()));
-                            if(r.to == localStorage.getItem("email")){
-                                
-                                this._service.listStreamKeyItems(this.userStream,r.from).then(data => {
-                                    if(data[data.length-1]){
-                                      let user= JSON.parse(this._service.Hex2String(data[data.length-1].data.toString()));
-                                      user.user_id=data[data.length-1].txid;
-                                      r.from = user;
-                                      r.time = element.blocktime;
-                                      this.sum_reviews += r.rate;
-                                      this.reviews.push(r);
-                                      this.avg_reviews = this.sum_reviews/this.reviews.length;
-                                    }
-                                }).catch(error => {
-                                    console.log(error.message);
-                                });
-                            }
-                        }).catch(error => {
-                            console.log(error.message);
-                        });
-                    });
-                }).catch(error => {
-                    console.log(error.message);
-                });
-                
             } else {
 
             }
@@ -173,7 +178,7 @@ export class Profile implements OnInit {
 
     }
 
-    gotoReviewer(id:string){
+    gotoReviewer(id: string) {
         // let link = ['/pages/users/profile', id];
         // this._router.navigate(link);
     }

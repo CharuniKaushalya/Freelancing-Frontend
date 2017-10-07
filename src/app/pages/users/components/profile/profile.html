@@ -200,7 +200,7 @@
                         <li *ngFor="let review of reviews">
                             <h4 class="title">
                                 <span class="text-warning">
-                                    <a (click)="gotoReviewer(review.from.user_id)">{{review?.from?.name}} </a>
+                                    <a style="cursor:pointer" (click)="gotoReviewer(review.from.user_id)">{{review?.from?.name}} </a>
                                 </span>
                                 <span>{{ review.time | date }} </span>
                                 <span class="pull-right">
