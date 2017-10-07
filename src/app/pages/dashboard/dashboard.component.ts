@@ -25,6 +25,11 @@ export class Dashboard implements OnInit {
         if (localStorage.getItem("email") == "" || localStorage.getItem("email") == undefined) {
             this._router.navigate(['login']);
         } else {
+            if(localStorage.getItem("userType") == "Client" ){
+                this._router.navigate(['pages/work/posted_projects']);
+            }else{
+                this._router.navigate(['pages/work/my_projects']);
+            }
             console.log(localStorage.getItem("userType"));
             _service.listStreamItems(this.projctsStream).then(data => {
                 data.forEach(element => {

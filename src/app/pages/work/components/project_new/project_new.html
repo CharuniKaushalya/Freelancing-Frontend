@@ -84,7 +84,7 @@
                 </div>
                 <br>
                 <div class="row">
-                    <ba-checkbox [(ngModel)]="needQA" [ngModelOptions]="{standalone: true}" ></ba-checkbox> Need a QA?
+                    <ba-checkbox [(ngModel)]="needQA" [ngModelOptions]="{standalone: true}"></ba-checkbox> Need a QA?
                 </div>
                 <br>
                 <div *ngIf="needQA==1" class="form-group">
@@ -102,7 +102,8 @@
                                 min=0 type="number">
                         </div>
                         <div class="col-sm-3">
-                            <select [(ngModel)]="project.qabudget.type" [ngModelOptions]="{standalone: true}" class="form-control" name="cur_type_qa" id="cur_type_qa">
+                            <select [(ngModel)]="project.qabudget.type" [ngModelOptions]="{standalone: true}" class="form-control" name="cur_type_qa"
+                                id="cur_type_qa">
                                 <option *ngFor="let cur_type_qa of cur_types" [ngValue]="cur_type_qa">
                                         {{cur_type_qa}}
                                     </option>
@@ -126,7 +127,8 @@
             </h3>
             <br><br><br>
             <tag-input style="padding-top: 0px;padding-bottom: 0px;padding-left: 0px;padding-right: 0px;" class="form-control" [ngModel]="skills"
-                [secondaryPlaceholder]="'Type here to find'" [onlyFromAutocomplete]="true" (onAdd)="onItemAdded($event)" theme='bootstrap-default'>
+                [secondaryPlaceholder]="'Type here to find'" [onlyFromAutocomplete]="true" (onAdd)="onItemAdded($event)" (onRemove)="onItemRemoved($event)"
+                theme='bootstrap-default'>
                 <tag-input-dropdown [appendToBody]="false" [autocompleteItems]="skill_items">
                 </tag-input-dropdown>
             </tag-input>

@@ -128,4 +128,9 @@ export class ProjectNew implements OnInit {
         console.log(this.skills);
     }
 
+    onItemRemoved(item) {
+        this.skills = this.skills.filter(i => i !== item);
+        console.log(this.skills);
+    }
+
 }
