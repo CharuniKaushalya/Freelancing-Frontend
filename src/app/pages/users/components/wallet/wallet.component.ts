@@ -81,24 +81,28 @@ export class Wallet implements OnInit {
         //     console.log(data);
         // });
 
-        if (asset == "USD") {
-            this._service.sendAsset(this.user.address, asset, this.assets[0].requested_amount.toString()).then(data => {
+        // this._service.sendAssetFrom("from", "to", "USD", "amount").then(data => {
+        //     console.log(data);
+        // });
 
-                this.assets[0].available_balance = Number(this.assets[0].available_balance) + Number(this.assets[0].requested_amount);
-                this.assets[0].requested_amount = '';
-            }).catch(error => {
-                console.log(error.message);
-            });
-
-        } else {
-            this._service.sendAsset(this.user.address, asset, this.assets[1].requested_amount.toString()).then(data => {
-
-                this.assets[1].available_balance = Number(this.assets[1].available_balance) + Number(this.assets[1].requested_amount);
-                this.assets[1].requested_amount = '';
-            }).catch(error => {
-                console.log(error.message);
-            });
-        }
+        // if (asset == "USD") {
+        //     this._service.sendAsset(this.user.address, asset, this.assets[0].requested_amount.toString()).then(data => {
+        //
+        //         this.assets[0].available_balance = Number(this.assets[0].available_balance) + Number(this.assets[0].requested_amount);
+        //         this.assets[0].requested_amount = '';
+        //     }).catch(error => {
+        //         console.log(error.message);
+        //     });
+        //
+        // } else {
+        //     this._service.sendAsset(this.user.address, asset, this.assets[1].requested_amount.toString()).then(data => {
+        //
+        //         this.assets[1].available_balance = Number(this.assets[1].available_balance) + Number(this.assets[1].requested_amount);
+        //         this.assets[1].requested_amount = '';
+        //     }).catch(error => {
+        //         console.log(error.message);
+        //     });
+        // }
     }
 
     goToUser(id: string) {
