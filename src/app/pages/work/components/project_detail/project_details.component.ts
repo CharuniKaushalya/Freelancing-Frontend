@@ -3,6 +3,7 @@ import { MyService } from "../../../../theme/services/backend/service";
 import { Project } from "../../../../theme/models/project";
 import { Bid } from "../../../../theme/models/bid";
 import { User } from "../../../../theme/models/user";
+import { BidValues } from "../../../../theme/models/bidValues";
 
 import { TreeModel } from 'ng2-tree';
 import { Router, Params, ActivatedRoute } from '@angular/router';
@@ -60,7 +61,26 @@ export class ProjectDetails implements OnInit {
                         if (project_id == bid_key.split("/")[0]) {
 
                             let bid: Bid;
+                            let client : string ="";
                             bid = JSON.parse(this._service.Hex2String(element.data.toString()));
+                            this._service.listStreamKeyItems("Users", this.project.user).then(data => {
+                                if(data[data.length-1]){
+                                  let user: User = JSON.parse(this._service.Hex2String(data[data.length-1].data.toString()));
+                                  client = user.address;
+                                  if(bid.data && client){
+                                    this._service.decrypt(client, bid.data).then(data => {
+                                        if(data.data){
+                                            let bid_data:BidValues = JSON.parse(data.data);
+                                            bid.bid_amount = bid_data.bid_amount
+                                            bid.deliver_time = bid_data.deliver_time;
+                                        }
+                                      });
+                                }
+                                 
+                                }
+                              }).catch(error => {
+                                console.log(error.message);
+                            });
                             _service.listStreamKeyItems(this.userstream, bid.user_email.toString()).then(data => {
                                 let user: User;
                                 user = JSON.parse(this._service.Hex2String(data[data.length-1].data.toString()));
