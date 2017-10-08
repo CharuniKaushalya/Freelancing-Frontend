@@ -22,7 +22,7 @@ export class ContractView implements OnInit {
     userstream: string = "Users";
     projectStatusStream: string = "ProjectStatus";
     projectStream: string = "projects";
-    reviewStream: string = "user-review";
+    reviewStream: string = "user-reviews";
 
     pending_contracts: Contract[] = [];
     active_contracts: Contract[] = [];

@@ -40,7 +40,7 @@ export class Profile implements OnInit {
     eduStream = "user-edu";
     workStream = "user-work";
     projStream = "user-portfolio";
-    reviewStream = "user-review";
+    reviewStream = "user-reviews";
 
     skills = [];
     educations: Education[] = [];
@@ -94,6 +94,15 @@ export class Profile implements OnInit {
                                         this._service.listStreamKeyItems(this.userStream, r.from).then(rkdata => {
                                             if (rkdata[rkdata.length - 1]) {
                                                 let user = JSON.parse(this._service.Hex2String(rkdata[rkdata.length - 1].data.toString()));
+                                                if(r.signature){
+                                                    this._service.verify(user.address, r.signature,JSON.stringify(r)).then(data => {
+                                                        if(data.verified){
+                                                            console.log("Data Verified : " , data.verified, "add bid sum here");
+                                                        }
+                                                    }).catch(error => {
+                                                        console.log(error.message);
+                                                    });
+                                                }
                                                 user.user_id = rkdata[rkdata.length - 1].txid;
                                                 r.from = user;
                                                 r.time = element.blocktime;
@@ -179,6 +188,7 @@ export class Profile implements OnInit {
     }
 
     gotoReviewer(id: string) {
+        window.open("/#/pages/users/profile/"+ id)
         // let link = ['/pages/users/profile', id];
         // this._router.navigate(link);
     }
