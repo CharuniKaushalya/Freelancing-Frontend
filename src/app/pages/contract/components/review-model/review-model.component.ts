@@ -6,7 +6,7 @@ import 'rxjs/add/operator/map';
 import { FormGroup, AbstractControl, FormBuilder, Validators } from '@angular/forms';
 import { Router } from '@angular/router';
 
-import {RatingModule,Rating} from "ng2-rating";
+import { RatingModule, Rating } from "ng2-rating";
 
 import { AuthService } from '../../../../providers/auth.service';
 
@@ -19,7 +19,7 @@ import { Contract } from "../../../../theme/models/contract";
     selector: 'app-review-model',
     templateUrl: './review-model.component.html',
     styleUrls: ['./review-model.component.scss'],
-    providers: [MyService, AuthService,Rating]
+    providers: [MyService, AuthService, Rating]
 })
 export class ReviewModelComponent implements OnInit {
 
@@ -28,12 +28,12 @@ export class ReviewModelComponent implements OnInit {
     public rate: AbstractControl;
     public description: AbstractControl;
 
-    public contract :Contract;
+    public contract: Contract;
 
     public submitted: boolean = false;
 
     @Input() review: Review;
-    reviewStream: string = "user-review";isDisabled: boolean = false;
+    reviewStream: string = "user-reviews"; isDisabled: boolean = false;
 
     constructor(private activeModal: NgbActiveModal, fb: FormBuilder, public authService: AuthService,
         private _service: MyService, private _router: Router) {
@@ -56,10 +56,10 @@ export class ReviewModelComponent implements OnInit {
             if (this.contract.client_email == localStorage.getItem("email")) {
                 this.review.from = this.contract.client_email;
                 this.review.to = this.contract.freelancer_email;
-            } else if(this.contract.freelancer_email == localStorage.getItem("email")){
+            } else if (this.contract.freelancer_email == localStorage.getItem("email")) {
                 this.review.from = this.contract.freelancer_email;
                 this.review.to = this.contract.client_email;
-                
+
             }
         }).catch(error => {
             console.log(error.message);
@@ -75,14 +75,21 @@ export class ReviewModelComponent implements OnInit {
         let review_key = this.key + "/" + this.review.from;
 
         if (this.form.valid) {
-            
-            this._service.encrypt(localStorage.getItem("address"), JSON.stringify(this.review)).then(data => {
-                this.review.data = data.data;
+
+            this._service.sign(localStorage.getItem("address"), JSON.stringify(this.review)).then(data => {
+                if (data.sign) {
+                    this.review.signature = data.sign;
+                }
                 console.log(this.review);
                 let rJSON = JSON.stringify(this.review);
                 let data_hex = this._service.String2Hex(rJSON);
                 this._service.publishToStream(this.reviewStream, review_key, data_hex).then(data => {
                     this.activeModal.close();
+                }).catch(error => {
+                    console.log(error.message);
+                });
+                this._service.verify(localStorage.getItem("address"), this.review.signature, JSON.stringify(this.review)).then(data => {
+                    console.log(data);
                 }).catch(error => {
                     console.log(error.message);
                 });

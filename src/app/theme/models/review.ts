@@ -6,5 +6,7 @@ export class Review {
     public to: any;
 	public rate: number;    
     public description: string;
-    public data :string;
+    // public data :string; //to be romoved
+    public signature :string;    
+    public time:any;
 }

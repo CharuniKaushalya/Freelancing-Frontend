@@ -17,6 +17,8 @@ import { PortfolioModal } from './components/proj-modal/proj-modal.component';
 import { WorkModal } from './components/work-modal/work-modal.component';
 import { PaymentModal } from './components/payment-modal/payment.component';
 
+import {RatingModule} from "ng2-rating";
+
 @NgModule({
   imports: [
     CommonModule,
@@ -27,6 +29,7 @@ import { PaymentModal } from './components/payment-modal/payment.component';
     NgbDropdownModule,
     NgbModalModule,
     TagInputModule,
+    RatingModule,
     CountryPickerModule.forRoot({
       baseUrl: '/assets/'
     })
