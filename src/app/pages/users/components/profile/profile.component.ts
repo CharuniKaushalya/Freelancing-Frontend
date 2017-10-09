@@ -95,20 +95,25 @@ export class Profile implements OnInit {
                                             if (rkdata[rkdata.length - 1]) {
                                                 let user = JSON.parse(this._service.Hex2String(rkdata[rkdata.length - 1].data.toString()));
                                                 if(r.signature){
-                                                    this._service.verify(user.address, r.signature,JSON.stringify(r)).then(data => {
+                                                    let rcopy:Review = new Review();
+                                                    rcopy.rate=r.rate;
+                                                    rcopy.description=r.description;
+                                                    rcopy.from=r.from;
+                                                    rcopy.to=r.to;
+                                                    this._service.verify(user.address, r.signature,JSON.stringify(rcopy)).then(data => {
                                                         if(data.verified){
-                                                            console.log("Data Verified : " , data.verified, "add bid sum here");
+                                                            console.log("Data Verified : " , data.verified);
+                                                            user.user_id = rkdata[rkdata.length - 1].txid;
+                                                            r.from = user;
+                                                            r.time = element.blocktime;
+                                                            this.sum_reviews += r.rate;
+                                                            this.reviews.push(r);
+                                                            this.avg_reviews = this.sum_reviews / this.reviews.length;
                                                         }
                                                     }).catch(error => {
                                                         console.log(error.message);
                                                     });
                                                 }
-                                                user.user_id = rkdata[rkdata.length - 1].txid;
-                                                r.from = user;
-                                                r.time = element.blocktime;
-                                                this.sum_reviews += r.rate;
-                                                this.reviews.push(r);
-                                                this.avg_reviews = this.sum_reviews / this.reviews.length;
                                             }
                                         }).catch(error => {
                                             console.log(error.message);

@@ -88,11 +88,6 @@ export class ReviewModelComponent implements OnInit {
                 }).catch(error => {
                     console.log(error.message);
                 });
-                this._service.verify(localStorage.getItem("address"), this.review.signature, JSON.stringify(this.review)).then(data => {
-                    console.log(data);
-                }).catch(error => {
-                    console.log(error.message);
-                });
             }).catch(error => {
                 console.log(error.message);
             });
