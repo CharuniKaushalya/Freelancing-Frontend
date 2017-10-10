@@ -70,7 +70,7 @@ export class ContractView implements OnInit {
 
                     if ((this.userType == "Client" && contract.client_email == this.userEmail) ||
                         (contract.type == this.userType && contract.freelancer_email == this.userEmail)) {
-                        if (contract_status.status == "Pending" || contract_status.status == "Confirmed") {
+                        if (contract_status.status == "Pending" || contract_status.status == "Confirmed"  || contract_status.status == "RedoPending") {
                             console.log(contract);
                             this.pending_contracts.unshift(contract);
 
@@ -171,7 +171,7 @@ export class ContractView implements OnInit {
                                 });
                                 this.cancelled_contracts.push(linked_contract);
                             }
-                            console.log("Contract Cancelled");
+                            console.log("Linked Contract Cancelled");
 
                             let payment2 = linked_contract.amount;
                             locked_amount_usd = locked_amount_usd - Number(payment2);
@@ -226,7 +226,7 @@ export class ContractView implements OnInit {
                         let linked_contract_status = JSON.parse(this._service.Hex2String((element[element.length - 1]).data.toString()));
 
                         console.log(linked_contract_status);
-                        if (linked_contract_status.status == "Pending") {
+                        if (linked_contract_status.status == "Pending" || linked_contract_status.status == "RedoPending") {
                             this.changeContractStatus(id, "Confirmed");
                             contract.status.status = "Confirmed";
 
@@ -240,10 +240,6 @@ export class ContractView implements OnInit {
                             });
                             this.changeStateOfLinkedContract(linked_contract_status, "Active");
                             this.updateProjectStatus(project_id, "Closed");
-
-
-                        } else if (linked_contract_status.status == "Cancelled") {
-
                         }
                     });
                 }
@@ -313,6 +309,13 @@ export class ContractView implements OnInit {
             console.log("Linked contract status saved");
             console.log(data);
         });
+    }
+
+    redoContract(id: string): void {
+        console.log('Go to create contract');
+        let bid = id.toString()+"/0";
+        let link = ['/pages/contract/mycontract', bid, 0];
+        this._router.navigate(link);
     }
 
     rModalShow(contract_id: string): void {
