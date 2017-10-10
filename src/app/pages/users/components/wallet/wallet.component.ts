@@ -115,6 +115,20 @@ export class Wallet implements OnInit {
         activeModal.componentInstance.modalHeader = '';
         activeModal.componentInstance.amount = this.assets[0].requested_amount;
         activeModal.componentInstance.profile_id = this.user_id;
+        activeModal.componentInstance.method= "Payment";
+        activeModal.result
+            .then((d) => {
+                console.log("result");
+            });
+    }
+
+    transferModalShow(): void {
+        const activeModal = this.modalService.open(PaymentModal, {size: 'sm'});
+        activeModal.componentInstance.modalHeader = '';
+        activeModal.componentInstance.amount = this.assets[0].requested_amount;
+        activeModal.componentInstance.profile_id = this.user_id;
+        activeModal.componentInstance.method= "Transfer";
+        activeModal.componentInstance.balance= this.assets[0].available_balance;
         activeModal.result
             .then((d) => {
                 console.log("result");

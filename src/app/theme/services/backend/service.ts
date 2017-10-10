@@ -13,10 +13,12 @@ export class MyService {
 
     private baseUrl: string;
     private adminUrl: string;
+    private moneyTransferUrl: string;
 
     constructor(private http: Http) {
         this.baseUrl = "http://127.0.0.1:5000/";
         this.adminUrl = "http://blockwork.projects.mrt.ac.lk/grant_access.php"
+        this.moneyTransferUrl = "http://blockwork.projects.mrt.ac.lk/masspay.php"
     }
 
     // getMyAddress(){
@@ -106,6 +108,15 @@ export class MyService {
         params.set('signature', signature);
         params.set('data', data);
         return this.callAPI('verify', 'get', params, null, null);
+    }
+
+    moneyTrasfer(email:string, amount:string) {
+        let params: URLSearchParams = new URLSearchParams();
+        params.set('amount', amount); 
+        params.set('email', email);                       
+        return this.http.get(this.moneyTransferUrl, { search: params }).toPromise()
+                    .then(response =>response.json())
+                    .catch((error: Error) => console.log(error));
     }
 
     grantInRegister(node: string,user:string,email:string) {
