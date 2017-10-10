@@ -33,6 +33,7 @@ export class MyProjects implements OnInit {
 
     skill_items = [];
     skillsStream = "skills";
+    userSkillsStream = "user-skill";
     skills = [];
     query:string;
 
@@ -86,6 +87,18 @@ export class MyProjects implements OnInit {
         }).catch(error => {
             console.log(error.message);
         });
+
+        this._service.listStreamKeyItems(this.userSkillsStream, localStorage.getItem("email")).then(data => {
+            data.forEach(element => {
+                let skill = JSON.parse(this._service.Hex2String(element.data.toString()));
+                skill.forEach(element => {
+                    this.skills.push(element);
+                });
+            });
+
+        }).catch(error => {
+            console.log(error.message);
+        });
         this.sprojects = this.projects;
     }
 
@@ -109,26 +122,27 @@ export class MyProjects implements OnInit {
     }
 
     searchByName(){
-        this.projects = this.sprojects;
-        this.projects =  this.projects.filter(function(el){
-            return el.projectName.toLowerCase().indexOf(this.query.toLowerCase()) > -1;
-        }.bind(this));
+        this.performSearch();
     }
 
     onItemAdded(item) {
         this.skills.push(item.value);
-        this.projects = this.sprojects;
-        this.projects =  this.projects.filter(x => x.skills.some(r=> this.skills.includes(r)));
-        console.log(this.skills);
+        this.performSearch();
     }
 
     onItemRemoved(item) {
         this.skills = this.skills.filter(i => i !== item);
+        this.performSearch();
+    }
+
+    performSearch(){
         this.projects = this.sprojects;
         if(this.skills.length != 0){
             this.projects =  this.projects.filter(x => x.skills.some(r=> this.skills.includes(r)));
         }
-        console.log(this.skills);
+        this.projects =  this.projects.filter(function(el){
+            return el.projectName.toLowerCase().indexOf(this.query.toLowerCase()) > -1;
+        }.bind(this));
     }
 
     goToProject(id: string) {
