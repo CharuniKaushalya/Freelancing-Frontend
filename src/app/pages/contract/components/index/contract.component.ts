@@ -47,6 +47,11 @@ export class MyContract implements OnInit {
     freelancer_username = '';
     qa_username = '';
     available_balance = 0;
+    primary_balance = 0;
+    project_id;
+
+    redo_request = '';
+    inEdit = false;
 
     public freelancerMilestones = [
         {
@@ -138,47 +143,75 @@ export class MyContract implements OnInit {
         this._route.params.forEach((params: Params) => {
             if (params['fBid'] !== undefined) {
                 let fBid = params['fBid'];
-                let project_id = fBid.split("/")[0];
+
+                this.project_id = fBid.split("/")[0];
                 let f_email = fBid.split("/")[1];
 
                 this.contract = new Contract();
-                this.contract.milestones = 0;
-
                 this.qa_contract = new Contract();
-                this.qa_contract.milestones = 0;
 
-                _service.gettxoutdata(project_id).then(largedata => {
-                    let project = JSON.parse(this._service.Hex2String(largedata.toString()));
-                    this.contract.projectName = project.projectName;
-                    this.contract.type = "Freelancer";
-                    this.contract.description = project.description;
-                    this.contract.asset = project.budget.type;
+                if (f_email == '0') {
+                    this.inEdit = true;
+                    _service.gettxoutdata(this.project_id).then(largedata => {
+                        this.contract = JSON.parse(this._service.Hex2String(largedata.toString()));
 
-                    this.qa_contract.projectName = project.projectName;
-                    this.qa_contract.type = "QA";
-                    this.qa_contract.description = project.description;
-                    this.qa_contract.asset = project.budget.type;
-                });
+                        _service.listStreamKeyItems(this.contractStatusStream, this.project_id).then(element => {
+                            this.contract.status = JSON.parse(this._service.Hex2String((element[element.length - 1]).data.toString()));
 
-                _service.listStreamKeyItems(this.userstream, f_email.toString()).then(data => {
-                    let user: User;
-                    user = JSON.parse(this._service.Hex2String(data[data.length - 1].data.toString()));
-                    this.contract.freelancer = user.address;
-                    this.contract.freelancer_email = f_email.toString();
-                    this.freelancer_username = user.name;
-                });
+                            this.redo_request = this.contract.status.milestone_state;
+                            this.primary_balance = this.contract.amount;
 
-                if (params['qaBid'] != 0) {
-                    this.hasQA = true;
-                    let qaBid = params['qaBid'];
-                    let qa_email = qaBid.split("/")[1];
-                    _service.listStreamKeyItems(this.userstream, qa_email.toString()).then(data => {
+                            console.log("Editing contract");
+                            console.log(this.contract);
+
+                            _service.listStreamKeyItems(this.userstream, this.contract.freelancer_email).then(data => {
+                                let user: User;
+                                user = JSON.parse(this._service.Hex2String(data[data.length - 1].data.toString()));
+                                this.freelancer_username = user.name;
+
+                                this.setMilestones();
+                            });
+                        });
+                    });
+
+                } else {
+
+                    this.contract.milestones = 0;
+                    this.qa_contract.milestones = 0;
+
+                    _service.gettxoutdata(this.project_id).then(largedata => {
+                        let project = JSON.parse(this._service.Hex2String(largedata.toString()));
+                        this.contract.projectName = project.projectName;
+                        this.contract.type = "Freelancer";
+                        this.contract.description = project.description;
+                        this.contract.asset = project.budget.type;
+
+                        this.qa_contract.projectName = project.projectName;
+                        this.qa_contract.type = "QA";
+                        this.qa_contract.description = project.description;
+                        this.qa_contract.asset = project.budget.type;
+                    });
+
+                    _service.listStreamKeyItems(this.userstream, f_email.toString()).then(data => {
                         let user: User;
                         user = JSON.parse(this._service.Hex2String(data[data.length - 1].data.toString()));
-                        this.qa_contract.freelancer = user.address;
-                        this.qa_contract.freelancer_email = qa_email.toString();
-                        this.qa_username = user.name;
+                        this.contract.freelancer = user.address;
+                        this.contract.freelancer_email = f_email.toString();
+                        this.freelancer_username = user.name;
                     });
+
+                    if (params['qaBid'] != 0) {
+                        this.hasQA = true;
+                        let qaBid = params['qaBid'];
+                        let qa_email = qaBid.split("/")[1];
+                        _service.listStreamKeyItems(this.userstream, qa_email.toString()).then(data => {
+                            let user: User;
+                            user = JSON.parse(this._service.Hex2String(data[data.length - 1].data.toString()));
+                            this.qa_contract.freelancer = user.address;
+                            this.qa_contract.freelancer_email = qa_email.toString();
+                            this.qa_username = user.name;
+                        });
+                    }
                 }
             }
             else {
@@ -215,7 +248,19 @@ export class MyContract implements OnInit {
     ngOnInit() {
     }
 
-    getAvailableBalance() {
+    setMilestones(): void {
+
+        for (let i = 0; i < this.contract.milestones; i++) {
+            this.freelancerMilestones[i].edit = true;
+            this.freelancerMilestones[i].value = this.contract.milestoneValues[i].value;
+            this.freelancerMilestones[i].deadline = this.contract.milestoneValues[i].deadline;
+            this.freelancerMilestones[i].task = this.contract.milestoneValues[i].task;
+        }
+
+        this.updateMilestonesSelectedValue(this.contract.milestones);
+    }
+
+    getAvailableBalance(): void {
 
         let user = new User();
         this._service.listStreamKeyItems(this.userstream, localStorage.getItem('email')).then(data => {
@@ -317,7 +362,25 @@ export class MyContract implements OnInit {
         this.qa_final_payment = String(sum + '%');
     }
 
+    savePreviousContractStatus() {
+
+        let prevContractStatus = this.contract.status;
+        prevContractStatus.status = "PreviousVersion";
+        prevContractStatus.milestone_state = null;
+        let prev_data_hex = this._service.String2Hex(JSON.stringify(prevContractStatus));
+
+        this._service.publishToStream(this.contractStatusStream, prevContractStatus.contract_id, prev_data_hex).then(data => {
+            console.log(data);
+            console.log(prevContractStatus);
+            console.log("Previous Contract Status Updated");
+        });
+    }
+
     saveContract() {
+
+        if (this.inEdit) {
+            this.savePreviousContractStatus();
+        }
 
         let key = this.contract.projectName;
         this.contract.milestoneValues = this.freelancerMilestones.filter(function (attr) {
@@ -349,33 +412,83 @@ export class MyContract implements OnInit {
         if (requested_amount <= this.available_balance)
             hasEnoughAssets = true;
 
+        if (this.inEdit && requested_amount <= (this.available_balance + this.primary_balance))
+            hasEnoughAssets = true;
+
         if (hasEnoughAssets) {
+
+            let newContractStatus = this.contract.status;
+            this.contract.status = null;
+
             this._service.publishToStream(this.contractStream, key, data_hex).then(f_data => {
                 console.log("Freelancer Contract Saved");
+                console.log(this.contract);
                 console.log(f_data);
 
-                if (this.hasQA) {
-                    this._service.publishToStream(this.contractStream, key, qa_data_hex).then(qa_data => {
-                        console.log("QA Contract Saved");
-                        console.log(qa_data);
+                if (this.inEdit) {
+                    this.saveContractStatus(f_data, newContractStatus.contract_link);
 
-                        this.saveContractStatus(f_data, qa_data);
-                        this.saveContractStatus(qa_data, f_data);
-                    });
+                    if (this.primary_balance < requested_amount) {
+                        let lock_amount = requested_amount - this.primary_balance;
+
+                        this._service.lockAssetsFrom(this.contract.client, this.contract.asset, lock_amount.toString()).then(data => {
+                            console.log("Assets Locked");
+                            console.log(data);
+                        });
+
+                    } else if (this.primary_balance > requested_amount) {
+                        let locked_amount_usd = 0;
+
+                        this._service.getAddressBalances(this.contract.client, 'True').then(total_balances => {
+
+                            if (total_balances.length == 1)
+                                locked_amount_usd = total_balances[0].qty;
+
+                            this._service.getAddressBalances(this.contract.client, 'False').then(unlocked_balances => {
+
+                                if (unlocked_balances.length == 1) {
+                                    locked_amount_usd = locked_amount_usd - unlocked_balances[0].qty;
+                                }
+                                locked_amount_usd -= this.primary_balance;
+                                locked_amount_usd += requested_amount;
+
+                                this._service.unlockAllAssets().then(data => {
+                                    console.log(data);
+                                    console.log("Assets Unlocked");
+
+                                    this._service.lockAssetsFrom(this.contract.client, this.contract.asset, locked_amount_usd.toString()).then(data => {
+                                        console.log(data);
+                                        console.log("Assets Locked = " + locked_amount_usd);
+                                    });
+                                });
+                            });
+                        });
+                    }
 
                 } else {
-                    this.saveContractStatus(f_data, null);
-                }
+                    if (this.hasQA) {
+                        this._service.publishToStream(this.contractStream, key, qa_data_hex).then(qa_data => {
+                            console.log("QA Contract Saved");
+                            console.log(qa_data);
 
-                this._service.lockAssetsFrom(this.contract.client, this.contract.asset, requested_amount.toString()).then(data => {
-                    console.log("Assets Locked");
-                    console.log(data);
-                });
+                            this.saveContractStatus(f_data, qa_data);
+                            this.saveContractStatus(qa_data, f_data);
+                        });
+
+                    } else {
+                        this.saveContractStatus(f_data, null);
+                    }
+                    this._service.lockAssetsFrom(this.contract.client, this.contract.asset, requested_amount.toString()).then(data => {
+                        console.log("Assets Locked");
+                        console.log(data);
+                    });
+                }
                 this._router.navigate(['/pages/contract/contract_view'])
             });
         } else {
             $('#myModal').modal('show');
         }
+
     }
 
     saveContractStatus(key_id: string, link_id: string) {

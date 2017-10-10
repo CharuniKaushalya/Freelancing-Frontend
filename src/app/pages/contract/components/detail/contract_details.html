@@ -17,7 +17,7 @@
                         <td>
                             <br><b>Type</b>
                         </td>
-                        <td >
+                        <td>
                             <br>{{contract.type}}
                         </td>
                     </tr>
@@ -91,21 +91,24 @@
                                     </td>
                                 </tr>
                                 <tr *ngIf="!isCompleted">
-                                    <td colspan=5 *ngIf="contract.status.milestone_state=='Uncompleted' && userType=='Freelancer'">
+                                    <td colspan=5
+                                        *ngIf="contract.status.milestone_state=='Uncompleted' && userType=='Freelancer'">
                                         <br>
                                         <button class="btn btn-primary  btn-sm float-sm-right" type="button"
                                                 (click)="stateBtnClicked('Working')">Start Working
                                         </button>
                                         <br><br>
                                     </td>
-                                    <td colspan=5 *ngIf="contract.status.milestone_state=='Working' && userType=='Freelancer'">
+                                    <td colspan=5
+                                        *ngIf="contract.status.milestone_state=='Working' && userType=='Freelancer'">
                                         <br>
                                         <button class="btn btn-primary  btn-sm float-sm-right" type="button"
                                                 (click)="stateBtnClicked('Reviewing')">Work Completed
                                         </button>
                                         <br><br>
                                     </td>
-                                    <td colspan=5 *ngIf="contract.status.milestone_state=='Reviewing' && userType=='QA'">
+                                    <td colspan=5
+                                        *ngIf="contract.status.milestone_state=='Reviewing' && userType=='QA'">
                                         <br>
                                         <button class="btn btn-primary  btn-sm float-sm-right" style="width: 110px"
                                                 type="button" (click)="stateBtnClicked('Completed')">
@@ -117,7 +120,8 @@
                                             QA Failed
                                         </button>
                                     </td>
-                                    <td colspan=5 *ngIf="contract.status.milestone_state=='Reviewing' && userType=='Client' && !hasLinkedContract">
+                                    <td colspan=5
+                                        *ngIf="contract.status.milestone_state=='Reviewing' && userType=='Client' && !hasLinkedContract">
                                         <br>
                                         <button class="btn btn-primary  btn-sm float-sm-right" style="width: 110px"
                                                 type="button" (click)="stateBtnClicked('Completed')">
@@ -130,15 +134,103 @@
                                         </button>
                                     </td>
                                 </tr>
+                                <tr *ngIf="contract.status.status=='Pending'">
+                                    <td colspan=5 *ngIf="userType=='Client'">
+                                        <br>
+                                        <button class="btn btn-primary  btn-sm float-sm-right" style="width: 110px"
+                                                type="button" (click)="cancelContract()">
+                                            Cancel
+                                        </button>
+                                    </td>
+                                    <td colspan=5 *ngIf="userType!='Client'">
+                                        <br>
+                                        <button class="btn btn-primary  btn-sm float-sm-right" style="width: 110px"
+                                                type="button" (click)="confirmContract()">
+                                            Confirm
+                                        </button>
+                                        <br>
+                                        <button class="btn btn-primary  btn-sm float-sm-right" style="width: 110px"
+                                                type="button" (click)="cancelContract()">
+                                            Cancel
+                                        </button>
+                                        <br>
+                                        <button class="btn btn-primary  btn-sm float-sm-right" style="width: 110px"
+                                                type="button" (click)="showMsgBox()">
+                                            Request Redo
+                                        </button>
+                                    </td>
+                                </tr>
+                                <tr *ngIf="contract.status.status=='RedoPending'">
+                                    <td colspan=5 *ngIf="userType=='Client'">
+                                        <br>
+                                        <button class="btn btn-primary  btn-sm float-sm-right" style="width: 110px"
+                                                type="button" (click)="redoContract()">
+                                            Redo
+                                        </button>
+                                        <br>
+                                        <button class="btn btn-primary  btn-sm float-sm-right" style="width: 110px"
+                                                type="button" (click)="cancelContract()">
+                                            Cancel
+                                        </button>
+                                    </td>
+                                    <td colspan=5 *ngIf="userType!='Client'">
+                                        <br>
+                                        <button class="btn btn-primary  btn-sm float-sm-right" style="width: 110px"
+                                                type="button" (click)="confirmContract()">
+                                            Confirm
+                                        </button>
+                                        <br>
+                                        <button class="btn btn-primary  btn-sm float-sm-right" style="width: 110px"
+                                                type="button" (click)="cancelContract()">
+                                            Cancel
+                                        </button>
+                                    </td>
+                                </tr>
                                 </tbody>
                             </table>
                         </td>
                     </tr>
                     </tbody>
                 </table>
+                <div id="divRedo" style="display: none">
+                    <br><br>
+                    <form class="form-horizontal">
+                        <div class="col-sm-12">
+                            <div class="form-group">
+                                <div class="col-sm-2 d-inline-block"></div>
+                                <div class="col-sm-9 d-inline-block">
+                                <textarea [(ngModel)]="redo_msg" [ngModelOptions]="{standalone: true}"
+                                          class="form-control float-right" rows="4" name="description" id="description"
+                                          placeholder="Enter the redo request message..."></textarea>
+                                </div>
+                            </div>
+                            <div *ngIf="contract.status.status=='Pending'">
+                                <button class="btn btn-primary  btn-sm float-sm-right" style="width: 110px"
+                                        type="button" (click)="requestRedo()">
+                                    Send Request
+                                </button>
+                            </div>
+                        </div>
+                    </form>
+                </div>
             </ba-card>
             <button class="btn btn-primary" (click)="goBack()">Back</button>
             <br><br><br><br>
+        </div>
+
+        <!-- Modal1 -->
+        <div class="modal fade" id="myModal" role="dialog">
+            <div class="modal-dialog modal-sm">
+                <div class="modal-content">
+                    <div class="modal-header"></div>
+                    <div class="modal-body">
+                        <h4 class="text-center">Already Reviewed</h4>
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+                    </div>
+                </div>
+            </div>
         </div>
     </div>
 </div>
