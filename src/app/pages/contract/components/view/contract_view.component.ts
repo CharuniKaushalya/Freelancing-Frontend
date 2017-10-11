@@ -250,7 +250,7 @@ export class ContractView implements OnInit {
     goToDisscussion(id: string) {
         let contract = this.getSelectedContract(id);
         this.data.saveData(contract);
-        let link = ['/pages/discussion/discussion_view', id];
+        let link = ['/pages/chat/chat_view', id];
         this._router.navigate(link);
     }
 }
