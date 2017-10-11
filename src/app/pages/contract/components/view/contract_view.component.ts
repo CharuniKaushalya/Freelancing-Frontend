@@ -1,11 +1,13 @@
-import {Component, OnInit} from '@angular/core';
-import {MyService} from "../../../../theme/services/backend/service";
-import {DataService} from "../../../../theme/services/data/data.service";
-import {Router} from '@angular/router';
+import { Component, OnInit } from '@angular/core';
+import { MyService } from "../../../../theme/services/backend/service";
+import { Router } from '@angular/router';
 
-import {Contract} from "../../../../theme/models/contract";
-import {ContractStatus} from "../../../../theme/models/contractStatus";
-import {User} from "../../../../theme/models/user";
+import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
+import { Contract } from "../../../../theme/models/contract";
+import { ContractStatus } from "../../../../theme/models/contractStatus";
+import { ProjectStatus } from "../../../../theme/models/projectStatus";
+import { User } from "../../../../theme/models/user";
+import { ReviewModelComponent } from '../review-model/review-model.component';
 
 @Component({
     selector: 'contract_view',
@@ -18,15 +20,19 @@ export class ContractView implements OnInit {
     contractStream: string = "contracts";
     contractStatusStream: string = "ContractStatus";
     userstream: string = "Users";
+    projectStatusStream: string = "ProjectStatus";
+    projectStream: string = "projects";
+    reviewStream: string = "user-reviews";
 
     pending_contracts: Contract[] = [];
     active_contracts: Contract[] = [];
     completed_contracts: Contract[] = [];
+    cancelled_contracts: Contract[] = [];
 
     userType;
     userEmail;
 
-    constructor(private _router: Router, private _service: MyService, private data: DataService) {
+    constructor(private _router: Router, private _service: MyService, private modalService: NgbModal) {
 
         this.userType = localStorage.getItem("userType");
         this.userEmail = localStorage.getItem("email");
@@ -64,7 +70,7 @@ export class ContractView implements OnInit {
 
                     if ((this.userType == "Client" && contract.client_email == this.userEmail) ||
                         (contract.type == this.userType && contract.freelancer_email == this.userEmail)) {
-                        if (contract_status.status == "Pending" || contract_status.status == "Confirmed") {
+                        if (contract_status.status == "Pending" || contract_status.status == "Confirmed"  || contract_status.status == "RedoPending") {
                             console.log(contract);
                             this.pending_contracts.unshift(contract);
 
@@ -76,6 +82,9 @@ export class ContractView implements OnInit {
 
                         } else if (contract_status.status == "Completed") {
                             this.completed_contracts.unshift(contract);
+
+                        } else if (contract_status.status == "Cancelled") {
+                            this.cancelled_contracts.unshift(contract);
                         }
                     }
                 });
@@ -119,29 +128,71 @@ export class ContractView implements OnInit {
 
 
         let contract = this.getSelectedContract(id);
+        let locked_amount_usd = 0;
 
-        this.changeContractStatus(id, "Cancelled");
-        this.pending_contracts = this.pending_contracts.filter(function (cnt) {
-            return cnt.contract_id !== id;
-        });
+        this._service.getAddressBalances(contract.client.address, 'True').then(total_balances => {
 
-        if (contract.status.contract_link != null) {
-            this._service.listStreamKeyItems(this.contractStatusStream, contract.status.contract_link).then(element => {
-                let linked_contract_status = JSON.parse(this._service.Hex2String((element[element.length - 1]).data.toString()));
+            if (total_balances.length == 1) {
+                locked_amount_usd = total_balances[0].qty;
+            }
 
-                this.changeStateOfLinkedContract(linked_contract_status, "Cancelled");
+            this._service.getAddressBalances(contract.client.address, 'False').then(unlocked_balances => {
 
-                console.log(this.getSelectedContract(linked_contract_status.contract_id));
-                if (this.getSelectedContract(linked_contract_status.contract_id) != undefined) {
-                    this.pending_contracts = this.pending_contracts.filter(function (cnt) {
-                        return cnt.contract_id !== linked_contract_status.contract_id;
-                    });
+                if (unlocked_balances.length == 1) {
+                    locked_amount_usd = locked_amount_usd - unlocked_balances[0].qty;
                 }
-                console.log("Contract Cancelled");
+
+                console.log("Locked USD = " + locked_amount_usd);
+
+                this._service.unlockAllAssets().then(data => {
+                    console.log(data);
+                    console.log("Assets unlocked");
+
+                    this.changeContractStatus(id, "Cancelled");
+                    this.pending_contracts = this.pending_contracts.filter(function (cnt) {
+                        return cnt.contract_id !== id;
+                    });
+                    this.cancelled_contracts.push(contract);
+                    console.log("Contract Cancelled");
+
+                    let payment1 = contract.amount;
+                    locked_amount_usd = locked_amount_usd - Number(payment1);
+
+                    if (contract.status.contract_link != null) {
+                        this._service.listStreamKeyItems(this.contractStatusStream, contract.status.contract_link).then(element => {
+                            let linked_contract_status = JSON.parse(this._service.Hex2String((element[element.length - 1]).data.toString()));
+
+                            this.changeStateOfLinkedContract(linked_contract_status, "Cancelled");
+                            let linked_contract = this.getSelectedContract(linked_contract_status.contract_id);
+
+                            if (linked_contract != undefined) {
+                                this.pending_contracts = this.pending_contracts.filter(function (cnt) {
+                                    return cnt.contract_id !== linked_contract_status.contract_id;
+                                });
+                                this.cancelled_contracts.push(linked_contract);
+                            }
+                            console.log("Linked Contract Cancelled");
+
+                            let payment2 = linked_contract.amount;
+                            locked_amount_usd = locked_amount_usd - Number(payment2);
+
+                            this._service.lockAssetsFrom(contract.client.address, contract.asset, locked_amount_usd.toString()).then(data => {
+                                console.log("Assets Locked");
+                                console.log(data);
+                            });
+                        });
+                        if (this.userType == "Client")
+                            $('#myModal').modal('show');
+
+                    } else {
+                        this._service.lockAssetsFrom(contract.client.address, contract.asset, locked_amount_usd.toString()).then(data => {
+                            console.log("Assets Locked");
+                            console.log(data);
+                        });
+                    }
+                });
             });
-            if (this.userType == "Client")
-                $('#myModal').modal('show');
-        }
+        });
     }
 
     setNewStatusForActivatedContracts(contract: Contract) {
@@ -158,38 +209,42 @@ export class ContractView implements OnInit {
 
     confirmContract(id: string): void {
         let contract = this.getSelectedContract(id);
+        this._service.listStreamKeyItems(this.projectStream, contract.projectName).then(p => {
 
-        if (contract.status.contract_link == null) {
-            this.changeContractStatus(id, "Active");
-            this.setNewStatusForActivatedContracts(contract);
-            this.pending_contracts = this.pending_contracts.filter(function (cnt) {
-                return cnt.contract_id !== id;
-            });
-
-        } else {
-            this._service.listStreamKeyItems(this.contractStatusStream, contract.status.contract_link).then(element => {
-                let linked_contract_status = JSON.parse(this._service.Hex2String((element[element.length - 1]).data.toString()));
-
-                console.log(linked_contract_status);
-                if (linked_contract_status.status == "Pending") {
-                    this.changeContractStatus(id, "Confirmed");
-                    contract.status.status = "Confirmed";
-
-                } else if (linked_contract_status.status == "Confirmed") {
+            if (p[p.length - 1] != undefined) {
+                let project_id = p[p.length - 1].txid;
+                if (contract.status.contract_link == null) {
                     this.changeContractStatus(id, "Active");
-
-                    contract.status.status = "Active";
                     this.setNewStatusForActivatedContracts(contract);
                     this.pending_contracts = this.pending_contracts.filter(function (cnt) {
                         return cnt.contract_id !== id;
                     });
-                    this.changeStateOfLinkedContract(linked_contract_status, "Active");
+                    this.updateProjectStatus(project_id, "Closed");
 
-                } else if (linked_contract_status.status == "Cancelled") {
+                } else {
+                    this._service.listStreamKeyItems(this.contractStatusStream, contract.status.contract_link).then(element => {
+                        let linked_contract_status = JSON.parse(this._service.Hex2String((element[element.length - 1]).data.toString()));
 
+                        console.log(linked_contract_status);
+                        if (linked_contract_status.status == "Pending" || linked_contract_status.status == "RedoPending") {
+                            this.changeContractStatus(id, "Confirmed");
+                            contract.status.status = "Confirmed";
+
+                        } else if (linked_contract_status.status == "Confirmed") {
+                            this.changeContractStatus(id, "Active");
+
+                            contract.status.status = "Active";
+                            this.setNewStatusForActivatedContracts(contract);
+                            this.pending_contracts = this.pending_contracts.filter(function (cnt) {
+                                return cnt.contract_id !== id;
+                            });
+                            this.changeStateOfLinkedContract(linked_contract_status, "Active");
+                            this.updateProjectStatus(project_id, "Closed");
+                        }
+                    });
                 }
-            });
-        }
+            }
+        });
     }
 
     changeContractStatus(id: string, state: string): void {
@@ -213,6 +268,22 @@ export class ContractView implements OnInit {
         this._service.publishToStream(this.contractStatusStream, key, data_hex).then(data => {
             console.log("Contract status saved");
             console.log(data);
+        });
+    }
+
+    updateProjectStatus(id: string, status: string) {
+        let projectStatus: ProjectStatus = new ProjectStatus();
+        projectStatus.project_id = id;
+        projectStatus.status = status;
+        projectStatus.user_email = localStorage.getItem("email");
+
+        let statusJSON = JSON.stringify(projectStatus);
+        let data_hex = this._service.String2Hex(statusJSON);
+
+        this._service.publishToStream(this.projectStatusStream, projectStatus.project_id, data_hex).then(data => {
+            console.log(projectStatus.status + "saved");
+        }).catch(error => {
+            console.log(error.message);
         });
     }
 
@@ -240,16 +311,35 @@ export class ContractView implements OnInit {
         });
     }
 
+    redoContract(id: string): void {
+        console.log('Go to create contract');
+        let bid = id.toString()+"/0";
+        let link = ['/pages/contract/mycontract', bid, 0];
+        this._router.navigate(link);
+    }
+
+    rModalShow(contract_id: string): void {
+        let review_id = contract_id+"/"+localStorage.getItem("email");
+        this._service.listStreamKeyItems(this.reviewStream, review_id).then(reviewd => {
+            if (reviewd[reviewd.length - 1] != undefined) {
+                console.log("reviewd");
+                $('#rmodal').modal('show');
+            } else {
+                console.log("not reviewd");
+                const activeModal = this.modalService.open(ReviewModelComponent, { size: 'lg' });
+                activeModal.componentInstance.modalHeader = 'Make a review about your work experience!!';
+                activeModal.componentInstance.key = contract_id;
+            }
+        });
+
+    }
+
     goToContract(id: string) {
-        let contract = this.getSelectedContract(id);
-        this.data.saveData(contract);
         let link = ['/pages/contract/contract_details', id];
         this._router.navigate(link);
     }
 
     goToDisscussion(id: string) {
-        let contract = this.getSelectedContract(id);
-        this.data.saveData(contract);
         let link = ['/pages/discussion/discussion_view', id];
         this._router.navigate(link);
     }

@@ -1,0 +1,188 @@
+<div class="container">
+    <div class="row">
+        <div class="col-sm-12">
+            <ba-card cardTitle="Contract Rules"
+                     baCardClass="with-scroll table-panel">
+                <div>
+                    <p style="font-size: 16px">The following rules will apply to all the contracts,</p><br>
+
+                    <div class="col-sm-12">
+                        <div class="col-sm-12">
+                            <h4>Redo requests</h4>
+                            <div>
+                                <p class="d-inline-block">A client can apply for a redo</p>
+                                {{contractRulesModel.redo}}
+                                <p class="d-inline-block">times.</p>
+                            </div>
+                            <br>
+                            <h4>Freelancer fail all redo requests</h4>
+                            <div>
+                                <p class="d-inline-block" style="line-height: 25px">If a freelancer fail all the redo
+                                    requests after QA testing and project was QA tested by the client, freelancer will
+                                    get paid {{contractRulesModel.freelancer_rf_payment_percentage}}% of the current
+                                    milestone payment and the contract will be automatically cancelled.</p>
+                                <p>If the project has a separate QA,</p>
+                                <p style="line-height: 25px">QA can decide the completed percentage of the current
+                                    milestone. That percentage from the current milestone payment will be paid
+                                    to the freelancer. Both QA and Freelancer contracts will be automatically
+                                    cancelled.</p>
+                            </div>
+                            <br>
+                            <h4>Freelancer fail to meet a deadline</h4>
+                            <div>
+                                <p class="d-inline-block" style="line-height: 25px">If a freelancer fail to meet a
+                                    milestone deadline, freelancers's milestone payment will be reduced by
+                                    {{contractRulesModel.freelancer_pay_reduce_percentage}}% for each extended day.</p>
+                            </div>
+                            <div>
+                                <p class="d-inline-block" style="line-height: 25px">If a freelancer fail to meet a
+                                    milestone deadline for a project worth over
+                                    ${{contractRulesModel.project_worth_mark}} and don't submit work done after
+                                    {{contractRulesModel.freelancer_contract_cancel_days_high}} days, contract will be
+                                    automatically cancelled.</p>
+                            </div>
+                            <div>
+                                <p class="d-inline-block" style="line-height: 25px">If a freelancer fail to meet a
+                                    milestone deadline for a project worth less than
+                                    ${{contractRulesModel.project_worth_mark}} and don't submit work done after
+                                    {{contractRulesModel.freelancer_contract_cancel_days_low}} days, contract will be
+                                    automatically cancelled.</p>
+                                <p>Freelancer won't get paid for the current milestone.</p>
+                                <p>If freelancer contract has a linked QA contract, that QA contract will also be
+                                    cancelled. QA won't be paid for the current milestone either.</p>
+                            </div>
+                            <br>
+                            <h4>QA fail to meet a deadline</h4>
+                            <div>
+                                <p class="d-inline-block" style="line-height: 25px">If a QA fail to meet a milestone
+                                    deadline, freelancers's milestone pay will be reduced by
+                                    {{contractRulesModel.qa_pay_reduce_percentage}}% for each extended day.</p>
+                            </div>
+                            <div>
+                                <p class="d-inline-block" style="line-height: 25px">If a QA fail to meet a milestone
+                                    deadline for a project worth over ${{contractRulesModel.project_worth_mark}} and
+                                    don't submit work done after {{contractRulesModel.qa_contract_cancel_days_high}}
+                                    days, contract will be automatically cancelled.</p>
+                            </div>
+                            <div>
+                                <p class="d-inline-block" style="line-height: 25px">If a QA fail to meet a milestone
+                                    deadline for a project worth less than ${{contractRulesModel.project_worth_mark}}
+                                    and don't submit work done after {{contractRulesModel.qa_contract_cancel_days_low}}
+                                    days, contract will be automatically cancelled.</p>
+                                <p class="d-inline-block">QA won't get paid for the current milestone.</p>
+                                <p>After cancellation of the QA contract, clients can decide to hire a new QA or QA the
+                                    project themselves.</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </ba-card>
+            <br><br>
+        </div>
+        <div class="col-sm-12">
+            <ba-card cardTitle="Set Contract Rules" baCardClass="with-scroll table-panel">
+                <div class="col-sm-12">
+                    <form class="form-horizontal">
+                        <div class="form-group">
+                            <label class="control-label col-sm-5 d-inline-block" for="redo">
+                                Maximum no. of redo's a client can apply for:
+                            </label>
+                            <div class="col-sm-6 d-inline-block">
+                                <select [(ngModel)]="contractRulesModel.redo" [ngModelOptions]="{standalone: true}"
+                                        class="form-control"
+                                        name="redo" id="redo">
+                                    <option *ngFor="let redo of redos" [ngValue]="redo">
+                                        {{redo}}
+                                    </option>
+                                </select>
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label class="control-label col-sm-5 d-inline-block" for="freelancer_rf_payment">Freelancer
+                                payment reduce percentage when all redo's fail:</label>
+                            <div class="col-sm-6 d-inline-block">
+                                <input [(ngModel)]="contractRulesModel.freelancer_rf_payment_percentage"
+                                       [ngModelOptions]="{standalone: true}"
+                                       class="form-control" type="number"
+                                       name="freelancer_rf_payment" id="freelancer_rf_payment">
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label class="control-label col-sm-5 d-inline-block" for="freelancer_rf_payment">Freelancer
+                                payment reduce percentage when fail to meet a deadline:</label>
+                            <div class="col-sm-6 d-inline-block">
+                                <input [(ngModel)]="contractRulesModel.freelancer_pay_reduce_percentage"
+                                       [ngModelOptions]="{standalone: true}"
+                                       class="form-control" type="number"
+                                       name="freelancer_pay_reduce" id="freelancer_pay_reduce">
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label class="control-label col-sm-5 d-inline-block" for="freelancer_rf_payment">QA
+                                payment reduce percentage when fail to meet a deadline:</label>
+                            <div class="col-sm-6 d-inline-block">
+                                <input [(ngModel)]="contractRulesModel.qa_pay_reduce_percentage"
+                                       [ngModelOptions]="{standalone: true}"
+                                       class="form-control" type="number" name="qa_pay_reduce" id="qa_pay_reduce">
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label class="control-label col-sm-5 d-inline-block" for="freelancer_rf_payment">Projects
+                                value boundary:</label>
+                            <div class="col-sm-6 d-inline-block">
+                                <input [(ngModel)]="contractRulesModel.project_worth_mark"
+                                       [ngModelOptions]="{standalone: true}" class="form-control" type="number"
+                                       name="project_worth_mark1" id="project_worth_mark1">
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label class="control-label col-sm-5 d-inline-block" for="freelancer_rf_payment">Days to
+                                wait before cancelling a high value freelancer contract:</label>
+                            <div class="col-sm-6 d-inline-block">
+                                <input [(ngModel)]="contractRulesModel.freelancer_contract_cancel_days_high"
+                                       [ngModelOptions]="{standalone: true}" class="form-control" type="number"
+                                       name="freelancer_contract_cancel_high" id="freelancer_contract_cancel_high">
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label class="control-label col-sm-5 d-inline-block" for="freelancer_rf_payment">Days to
+                                wait before cancelling a low value freelancer contract:</label>
+                            <div class="col-sm-6 d-inline-block">
+                                <input [(ngModel)]="contractRulesModel.freelancer_contract_cancel_days_low"
+                                       [ngModelOptions]="{standalone: true}" class="form-control" type="number"
+                                       name="freelancer_contract_cancel_low" id="freelancer_contract_cancel_low">
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label class="control-label col-sm-5 d-inline-block" for="freelancer_rf_payment">Days to
+                                wait before cancelling a high value QA contract:</label>
+                            <div class="col-sm-6 d-inline-block">
+                                <input [(ngModel)]="contractRulesModel.qa_contract_cancel_days_high"
+                                       [ngModelOptions]="{standalone: true}"
+                                       class="form-control" type="number"
+                                       name="qa_contract_cancel_high" id="qa_contract_cancel_high">
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label class="control-label col-sm-5 d-inline-block" for="freelancer_rf_payment">Days to
+                                wait before cancelling a low value QA contract:</label>
+                            <div class="col-sm-6 d-inline-block">
+                                <input [(ngModel)]="contractRulesModel.qa_contract_cancel_days_low"
+                                       [ngModelOptions]="{standalone: true}"
+                                       class="form-control" type="number"
+                                       name="qa_contract_cancel_low" id="qa_contract_cancel_low">
+                            </div>
+                        </div>
+                    </form>
+                </div>
+            </ba-card>
+            <br><br>
+        </div>
+        <div class="col-sm-12">
+            <div class="form-group">
+                <button class="btn btn-primary float-right" (click)="saveRules()">Save Rules</button>
+            </div>
+            <br><br><br><br>
+        </div>
+    </div>
+</div>

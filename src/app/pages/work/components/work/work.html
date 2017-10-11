@@ -25,9 +25,7 @@
                                         <tr>
                                             <th></th>
                                             <th>Project Name</th>
-                                            <th>Bids</th>
-                                            <th>My Bid</th>
-                                            <th>Average Bid</th>
+                                            <th>Actions</th>
                                         </tr>
                                     </thead>
                                     <tbody>
@@ -46,11 +44,11 @@
                                                     <button *ngFor="let skill of project.skills" type="button" class="btn btn-default btn-sm" style="background-color: #776e6e;color: #ffffff;cursor:default;">{{skill}}</button>
                                                 </a>
                                             </td>
-                                            <td><br>1</td>
-                                            <td>
-                                                <br>25 USD
+                                            <td><br><br>
+                                                <a style="cursor:pointer" (click)="goToProject(project.project_id)">
+                                                    <h5 class="text-success"><i class="fa fa-eye"></i> View Project</h5>
+                                                </a>
                                             </td>
-                                            <td><br>15 USD</td>
                                         </tr>
                                     </tbody>
                                 </table>

@@ -12,6 +12,9 @@
                 <li class="nav-item">
                     <a class="nav-link" data-toggle="tab" href="#completed_contracts">Completed Contracts</a>
                 </li>
+                <li class="nav-item">
+                    <a class="nav-link" data-toggle="tab" href="#cancelled_contracts">Cancelled Contracts</a>
+                </li>
             </ul>
             <br>
             <div class="tab-content">
@@ -66,6 +69,14 @@
                                                         (click)="cancelContract(contract.contract_id)">Cancel
                                                 </button>
                                             </div>
+                                            <div *ngIf="userType == 'Client' && contract.status.status == 'RedoPending'">
+                                                <button class="btn btn-primary"
+                                                        (click)="cancelContract(contract.contract_id)">Cancel
+                                                </button>
+                                                <button class="btn btn-primary"
+                                                        (click)="redoContract(contract.contract_id)">Redo
+                                                </button>
+                                            </div>
                                             <div *ngIf="userType == 'Client' && contract.status.status == 'Confirmed'">
                                                 Waiting for
                                                 <div class="d-inline-block" *ngIf="contract.type == 'Freelancer'">QA
@@ -82,6 +93,14 @@
                                                         (click)="cancelContract(contract.contract_id)">Cancel
                                                 </button>
                                             </div>
+                                            <div *ngIf="userType == 'Freelancer' && contract.status.status == 'RedoPending'">
+                                                <button class="btn btn-primary"
+                                                        (click)="confirmContract(contract.contract_id)">Confirm
+                                                </button>
+                                                <button class="btn btn-primary"
+                                                        (click)="cancelContract(contract.contract_id)">Cancel
+                                                </button>
+                                            </div>
                                             <div *ngIf="userType == 'Freelancer' && contract.status.status == 'Confirmed'">
                                                 Waiting for
                                                 <div class="d-inline-block" *ngIf="contract.type == 'Freelancer'">QA
@@ -91,6 +110,14 @@
                                                 conformation
                                             </div>
                                             <div *ngIf="userType == 'QA' && contract.status.status == 'Pending'">
+                                                <button class="btn btn-primary"
+                                                        (click)="confirmContract(contract.contract_id)">Confirm
+                                                </button>
+                                                <button class="btn btn-primary"
+                                                        (click)="cancelContract(contract.contract_id)">Cancel
+                                                </button>
+                                            </div>
+                                            <div *ngIf="userType == 'QA' && contract.status.status == 'RedoPending'">
                                                 <button class="btn btn-primary"
                                                         (click)="confirmContract(contract.contract_id)">Confirm
                                                 </button>
@@ -161,8 +188,8 @@
                                                 <div class="progress">
                                                     <div class="progress-bar" role="progressbar"
                                                          [style.width]="contract.status.progress + '%'"
-                                                         style="background-color: #23a99c" aria-valuemin="0"
-                                                         aria-valuemax="100">
+                                                         style="background-color: #23a99c"
+                                                         aria-valuemin="0" aria-valuemax="100">
                                                         {{contract.status.progress}}%
                                                     </div>
                                                 </div>
@@ -177,8 +204,7 @@
                 </div>
                 <div id="completed_contracts" class="tab-pane fade">
                     <div class="col-sm-12">
-                        <ba-card cardTitle="Completed Contract Details"
-                                 baCardClass="with-scroll table-panel">
+                        <ba-card cardTitle="Completed Contract Details" baCardClass="with-scroll table-panel">
                             <div>
                                 <table class="table table-condensed">
                                     <thead>
@@ -198,13 +224,11 @@
                                     <tr *ngFor="let contract of completed_contracts">
                                         <td>
                                             <br>
-                                            <font size="5" color="#209e91"><i
-                                                    class="fa fa-product-hunt"></i></font>
+                                            <font size="5" color="#209e91"><i class="fa fa-product-hunt"></i></font>
                                         </td>
                                         <td>
                                             <br>
-                                            <a style="cursor:pointer"
-                                               (click)="goToContract(contract.contract_id)">
+                                            <a style="cursor:pointer" (click)="goToContract(contract.contract_id)">
                                                 <h3>{{contract.projectName}}</h3>
                                             </a>
                                             <p>{{contract.description}}</p>
@@ -230,6 +254,64 @@
                                             <button class="btn btn-primary"
                                                     (click)="goToDisscussion(contract.contract_id)">Discussion
                                             </button>
+                                            <button (click)="rModalShow(contract.contract_id)" class="btn btn-info"><i
+                                                    class="fa fa-star-half-o"> Review</i></button>
+
+                                        </td>
+                                    </tr>
+                                    </tbody>
+                                </table>
+                            </div>
+                        </ba-card>
+                        <br><br><br><br>
+                    </div>
+                </div>
+                <div id="cancelled_contracts" class="tab-pane fade">
+                    <div class="col-sm-12">
+                        <ba-card cardTitle="Cancelled Contract Details" baCardClass="with-scroll table-panel">
+                            <div>
+                                <table class="table table-condensed">
+                                    <thead>
+                                    <tr>
+                                        <th></th>
+                                        <th>Project Name</th>
+                                        <th>Contract Type</th>
+                                        <th>
+                                            <div *ngIf="userType == 'Client'">Freelancer</div>
+                                            <div *ngIf="userType == 'Freelancer' || userType == 'QA'">Client</div>
+                                        </th>
+                                        <th>Deadline</th>
+                                        <th>Amount</th>
+                                    </tr>
+                                    </thead>
+                                    <tbody>
+                                    <tr *ngFor="let contract of cancelled_contracts">
+                                        <td>
+                                            <br>
+                                            <font size="5" color="#209e91"><i class="fa fa-product-hunt"></i></font>
+                                        </td>
+                                        <td>
+                                            <br>
+                                            <a style="cursor:pointer" (click)="goToContract(contract.contract_id)">
+                                                <h3>{{contract.projectName}}</h3>
+                                            </a>
+                                            <p>{{contract.description}}</p>
+                                        </td>
+                                        <td>
+                                            <br>{{contract.type}}
+                                        </td>
+                                        <td>
+                                            <br>
+                                            <div *ngIf="userType == 'Client'">{{contract.freelancer.username}}</div>
+                                            <div *ngIf="userType == 'Freelancer' || userType == 'QA'">
+                                                {{contract.client.username}}
+                                            </div>
+                                        </td>
+                                        <td>
+                                            <br>{{contract.deadline}}
+                                        </td>
+                                        <td>
+                                            <br>{{contract.amount}} {{contract.asset}}
                                         </td>
                                     </tr>
                                     </tbody>
@@ -248,6 +330,21 @@
                     <div class="modal-header"></div>
                     <div class="modal-body">
                         <h4 class="text-center">Linked contract also been cancelled</h4>
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Modal1 -->
+        <div class="modal fade" id="rmodal" role="dialog">
+            <div class="modal-dialog modal-sm">
+                <div class="modal-content">
+                    <div class="modal-header"></div>
+                    <div class="modal-body">
+                        <h4 class="text-center">Already Reviewed</h4>
                     </div>
                     <div class="modal-footer">
                         <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>

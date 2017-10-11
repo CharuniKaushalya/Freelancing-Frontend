@@ -10,6 +10,7 @@ import { AuthService } from '../../../../providers/auth.service';
 
 import { MyService } from "../../../../theme/services/backend/service";
 
+import { ProjectStatus } from "../../../../theme/models/projectStatus";
 import { ProjectUserType } from "../../../../theme/models/projectUserType";
 import { DatePipe } from '@angular/common';
 
@@ -28,6 +29,9 @@ export class PublishModelComponent implements OnInit {
   today: number = Date.now();
 
   public submitted: boolean = false;
+  
+  projectStatus: ProjectStatus; 
+  projectStatusStream: string = "ProjectStatus";
 
   @Input() project_utype: ProjectUserType;
   bidStream: string = "project_user_type";
@@ -70,10 +74,12 @@ export class PublishModelComponent implements OnInit {
   constructor(private datePipe: DatePipe,private activeModal: NgbActiveModal, fb: FormBuilder, public authService: AuthService,
     private _service: MyService, private _router: Router) {
 
+    this.projectStatus = new ProjectStatus();
     this.project_utype = new ProjectUserType();
 
     this.authService.getAuth().authState.subscribe(user => {
       this.project_utype.user_email = user.email;
+      this.projectStatus.user_email = user.email;
     });
 
   }
@@ -103,8 +109,6 @@ export class PublishModelComponent implements OnInit {
 
   public onSubmit() {
     this.submitted = true;
-
-
     this.project_utype.project_id = this.key;
     this.project_utype.putype_id = this.key;
     this.checkboxModel.forEach(element => {
@@ -117,13 +121,28 @@ export class PublishModelComponent implements OnInit {
             let data_hex = this._service.String2Hex(projectJSON);
         
             this._service.publishToStream(this.bidStream, this.project_utype.putype_id, data_hex).then(data => {
-              this.activeModal.close();
+              this.saveProjectStatus();
               //this._router.navigate(['/pages/work/my_work'])
             }).catch(error => {
                 console.log(error.message);
             });
       }
       
+    });
+  }
+
+  saveProjectStatus(){
+    this.projectStatus.project_id = this.key;
+    this.projectStatus.status = "Open";
+    console.log(this.projectStatus);
+
+    let statusJSON = JSON.stringify(this.projectStatus);
+    let data_hex = this._service.String2Hex(statusJSON);
+
+    this._service.publishToStream(this.projectStatusStream, this.projectStatus.project_id, data_hex).then(data => {
+      this.activeModal.close();
+    }).catch(error => {
+        console.log(error.message);
     });
   }
 

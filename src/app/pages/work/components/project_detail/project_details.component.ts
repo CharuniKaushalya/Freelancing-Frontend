@@ -3,6 +3,7 @@ import { MyService } from "../../../../theme/services/backend/service";
 import { Project } from "../../../../theme/models/project";
 import { Bid } from "../../../../theme/models/bid";
 import { User } from "../../../../theme/models/user";
+import { BidValues } from "../../../../theme/models/bidValues";
 
 import { TreeModel } from 'ng2-tree';
 import { Router, Params, ActivatedRoute } from '@angular/router';
@@ -34,6 +35,7 @@ export class ProjectDetails implements OnInit {
     qaBid;
 
     isClient;
+    message:string;
 
     constructor(private _service: MyService, private _route: ActivatedRoute, private _router: Router) {
         this._route.params.forEach((params: Params) => {
@@ -50,8 +52,8 @@ export class ProjectDetails implements OnInit {
                     console.log(error.message);
                 });
 
-                let bid_key = project_id + "/" + localStorage.getItem("user");
-
+                let bid_key = project_id + "/" + localStorage.getItem("email");
+                let bid_data: BidValues;
                 _service.listStreamItems(this.bidStream).then(data => {
                     data.forEach(element => {
                         let bid_key = element.key;
@@ -59,25 +61,57 @@ export class ProjectDetails implements OnInit {
                         if (project_id == bid_key.split("/")[0]) {
 
                             let bid: Bid;
+                            let client : string ="";
+                            let bid_data: BidValues;
                             bid = JSON.parse(this._service.Hex2String(element.data.toString()));
-                            _service.listStreamKeyItems(this.userstream, bid.user_email.toString()).then(data => {
-                                let user: User;
-                                user = JSON.parse(this._service.Hex2String(data[data.length-1].data.toString()));
-                                bid.user_type = user.type;
-                                bid.user_name = user.name;
-                                bid.user_id = data[0].txid;
-                                console.log(bid)
-                                if (user.type == "Freelancer") {
-                                    this.freelancer_bidsum += bid.bid_amount;
-                                    this.freelancer_bids.push(bid);
+                            console.log(bid);
+                            this._service.listStreamKeyItems("Users", this.project.user).then(data => {
+                                if(data[data.length-1]){
+                                  let user: User = JSON.parse(this._service.Hex2String(data[data.length-1].data.toString()));
+                                  client = user.address;
+                                  if(bid.data && client && client == localStorage.getItem("address")){
+                                    this._service.decrypt(client, bid.data).then(decrptdata => {
+                                        if(decrptdata.data){
+                                            bid_data = JSON.parse(decrptdata.data);
+                                            bid.bid_amount = bid_data.bid_amount
+                                            bid.deliver_time = bid_data.deliver_time;
+                                        }
+                                        _service.listStreamKeyItems(this.userstream, bid.user_email.toString()).then(data => {
+                                            let user: User;
+                                            user = JSON.parse(this._service.Hex2String(data[data.length-1].data.toString()));
+                                            bid.user_type = user.type;
+                                            bid.user_name = user.name;
+                                            bid.user_id = data[0].txid;
+                                            if(bid.signature){
+                                                this._service.verify(user.address, bid.signature,JSON.stringify(bid_data)).then(data => {
+                                                    if(data.verified){
+                                                        console.log("Data Verified : " , data.verified, "add bid sum here");
+                                                    }
+                                                }).catch(error => {
+                                                    console.log(error.message);
+                                                });
+                                            }
+                                            if (user.type == "Freelancer") {
+                                                this.freelancer_bidsum += bid.bid_amount;
+                                                this.freelancer_bids.push(bid);
+                                            }
+                                            else if (user.type == "QA") {
+                                                this.qa_bidsum += bid.bid_amount;
+                                                this.qa_bids.push(bid);
+                                            }
+                                        }).catch(error => {
+                                            console.log(error.message);
+                                        });
+                                    }).catch(error => {
+                                        console.log(error.message);
+                                    });
                                 }
-                                else if (user.type == "QA") {
-                                    this.qa_bidsum += bid.bid_amount;
-                                    this.qa_bids.push(bid);
+                                 
                                 }
-                            }).catch(error => {
+                              }).catch(error => {
                                 console.log(error.message);
                             });
+                            
                         }
                     });
                     console.log(this.freelancer_bidsum);
@@ -109,12 +143,27 @@ export class ProjectDetails implements OnInit {
     }
 
     goToContract() {
-        if(this.qaBid == undefined) {
-            this.qaBid = 0;
+        if(this.fBid == undefined) {
+            this.message = "Please select a freelancer for create a new contract..";
+            $('#modal1').modal('show');
+        }else{
+            if(this.qaBid == undefined) {
+                this.message = "Are you sure want to proceed without a QA?";
+                $('#modal2').modal('show');
+            }else{
+                console.log(this.fBid)  //key of freelancer bid ----> project_id/user_email
+                console.log(this.qaBid) // key of QA bid------> project_id/user_email
+                let link = ['/pages/contract/mycontract', this.fBid, this.qaBid];
+                this._router.navigate(link);
+            }
         }
-        console.log(this.fBid)  //key of freelancer bid ----> project_id/user_email
-        console.log(this.qaBid) // key of QA bid------> project_id/user_email
+    }
+
+    setYesQaBid(){
+        this.qaBid = 0;
         let link = ['/pages/contract/mycontract', this.fBid, this.qaBid];
         this._router.navigate(link);
     }
+
+
 }

@@ -15,5 +15,6 @@ export class Project {
     public skills: any;
 	public time_period: TimePeriod;
     public budget: Budget;
+    public qabudget: Budget;    
     public user: string;
 }

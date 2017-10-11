@@ -140,6 +140,11 @@ export class Register {
       }).catch(error => {
         console.log(error.message);
       });
+      this._service.keygenerate(this.node_address).then(data => {
+        console.log("Key Generation " + data);
+      }).catch(error => {
+        console.log(error.message);
+      });
     });
     setTimeout(() => {
       this.form.reset();
@@ -168,6 +173,12 @@ export class Register {
           // }).catch(error => {
           //   console.log(error.message);
           // });
+        }).catch(error => {
+          console.log(error.message);
+        });
+
+        this._service.keygenerate(address).then(data => {
+          console.log("Key Generation " + data);
         }).catch(error => {
           console.log(error.message);
         });

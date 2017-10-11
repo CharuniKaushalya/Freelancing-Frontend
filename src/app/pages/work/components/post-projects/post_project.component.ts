@@ -33,7 +33,7 @@ export class PostedProjects implements OnInit {
                 let project: Project;
                 _service.gettxoutdata(element.txid).then(largedata => {
                     project = JSON.parse(this._service.Hex2String(largedata.toString()));
-                    if (project.user && project.user == localStorage.getItem("user")) {
+                    if (project.user && project.user == localStorage.getItem("email")) {
                         project.project_id = element.txid;
                         project.client = element.publishers[0];
                         this.projects.push(project);

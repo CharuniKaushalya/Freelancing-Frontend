@@ -24,13 +24,15 @@ export class ProjectNew implements OnInit {
 
     @Input() project: Project;
     @Input() time_period: TimePeriod;
-    @Input() budget: Budget;
+    @Input() fbudget: Budget;
+    @Input() needQA: Number;   
+    @Input() qabudget: Budget;
     skills = [];
 
     @Output() close = new EventEmitter();
     addtionalFiles: FileList;
     encodedFiles: DownloadFile[] = [];
-    projctsStream: string = "projects";
+    projectsStream: string = "projects";
 
     skill_items = [];
     skillsStream = "skills";
@@ -42,9 +44,12 @@ export class ProjectNew implements OnInit {
 
         this.project = new Project();
         this.time_period = new TimePeriod();
-        this.budget = new Budget();
+        this.fbudget = new Budget();
         this.project.time_period = this.time_period;
-        this.project.budget = this.budget;
+        this.project.budget = this.fbudget; 
+
+        this.qabudget = new Budget();
+        this.project.qabudget = this.qabudget; 
 
         this.authService.getAuth().authState.subscribe(user => {
             console.log(user);
@@ -99,13 +104,18 @@ export class ProjectNew implements OnInit {
         this.project.skills = this.skills;
         this.project.user = this.user_email;
         let key = this.project.projectName;
+
+        if(this.needQA == 0){
+            this.project.qabudget = null;
+        }
+        console.log(this.project)
         let projectJSON = JSON.stringify(this.project)
 
         let data_hex = this._service.String2Hex(projectJSON)
 
-        this._service.publishToStream(this.projctsStream, key, data_hex).then(data => {
+        this._service.publishToStream(this.projectsStream, key, data_hex).then(data => {
             console.log("saved");
-            // console.log(data);
+            console.log(data);
 
             this._router.navigate(['/pages/work/posted_projects'])
         }).catch(error => {
@@ -117,5 +127,10 @@ export class ProjectNew implements OnInit {
         this.skills.push(item.value);
         console.log(this.skills);
     }
-}
 
+    onItemRemoved(item) {
+        this.skills = this.skills.filter(i => i !== item);
+        console.log(this.skills);
+    }
+
+}

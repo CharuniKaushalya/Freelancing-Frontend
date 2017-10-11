@@ -41,7 +41,7 @@ export class Pages {
 
 
       
-  constructor(public _pri: privilegeService, private _menuService: BaMenuService, public authService: AuthService, private _service: MyService, ) {
+  constructor(public _pri: privilegeService, private _menuService: BaMenuService, public authService: AuthService, private _service: MyService, ) {  
     this.authService.getAuth().authState.subscribe(user => {
       this.auth = user;
       
@@ -50,7 +50,9 @@ export class Pages {
           if(data[data.length-1]){
             let user = JSON.parse(this._service.Hex2String(data[data.length-1].data.toString()));
             let array = null;
+            console.log(user);
             localStorage.setItem("userType", user.type);
+            localStorage.setItem("address", user.address);
             this.addUserProfile(data[data.length-1].txid);
             this._pri.getData().then((data) => {
               this.previleges = data;
@@ -58,7 +60,6 @@ export class Pages {
  
               array = this.getPrivileges(user.type);
               array.forEach(element => {
-                console.log(element);
                 let component = {
                 path: element.type,
                 data: {
