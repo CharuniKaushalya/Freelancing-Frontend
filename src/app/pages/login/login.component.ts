@@ -3,6 +3,7 @@ import { FormGroup, AbstractControl, FormBuilder, Validators } from '@angular/fo
 import { Router } from '@angular/router';
 import { AuthService } from '../../providers/auth.service';
 import { MyService } from "../../theme/services/backend/service";
+import { AF } from '../../providers/af';
 
 import { User } from "../../theme/models/user";
 
@@ -29,7 +30,7 @@ export class Login implements OnInit {
   error = "";
   success = "";
 
-  constructor(private _service: MyService, fb: FormBuilder, public authService: AuthService, private _router: Router) {
+  constructor(private _service: MyService, fb: FormBuilder, public afService: AF,public authService: AuthService, private _router: Router) {
     if (localStorage.getItem("email") == "" || localStorage.getItem("email") == undefined) {
       this.isResetPass = false;
       this.form = fb.group({
@@ -60,6 +61,9 @@ export class Login implements OnInit {
           }).catch(error => {
             console.log(error.message);
           });
+
+
+
           this._router.navigate(['pages/dashboard']);   
         } else {
           this.error = "Please verify your email address";
@@ -78,10 +82,12 @@ export class Login implements OnInit {
   loginWithGoogle() {
     this.authService.signInWithGoogle().then((data) => {
       this.goToUserType(data.user.email, data.user.displayName);
+      this.afService.addUserInfo();
     }).catch(error => {
       this.error = error.message;
     })
   }
+
 
   loginWithFacebook() {
     this.authService.signInWithFacebook().then((data) => {

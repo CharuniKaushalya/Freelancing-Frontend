@@ -4,6 +4,7 @@ import { Router } from '@angular/router';
 import { GlobalState } from '../../../global.state';
 
 import { AuthService } from '../../../providers/auth.service';
+
 import { MyService } from "../../services/backend/service";
 
 @Component({
@@ -22,8 +23,7 @@ export class BaPageTop {
   user_email: string;
   private auth: any;
 
-  constructor(private _state: GlobalState, private _service: MyService, public authService: AuthService,
-    private _router: Router) {
+  constructor(private _state: GlobalState, private _service: MyService, public authService: AuthService,private _router: Router) {
     this._state.subscribe('menu.isCollapsed', (isCollapsed) => {
       this.isMenuCollapsed = isCollapsed;
     });
@@ -41,10 +41,16 @@ export class BaPageTop {
         this.isLoggedIn = true;
         this.user_displayName = this.auth.displayName;
         this.user_email = this.auth.email;
+       
         console.log("Logged in");
         console.log(this.user_email);
+        
+
       }
     });
+
+
+
   }
 
   logout() {

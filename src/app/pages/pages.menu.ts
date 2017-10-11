@@ -51,10 +51,10 @@ export const PAGES_MENU = [
         ]
       },
       {
-        path: 'discussion',
+        path: 'chat',
         data: {
           menu: {
-            title: 'Discussion',
+            title: 'Chat',
             icon: 'ion-ios-compose-outline',
             selected: false,
             expanded: false,
@@ -64,7 +64,7 @@ export const PAGES_MENU = [
         children: [
           
           {
-            path: 'discussion_view',
+            path: 'chat_view',
             data: {
               menu: {
                 title: 'View'

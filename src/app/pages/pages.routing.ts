@@ -29,7 +29,7 @@ export const routes: Routes = [
       { path: 'users', loadChildren: './users/users.module#UsersModule' },
       { path: 'contract', loadChildren: './contract/contract.module#ContractModule' },
       { path: 'work', loadChildren: './work/work.module#WorkModule' },
-      { path: 'discussion', loadChildren: './discussion/discussion.module#DiscussionModule' }
+      { path: 'chat', loadChildren: './chat/chat.module#ChatModule' }
 
     ]
   }

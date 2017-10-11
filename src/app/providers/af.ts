@@ -42,11 +42,12 @@ export class AF {
     });
   }
 
-  sendMessage(text) {
+  sendMessage(text, id) {
     var message = {
       message: text,
       displayName: this.displayName,
       email: this.email,
+      contract_id: id,
       timestamp: Date.now()
     };
     this.messages.push(message);

@@ -13,10 +13,11 @@ import { routing } from './app.routing';
 
 //Firebase
 import { AngularFireModule } from 'angularfire2';
-import { AngularFireDatabaseModule, AngularFireDatabase } from 'angularfire2/database';
+import { AngularFireDatabaseModule} from 'angularfire2/database';
 import { AngularFireAuthModule, AngularFireAuth } from 'angularfire2/auth';
-
+import { AngularFireDatabase } from 'angularfire2/database-deprecated'
 import { AuthService } from './providers/auth.service';
+import { AF } from './providers/af';
 
 // App is our top level component
 import { App } from './app.component';
@@ -67,11 +68,15 @@ export const firebaseConfig = {
     routing,
     AngularFireModule.initializeApp(firebaseConfig),
     AngularFireDatabaseModule,
-    AngularFireAuthModule,
+    AngularFireAuthModule
+
   ],
   providers: [ // expose our Services and Providers into Angular's dependency injection
     APP_PROVIDERS,
-    AuthService
+    AuthService,
+    AF,
+    AngularFireDatabase
+
   ]
 })
 
