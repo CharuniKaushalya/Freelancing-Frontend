@@ -47,7 +47,7 @@ export class MyProjects implements OnInit {
             console.log(error.message);
         });
 
-        _service.listStreamKeyItems(this.userSkillsStream, localStorage.getItem("email")).then(data => {
+        this._service.listStreamKeyItems(this.userSkillsStream, localStorage.getItem("email")).then(data => {
             data.forEach(element => {
                 let skill = JSON.parse(this._service.Hex2String(element.data.toString()));
                 skill.forEach(element => {
@@ -70,22 +70,17 @@ export class MyProjects implements OnInit {
                                     project.project_id = element.txid;
                                     project.client = element.publishers[0];
                                     this._service.listStreamKeyItems(this.projctUtypeStream, project.project_id).then(data => {
-                                        console.log(data);
                                         data.forEach(element => {
                                             console.log(element);
                                             let putype: ProjectUserType = JSON.parse(this._service.Hex2String(element.data.toString()));
-                                            console.log(putype.publish_utype);
                                             if (localStorage.getItem("userType") == putype.publish_utype) {
                                                 if (putype.deadline &&
                                                     this.datePipe.transform(putype.deadline, 'yyyy-MM-dd') >= this.datePipe.transform(this.today, 'yyyy-MM-dd')) {
-                                                    console.log("selected");
                                                     this.projects.push(project);
                                                     this.sprojects.push(project);
                                                     this.performSearch(); 
                                                 }
                                             }
-                                            //edu.edu_id = element.txid;
-                                            //this.educations.push(edu);
                                         });
     
                                     }).catch(error => {
@@ -101,7 +96,7 @@ export class MyProjects implements OnInit {
                 });
             }).catch(error => {
                 console.log(error.message);
-            }); 
+            });
 
         }).catch(error => {
             console.log(error.message);

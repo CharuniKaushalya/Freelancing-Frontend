@@ -60,7 +60,6 @@ export class Pages {
  
               array = this.getPrivileges(user.type);
               array.forEach(element => {
-                console.log(element);
                 let component = {
                 path: element.type,
                 data: {

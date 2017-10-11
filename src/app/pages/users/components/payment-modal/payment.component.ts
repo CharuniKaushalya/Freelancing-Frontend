@@ -9,6 +9,7 @@ import { Router } from '@angular/router';
 import { User } from "../../../../theme/models/user";
 
 import { Education } from "../../../../theme/models/education";
+import { EmailValidator, EqualPasswordsValidator } from '../../../../theme/validators';
 
 
 @Component({
@@ -23,16 +24,21 @@ export class PaymentModal implements OnInit {
 
   modalHeader: string;
   modalContent: string = "";
+  balance: number = 0;
   public form: FormGroup;
   public useremail: string;
   public name: string;
   public address: string;
+  
 
   public submitted: boolean = false;
 
   @Input() education: Education;
   userStream: string = "Users";
   user = new User();
+
+  public email: AbstractControl;
+  public qty: AbstractControl;
 
 
 
@@ -44,6 +50,15 @@ export class PaymentModal implements OnInit {
       this.address = this.user.address;
       console.log(this.address);
     });
+
+    this.form = fb.group({
+      'qty': ['', Validators.compose([Validators.required])],
+      'email': ['', Validators.compose([Validators.required, EmailValidator.validate])]
+    });
+
+    this.qty = this.form.controls['qty'];
+    this.email = this.form.controls['email'];
+
   }
 
   ngOnInit() {
@@ -55,8 +70,26 @@ export class PaymentModal implements OnInit {
     this.activeModal.close();
   }
 
-  public onSubmit(values: Object): void {
 
+
+  public onSubmit(values: Object): void {
+    this.submitted = true;
+
+    this.activeModal.close();
+    if (this.form.valid && values['qty'] <= this.balance) {
+    this._service.moneyTrasfer(values['email'], values['qty']).then(data => {
+      console.log("Money transfer call");
+      console.log(data);
+      console.log(data.output);
+      if(data.output == 'success'){
+        this._service.sendAssetFrom(localStorage.getItem('address'),'1WSz5nyX9z2zHuSv4hveqisVnKxMjx23vTtBs5' , 'USD', values['qty']).then(data => {
+          console.log(data);
+      });
+      }
+      
+
+    });
+    }
   }
 
 
