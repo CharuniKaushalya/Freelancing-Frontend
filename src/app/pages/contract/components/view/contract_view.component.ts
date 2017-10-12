@@ -65,26 +65,29 @@ export class ContractView implements OnInit {
 
                 this._service.listStreamKeyItems(this.contractStatusStream, element.txid).then(element => {
                     let lastStatus = element[element.length - 1];
-                    let contract_status = JSON.parse(this._service.Hex2String(lastStatus.data.toString()));
-                    contract.status = contract_status;
 
-                    if ((this.userType == "Client" && contract.client_email == this.userEmail) ||
-                        (contract.type == this.userType && contract.freelancer_email == this.userEmail)) {
-                        if (contract_status.status == "Pending" || contract_status.status == "Confirmed"  || contract_status.status == "RedoPending") {
-                            console.log(contract);
-                            this.pending_contracts.unshift(contract);
+                    if(lastStatus != undefined) {
+                        let contract_status = JSON.parse(this._service.Hex2String(lastStatus.data.toString()));
+                        contract.status = contract_status;
 
-                        } else if (contract_status.status == "Active") {
-                            contract.status.current_milestone_name =
-                                this.getCurrentMilestoneName(contract.milestones, contract_status.current_milestone, contract_status.milestone_state);
-                            contract.status.progress = this.getProgress(contract.milestones, contract.milestoneValues, contract_status);
-                            this.active_contracts.unshift(contract);
+                        if ((this.userType == "Client" && contract.client_email == this.userEmail) ||
+                            (contract.type == this.userType && contract.freelancer_email == this.userEmail)) {
+                            if (contract_status.status == "Pending" || contract_status.status == "Confirmed" || contract_status.status == "RedoPending") {
+                                console.log(contract);
+                                this.pending_contracts.unshift(contract);
 
-                        } else if (contract_status.status == "Completed") {
-                            this.completed_contracts.unshift(contract);
+                            } else if (contract_status.status == "Active") {
+                                contract.status.current_milestone_name =
+                                    this.getCurrentMilestoneName(contract.milestones, contract_status.current_milestone, contract_status.milestone_state);
+                                contract.status.progress = this.getProgress(contract.milestones, contract.milestoneValues, contract_status);
+                                this.active_contracts.unshift(contract);
 
-                        } else if (contract_status.status == "Cancelled") {
-                            this.cancelled_contracts.unshift(contract);
+                            } else if (contract_status.status == "Completed") {
+                                this.completed_contracts.unshift(contract);
+
+                            } else if (contract_status.status == "Cancelled") {
+                                this.cancelled_contracts.unshift(contract);
+                            }
                         }
                     }
                 });
