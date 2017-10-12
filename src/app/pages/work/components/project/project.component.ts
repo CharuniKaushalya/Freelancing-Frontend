@@ -77,12 +77,11 @@ export class MyProjects implements OnInit {
                                                 if (putype.deadline &&
                                                     this.datePipe.transform(putype.deadline, 'yyyy-MM-dd') >= this.datePipe.transform(this.today, 'yyyy-MM-dd')) {
                                                     this.projects.push(project);
-                                                    this.sprojects.push(project);
+                                                    //this.sprojects.push(project);
                                                     this.performSearch(); 
                                                 }
                                             }
                                         });
-    
                                     }).catch(error => {
                                         console.log(error.message);
                                     });

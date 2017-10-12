@@ -4,7 +4,7 @@
         <div class="col-sm-12">
             <form class="form-horizontal">
                 <div class="input-group">
-                    <input type="text" style="font-size:23px;border-color:#428bca" class="form-control" placeholder="Search by project name" [(ngModel)]="query"
+                    <input type="text" class="form-control" placeholder="Search by project name" [(ngModel)]="query"
                         [ngModelOptions]="{standalone: true}" (keyup)=searchByName()>
                     <!-- <span class="input-group-btn">
                         <a class="btn btn-primary" (click)="searchByName();"><i class="fa fa-search"></i></a>
@@ -12,7 +12,7 @@
                 </div>
                 <br><label class="text-primary"><h4>Projects match with your skills: </h4></label>
                 <div class="input-group">
-                    <tag-input style="font-size:23px;border-color:#428bca ;padding-top: 0px;padding-bottom: 0px;padding-left: 0px;padding-right: 0px;"
+                    <tag-input 
                         class="form-control" [ngModel]="skills" [ngModelOptions]="{standalone: true}" [secondaryPlaceholder]="'Type here to find skills'"
                         [onlyFromAutocomplete]="true" (onAdd)="onItemAdded($event)" (onRemove)="onItemRemoved($event)" theme='bootstrap-default'>
                         <tag-input-dropdown [appendToBody]="false" [autocompleteItems]="skill_items">
