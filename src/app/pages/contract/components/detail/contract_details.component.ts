@@ -27,7 +27,7 @@ export class ContractDetails implements OnInit {
     projectStream: string = "projects";
     projectStatusStream: string = "ProjectStatus";
     userstream: string = "Users";
-    userType;
+    userType = '';
     redo_msg;
 
     constructor(private _service: MyService, private _route: ActivatedRoute, private _router: Router) {
@@ -62,6 +62,16 @@ export class ContractDetails implements OnInit {
                             _service.gettxoutdata(this.contract.status.contract_link).then(largedata => {
                                 this.linkedContract = JSON.parse(this._service.Hex2String(largedata.toString()));
 
+                                this._service.listStreamKeyItems(this.userstream, this.linkedContract.client_email).then(data => {
+                                    if (data[data.length - 1] != undefined)
+                                        this.linkedContract.client = JSON.parse(this._service.Hex2String(data[data.length - 1].data.toString()));
+
+                                    this._service.listStreamKeyItems(this.userstream, this.linkedContract.freelancer_email).then(data => {
+                                        if (data[data.length - 1] != undefined)
+                                            this.linkedContract.freelancer = JSON.parse(this._service.Hex2String(data[data.length - 1].data.toString()));
+                                    });
+                                });
+
                                 this._service.listStreamKeyItems(this.contractStatusStream, this.contract.status.contract_link).then(element => {
                                     let LinkedContractLastStatus = element[element.length - 1];
                                     this.linkedContract.status = JSON.parse(this._service.Hex2String(LinkedContractLastStatus.data.toString()));
@@ -92,10 +102,14 @@ export class ContractDetails implements OnInit {
 
     ngOnInit() {
         this.contract = new Contract();
-        this.linkedContract = new Contract();
         this.contract.client = new User();
         this.contract.freelancer = new User();
         this.contract.status = new ContractStatus();
+
+        this.linkedContract = new Contract();
+        this.linkedContract.client = new User();
+        this.linkedContract.freelancer = new User();
+        this.linkedContract.status = new ContractStatus();
     }
 
     addFinalStep() {
@@ -264,7 +278,7 @@ export class ContractDetails implements OnInit {
                             locked_amount_usd = locked_amount_usd - payment2;
                             console.log("locked_amount_usd -2 = " + locked_amount_usd);
 
-                            this._service.sendAssetFrom(this.linkedContract.client, this.linkedContract.freelancer, this.linkedContract.asset, payment2.toString()).then(data => {
+                            this._service.sendAssetFrom(this.linkedContract.client.address, this.linkedContract.freelancer.address, this.linkedContract.asset, payment2.toString()).then(data => {
 
                                 console.log(data);
                                 console.log("Paid " + this.linkedContract.type + " " + payment2);
@@ -472,6 +486,21 @@ export class ContractDetails implements OnInit {
         this._router.navigate(link);
     }
 
+    goToDiscussion(id1: string, id2: string, id3: string): void {
+        let id = id1 + id2 + id3;
+
+        console.log(id);
+        let link = ['/pages/chat/chat_view', id];
+        this._router.navigate(link);
+    }
+
+    contact(id1: string, id2: string): void {
+
+        let id = id1 + id2;
+        console.log(id);
+        let link = ['/pages/chat/chat_view', id];
+        this._router.navigate(link);
+    }
 
     goBack() {
         console.log('Back called');

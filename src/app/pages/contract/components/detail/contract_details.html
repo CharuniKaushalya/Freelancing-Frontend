@@ -2,217 +2,286 @@
     <div class="row">
 
         <div class="col-sm-12">
-            <ba-card cardTitle="My Contract" baCardClass="with-scroll table-panel">
-                <table class="table table-condensed" style="font-size: 16px">
-                    <tbody>
-                    <tr>
-                        <td>
-                            <br><b>Project Name</b>
-                        </td>
-                        <td>
-                            <br>{{contract.projectName}}
-                        </td>
-                    </tr>
-                    <tr>
-                        <td>
-                            <br><b>Type</b>
-                        </td>
-                        <td>
-                            <br>{{contract.type}}
-                        </td>
-                    </tr>
-                    <tr>
-                        <td>
-                            <br><b>Client</b>
-                        </td>
-                        <td>
-                            <br>{{contract.client.username}}
-                        </td>
-                    </tr>
-                    <tr>
-                        <td>
-                            <br><b>Freelancer</b>
-                        </td>
-                        <td>
-                            <br>{{contract.freelancer.username}}
-                        </td>
-                    </tr>
-                    <tr>
-                        <td>
-                            <br><b>Deadline</b>
-                        </td>
-                        <td>
-                            <br>{{contract.deadline}}
-                        </td>
-                    </tr>
-                    <tr>
-                        <td>
-                            <br><b>Amount</b>
-                        </td>
-                        <td>
-                            <br>{{contract.amount}} {{contract.asset}}
-                        </td>
-                    </tr>
-                    <tr>
-                        <td>
-                            <br><b>Description</b>
-                        </td>
-                        <td>
-                            <br>{{contract.description}}
-                        </td>
-                    </tr>
-                    <tr *ngIf="hasMilestones">
-                        <td><br><b>Milestones</b></td>
-                        <td><br>
-                            <table class="table table-condensed" style="font-size: 16px">
-                                <thead>
-                                <th></th>
-                                <th>Payment</th>
-                                <th>Deadline</th>
-                                <th>Task</th>
-                                <th>Status</th>
-                                </thead>
-                                <tbody>
-                                <tr *ngFor="let milestone of contract.milestoneValues">
-                                    <td>
-                                        <br>{{milestone.name}}
-                                    </td>
-                                    <td>
-                                        <br>{{milestone.value}}%
-                                    </td>
-                                    <td>
-                                        <br>{{milestone.deadline}}
-                                    </td>
-                                    <td>
-                                        <br>{{milestone.task}}
-                                    </td>
-                                    <td>
-                                        <br>{{milestone.state}}
-                                    </td>
-                                </tr>
-                                <tr *ngIf="!isCompleted">
-                                    <td colspan=5
-                                        *ngIf="contract.status.milestone_state=='Uncompleted' && userType=='Freelancer'">
-                                        <br>
-                                        <button class="btn btn-primary  btn-sm float-sm-right" type="button"
-                                                (click)="stateBtnClicked('Working')">Start Working
-                                        </button>
-                                        <br><br>
-                                    </td>
-                                    <td colspan=5
-                                        *ngIf="contract.status.milestone_state=='Working' && userType=='Freelancer'">
-                                        <br>
-                                        <button class="btn btn-primary  btn-sm float-sm-right" type="button"
-                                                (click)="stateBtnClicked('Reviewing')">Work Completed
-                                        </button>
-                                        <br><br>
-                                    </td>
-                                    <td colspan=5
-                                        *ngIf="contract.status.milestone_state=='Reviewing' && userType=='QA'">
-                                        <br>
-                                        <button class="btn btn-primary  btn-sm float-sm-right" style="width: 110px"
-                                                type="button" (click)="stateBtnClicked('Completed')">
-                                            QA Successful
-                                        </button>
-                                        <br>
-                                        <button class="btn btn-primary  btn-sm float-sm-right" style="width: 110px"
-                                                type="button" (click)="stateBtnClicked('Working')">
-                                            QA Failed
-                                        </button>
-                                    </td>
-                                    <td colspan=5
-                                        *ngIf="contract.status.milestone_state=='Reviewing' && userType=='Client' && !hasLinkedContract">
-                                        <br>
-                                        <button class="btn btn-primary  btn-sm float-sm-right" style="width: 110px"
-                                                type="button" (click)="stateBtnClicked('Completed')">
-                                            QA Successful
-                                        </button>
-                                        <br>
-                                        <button class="btn btn-primary  btn-sm float-sm-right" style="width: 110px"
-                                                type="button" (click)="stateBtnClicked('Working')">
-                                            QA Failed
-                                        </button>
-                                    </td>
-                                </tr>
-                                <tr *ngIf="contract.status.status=='Pending'">
-                                    <td colspan=5 *ngIf="userType=='Client'">
-                                        <br>
-                                        <button class="btn btn-primary  btn-sm float-sm-right" style="width: 110px"
-                                                type="button" (click)="cancelContract()">
-                                            Cancel
-                                        </button>
-                                    </td>
-                                    <td colspan=5 *ngIf="userType!='Client'">
-                                        <br>
-                                        <button class="btn btn-primary  btn-sm float-sm-right" style="width: 110px"
-                                                type="button" (click)="confirmContract()">
-                                            Confirm
-                                        </button>
-                                        <br>
-                                        <button class="btn btn-primary  btn-sm float-sm-right" style="width: 110px"
-                                                type="button" (click)="cancelContract()">
-                                            Cancel
-                                        </button>
-                                        <br>
-                                        <button class="btn btn-primary  btn-sm float-sm-right" style="width: 110px"
-                                                type="button" (click)="showMsgBox()">
-                                            Request Redo
-                                        </button>
-                                    </td>
-                                </tr>
-                                <tr *ngIf="contract.status.status=='RedoPending'">
-                                    <td colspan=5 *ngIf="userType=='Client'">
-                                        <br>
-                                        <button class="btn btn-primary  btn-sm float-sm-right" style="width: 110px"
-                                                type="button" (click)="redoContract()">
-                                            Redo
-                                        </button>
-                                        <br>
-                                        <button class="btn btn-primary  btn-sm float-sm-right" style="width: 110px"
-                                                type="button" (click)="cancelContract()">
-                                            Cancel
-                                        </button>
-                                    </td>
-                                    <td colspan=5 *ngIf="userType!='Client'">
-                                        <br>
-                                        <button class="btn btn-primary  btn-sm float-sm-right" style="width: 110px"
-                                                type="button" (click)="confirmContract()">
-                                            Confirm
-                                        </button>
-                                        <br>
-                                        <button class="btn btn-primary  btn-sm float-sm-right" style="width: 110px"
-                                                type="button" (click)="cancelContract()">
-                                            Cancel
-                                        </button>
-                                    </td>
-                                </tr>
-                                </tbody>
-                            </table>
-                        </td>
-                    </tr>
-                    </tbody>
-                </table>
-                <div id="divRedo" style="display: none">
-                    <br><br>
-                    <form class="form-horizontal">
-                        <div class="col-sm-12">
-                            <div class="form-group">
-                                <div class="col-sm-2 d-inline-block"></div>
-                                <div class="col-sm-9 d-inline-block">
+            <ba-card baCardClass="with-scroll table-panel">
+                <ul class="list-unstyled">
+                    <li>
+                        <div class="d-inline-block">
+                            <h3 class="card-title">My Contract</h3>
+                        </div>
+                        <div class="text-warning pull-right d-inline-block">
+                            <button *ngIf="hasLinkedContract && contract.type=='Freelancer'" class="btn btn-primary float-sm-right" type="button"
+                                    (click)="goToDiscussion(contract.client.address, contract.freelancer.address, linkedContract.freelancer.address)">
+                                Discussion
+                            </button>
+                            <button *ngIf="hasLinkedContract && contract.type=='QA'" class="btn btn-primary float-sm-right" type="button"
+                                    (click)="goToDiscussion(contract.client.address, linkedContract.freelancer.address, contract.freelancer.address)">
+                                Discussion
+                            </button>
+                            <button *ngIf="!hasLinkedContract" class="btn btn-primary float-sm-right" type="button"
+                                    (click)="contact(contract.client.address, contract.freelancer.address)">
+                                Discussion
+                            </button>
+                        </div>
+                    </li>
+                    <br>
+                    <li>
+                        <table class="table table-condensed" style="font-size: 16px">
+                            <tbody>
+                            <tr>
+                                <td>
+                                    <br><b>Project Name</b>
+                                </td>
+                                <td>
+                                    <br>{{contract.projectName}}
+                                </td>
+                            </tr>
+                            <tr>
+                                <td>
+                                    <br><b>Type</b>
+                                </td>
+                                <td>
+                                    <br>{{contract.type}}
+                                </td>
+                            </tr>
+                            <tr>
+                                <td>
+                                    <br><b>Client</b>
+                                </td>
+                                <td>
+                                    <br>{{contract.client.username}}
+                                    <button *ngIf="userType != 'Client'" class="btn btn-primary  btn-sm float-sm-right"
+                                            style="width: 110px"
+                                            type="button" (click)="contact(contract.client.address, contract.freelancer.address)">
+                                        Contact
+                                    </button>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td>
+                                    <br><b>{{contract.type}}</b>
+                                </td>
+                                <td>
+                                    <br>{{contract.freelancer.username}}
+                                    <button *ngIf="userType == 'Client'" class="btn btn-primary  btn-sm float-sm-right"
+                                            style="width: 110px"
+                                            type="button" (click)="contact(contract.client.address, contract.freelancer.address)">
+                                        Contact
+                                    </button>
+                                </td>
+                            </tr>
+                            <tr *ngIf="hasLinkedContract">
+                                <td *ngIf="contract.type == 'QA'">
+                                    <br><b>Freelancer</b>
+                                </td>
+                                <td *ngIf="contract.type == 'Freelancer'">
+                                    <br><b>QA</b>
+                                </td>
+                                <td>
+                                    <br>{{linkedContract.freelancer.username}}
+                                    <button *ngIf="userType == 'Client'" class="btn btn-primary  btn-sm float-sm-right" style="width: 110px"
+                                            type="button" (click)="contact(linkedContract.client.address, linkedContract.freelancer.address)">
+                                        Contact
+                                    </button>
+                                    <button *ngIf="userType == 'Freelancer'" class="btn btn-primary  btn-sm float-sm-right" style="width: 110px"
+                                            type="button" (click)="contact(contract.freelancer.address, linkedContract.freelancer.address)">
+                                        Contact
+                                    </button>
+                                    <button *ngIf="userType == 'QA'" class="btn btn-primary  btn-sm float-sm-right" style="width: 110px"
+                                            type="button" (click)="contact(linkedContract.freelancer.address, contract.freelancer.address)">
+                                        Contact
+                                    </button>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td>
+                                    <br><b>Deadline</b>
+                                </td>
+                                <td>
+                                    <br>{{contract.deadline}}
+                                </td>
+                            </tr>
+                            <tr>
+                                <td>
+                                    <br><b>Amount</b>
+                                </td>
+                                <td>
+                                    <br>{{contract.amount}} {{contract.asset}}
+                                </td>
+                            </tr>
+                            <tr>
+                                <td>
+                                    <br><b>Description</b>
+                                </td>
+                                <td>
+                                    <br>{{contract.description}}
+                                </td>
+                            </tr>
+                            <tr *ngIf="hasMilestones">
+                                <td><br><b>Milestones</b></td>
+                                <td><br>
+                                    <table class="table table-condensed" style="font-size: 16px">
+                                        <thead>
+                                        <th></th>
+                                        <th>Payment</th>
+                                        <th>Deadline</th>
+                                        <th>Task</th>
+                                        <th>Status</th>
+                                        </thead>
+                                        <tbody>
+                                        <tr *ngFor="let milestone of contract.milestoneValues">
+                                            <td>
+                                                <br>{{milestone.name}}
+                                            </td>
+                                            <td>
+                                                <br>{{milestone.value}}%
+                                            </td>
+                                            <td>
+                                                <br>{{milestone.deadline}}
+                                            </td>
+                                            <td>
+                                                <br>{{milestone.task}}
+                                            </td>
+                                            <td>
+                                                <br>{{milestone.state}}
+                                            </td>
+                                        </tr>
+                                        <tr *ngIf="!isCompleted">
+                                            <td colspan=5
+                                                *ngIf="contract.status.milestone_state=='Uncompleted' && userType=='Freelancer'">
+                                                <br>
+                                                <button class="btn btn-primary  btn-sm float-sm-right" type="button"
+                                                        (click)="stateBtnClicked('Working')">Start Working
+                                                </button>
+                                                <br><br>
+                                            </td>
+                                            <td colspan=5
+                                                *ngIf="contract.status.milestone_state=='Working' && userType=='Freelancer'">
+                                                <br>
+                                                <button class="btn btn-primary  btn-sm float-sm-right" type="button"
+                                                        (click)="stateBtnClicked('Reviewing')">Work Completed
+                                                </button>
+                                                <br><br>
+                                            </td>
+                                            <td colspan=5
+                                                *ngIf="contract.status.milestone_state=='Reviewing' && userType=='QA'">
+                                                <br>
+                                                <button class="btn btn-primary  btn-sm float-sm-right"
+                                                        style="width: 110px"
+                                                        type="button" (click)="stateBtnClicked('Completed')">
+                                                    QA Successful
+                                                </button>
+                                                <br>
+                                                <button class="btn btn-primary  btn-sm float-sm-right"
+                                                        style="width: 110px"
+                                                        type="button" (click)="stateBtnClicked('Working')">
+                                                    QA Failed
+                                                </button>
+                                            </td>
+                                            <td colspan=5
+                                                *ngIf="contract.status.milestone_state=='Reviewing' && userType=='Client' && !hasLinkedContract">
+                                                <br>
+                                                <button class="btn btn-primary  btn-sm float-sm-right"
+                                                        style="width: 110px"
+                                                        type="button" (click)="stateBtnClicked('Completed')">
+                                                    QA Successful
+                                                </button>
+                                                <br>
+                                                <button class="btn btn-primary  btn-sm float-sm-right"
+                                                        style="width: 110px"
+                                                        type="button" (click)="stateBtnClicked('Working')">
+                                                    QA Failed
+                                                </button>
+                                            </td>
+                                        </tr>
+                                        <tr *ngIf="contract.status.status=='Pending'">
+                                            <td colspan=5 *ngIf="userType=='Client'">
+                                                <br>
+                                                <button class="btn btn-primary  btn-sm float-sm-right"
+                                                        style="width: 110px"
+                                                        type="button" (click)="cancelContract()">
+                                                    Cancel
+                                                </button>
+                                            </td>
+                                            <td colspan=5 *ngIf="userType!='Client'">
+                                                <br>
+                                                <button class="btn btn-primary  btn-sm float-sm-right"
+                                                        style="width: 110px"
+                                                        type="button" (click)="confirmContract()">
+                                                    Confirm
+                                                </button>
+                                                <br>
+                                                <button class="btn btn-primary  btn-sm float-sm-right"
+                                                        style="width: 110px"
+                                                        type="button" (click)="cancelContract()">
+                                                    Cancel
+                                                </button>
+                                                <br>
+                                                <button class="btn btn-primary  btn-sm float-sm-right"
+                                                        style="width: 110px"
+                                                        type="button" (click)="showMsgBox()">
+                                                    Request Redo
+                                                </button>
+                                            </td>
+                                        </tr>
+                                        <tr *ngIf="contract.status.status=='RedoPending'">
+                                            <td colspan=5 *ngIf="userType=='Client'">
+                                                <br>
+                                                <button class="btn btn-primary  btn-sm float-sm-right"
+                                                        style="width: 110px"
+                                                        type="button" (click)="redoContract()">
+                                                    Redo
+                                                </button>
+                                                <br>
+                                                <button class="btn btn-primary  btn-sm float-sm-right"
+                                                        style="width: 110px"
+                                                        type="button" (click)="cancelContract()">
+                                                    Cancel
+                                                </button>
+                                            </td>
+                                            <td colspan=5 *ngIf="userType!='Client'">
+                                                <br>
+                                                <button class="btn btn-primary  btn-sm float-sm-right"
+                                                        style="width: 110px"
+                                                        type="button" (click)="confirmContract()">
+                                                    Confirm
+                                                </button>
+                                                <br>
+                                                <button class="btn btn-primary  btn-sm float-sm-right"
+                                                        style="width: 110px"
+                                                        type="button" (click)="cancelContract()">
+                                                    Cancel
+                                                </button>
+                                            </td>
+                                        </tr>
+                                        </tbody>
+                                    </table>
+                                </td>
+                            </tr>
+                            </tbody>
+                        </table>
+                        <div id="divRedo" style="display: none">
+                            <br><br>
+                            <form class="form-horizontal">
+                                <div class="col-sm-12">
+                                    <div class="form-group">
+                                        <div class="col-sm-2 d-inline-block"></div>
+                                        <div class="col-sm-9 d-inline-block">
                                 <textarea [(ngModel)]="redo_msg" [ngModelOptions]="{standalone: true}"
                                           class="form-control float-right" rows="4" name="description" id="description"
                                           placeholder="Enter the redo request message..."></textarea>
+                                        </div>
+                                    </div>
+                                    <div id="requestBtn">
+                                        <button class="btn btn-primary  btn-sm float-sm-right" style="width: 110px"
+                                                type="button" (click)="requestRedo()">
+                                            Send Request
+                                        </button>
+                                    </div>
                                 </div>
-                            </div>
-                            <div id="requestBtn">
-                                <button class="btn btn-primary  btn-sm float-sm-right" style="width: 110px"
-                                        type="button" (click)="requestRedo()">
-                                    Send Request
-                                </button>
-                            </div>
+                            </form>
                         </div>
-                    </form>
-                </div>
+                    </li>
+                </ul>
             </ba-card>
             <button class="btn btn-primary" (click)="goBack()">Back</button>
             <br><br><br><br>
