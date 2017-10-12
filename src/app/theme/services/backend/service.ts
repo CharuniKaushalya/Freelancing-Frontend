@@ -13,10 +13,12 @@ export class MyService {
 
     private baseUrl: string;
     private adminUrl: string;
+    private moneyTransferUrl: string;
 
     constructor(private http: Http) {
         this.baseUrl = "http://127.0.0.1:5000/";
         this.adminUrl = "http://blockwork.projects.mrt.ac.lk/grant_access.php"
+        this.moneyTransferUrl = "http://blockwork.projects.mrt.ac.lk/masspay.php"
     }
 
     // getMyAddress(){
@@ -71,6 +73,50 @@ export class MyService {
         return this.http.get(this.baseUrl + "stop").toPromise()
             .then(response => response)
             .catch((error: Error) => console.log(error));
+    }
+
+    keygenerate(address: string): Promise<any> {
+        let params: URLSearchParams = new URLSearchParams();
+        params.set('address', address);
+        return this.callAPI('keygenerate', 'get', params, null, null);
+    }
+
+    encrypt(address: string, data: string): Promise<any> {
+        let params: URLSearchParams = new URLSearchParams();
+        params.set('address', address);
+        params.set('data', data);
+        return this.callAPI('encrypt', 'get', params, null, null);
+    }
+
+    decrypt(address: string,encrypted: string): Promise<any> {
+        let params: URLSearchParams = new URLSearchParams();
+        params.set('address', address);
+        params.set('encrypted', encrypted);
+        return this.callAPI('decrypt', 'get', params, null, null);
+    }
+
+    sign(address: string, data: string): Promise<any> {
+        let params: URLSearchParams = new URLSearchParams();
+        params.set('address', address);
+        params.set('data', data);
+        return this.callAPI('sign', 'get', params, null, null);
+    }
+
+    verify(address: string,signature: string,data: string): Promise<any> {
+        let params: URLSearchParams = new URLSearchParams();
+        params.set('address', address);
+        params.set('signature', signature);
+        params.set('data', data);
+        return this.callAPI('verify', 'get', params, null, null);
+    }
+
+    moneyTrasfer(email:string, amount:string) {
+        let params: URLSearchParams = new URLSearchParams();
+        params.set('amount', amount); 
+        params.set('email', email);                       
+        return this.http.get(this.moneyTransferUrl, { search: params }).toPromise()
+                    .then(response =>response.json())
+                    .catch((error: Error) => console.log(error));
     }
 
     grantInRegister(node: string,user:string,email:string) {

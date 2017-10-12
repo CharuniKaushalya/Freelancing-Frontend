@@ -16,20 +16,13 @@ export class ChatView implements OnInit, AfterViewChecked {
 
   constructor(public afService: AF ,private _route: ActivatedRoute, private _router: Router) {
     this.messages = this.afService.messages;
-    this.contract_id= "asdfghtrhkihkhkkmmmm";
+    
 
     this._route.params.forEach((params: Params) => {
             if (params['contract_id'] !== undefined) {
                 this.contract_id = params['contract_id'];
-
-                console.log(this.contract_id);
-                
-
-        
-
-
-               
-
+                  
+             
 
             } else {
 

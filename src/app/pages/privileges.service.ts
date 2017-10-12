@@ -140,6 +140,10 @@ export class privilegeService {
           {
             type: 'contract_view',
             title: 'general.menu.contract_view'
+          },
+          {
+            type: 'contract_rules',
+            title: 'general.menu.contract_rules'
           }
         ]
       }

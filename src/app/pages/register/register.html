@@ -1,6 +1,10 @@
 <div class="auth-main">
   <div class="auth-block">
     <h1>Sign up to BlockWork</h1>
+    <div class="alert alert-warning alert-dismissable">
+      <a href="#" class="close" data-dismiss="alert" aria-label="close">&times;</a>
+      <strong>Warning! </strong> Please Run Blockchain Desktop App before Signing Up
+    </div>
     <a routerLink="/login" class="auth-link">Already have an BlockWork account? Sign in!</a>
 
     <form [formGroup]="form" (ngSubmit)="onSubmit(form.value)" class="form-horizontal">
@@ -50,18 +54,18 @@
           <span *ngIf="!passwords.valid && (password.touched || repeatPassword.touched)" class="help-block sub-little-text">Passwords don't match.</span>
         </div>
       </div>
-       <h5 class="text-danger" >{{error}}</h5>
+      <h5 class="text-danger">{{error}}</h5>
       <div class="form-group row">
         <div class="offset-sm-2 col-sm-10">
           <button [disabled]="!form.valid" type="submit" class="btn btn-default btn-auth">Sign up</button>
         </div>
       </div>
-      <h5 class="text-success" >{{success}}</h5>
+      <h5 class="text-success">{{success}}</h5>
     </form>
 
     <div class="auth-sep"><span><span>or Sign up with one click</span></span>
     </div>
-    
+
     <div class="al-share-auth">
       <ul class="al-share clearfix">
         <li><i class="socicon socicon-facebook" (click)="loginWithFacebook()" title="Share on Facebook"></i></li>

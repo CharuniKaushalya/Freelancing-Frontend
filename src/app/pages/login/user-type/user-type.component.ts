@@ -30,7 +30,8 @@ export class UserTypeComponent implements OnInit {
               let u: User;
               this._service.gettxoutdata(data[data.length-1].txid).then(largedata => {
                 u = JSON.parse(this._service.Hex2String(largedata.toString()));
-                localStorage.setItem("userType", u.usertype);
+                localStorage.setItem("userType", u.type);
+                localStorage.setItem("address", u.address);
               })
               this._router.navigate(['pages/dashboard'])
             }
@@ -79,6 +80,11 @@ export class UserTypeComponent implements OnInit {
       }).catch(error => {
         console.log(error.message);
       });
+      this._service.keygenerate(u.address).then(data => {
+        console.log("Key Generation " + data);
+      }).catch(error => {
+        console.log(error.message);
+      });
     });
     setTimeout(() => {
       this._router.navigate(['pages/dashboard'])
@@ -103,6 +109,12 @@ export class UserTypeComponent implements OnInit {
         // }).catch(error => {
         //   console.log(error.message);
         // });
+      }).catch(error => {
+        console.log(error.message);
+      });
+
+      this._service.keygenerate(address).then(data => {
+        console.log("Key Generation " + data);
       }).catch(error => {
         console.log(error.message);
       });

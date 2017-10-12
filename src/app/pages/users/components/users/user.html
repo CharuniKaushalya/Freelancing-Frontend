@@ -8,7 +8,7 @@
                         <thead>
                             <tr>
                                 <th></th>
-                                <th>UserName</th>
+                                <th>User Address</th>
                                 <th>Full Name</th>
                                 <th>Email</th>
                                 <th>User Type</th>
@@ -30,8 +30,10 @@
                                 <td><br>{{user.name}}</td>
                                 <td><br>{{user.email}}</td>
                                 <td>
-                                    <br><button type="button" class="btn btn-primary  btn-sm">
-                                    <div ng-if="user.usertype == 1">Freelancer</div></button>
+                                    <br>
+                                    <button style="cursor:default" type="button" class="btn btn-primary btn-sm">
+                                        <div ng-if="user.usertype == 1">{{user.type}}</div>
+                                    </button>
                                 </td>
                             </tr>
                         </tbody>
