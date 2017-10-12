@@ -4,8 +4,8 @@
             <h3 class="text-success"> Freelancer Contract</h3>
             <form class="form-horizontal">
                 <br>
-                <div class="alert alert-info alert-dismissable col-sm-9">
-                    <a href="#" class="close" data-dismiss="alert" aria-label="close" style="fo">×</a>
+                <div *ngIf="hasRedoRequestMsg" class="alert alert-info alert-dismissable col-sm-9">
+                    <a href="#" class="close" data-dismiss="alert" aria-label="close" style="font-size: 15px">×</a>
                     <strong>Redo Request: </strong> {{redo_request}}
                 </div>
                 <div class="form-group">

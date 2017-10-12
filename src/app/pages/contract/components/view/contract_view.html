@@ -195,6 +195,11 @@
                                                 </div>
                                             </div>
                                         </td>
+                                        <td>
+                                            <button class="btn btn-primary"
+                                                    (click)="goToDisscussion(contract.contract_id)">Discussion
+                                            </button>
+                                        </td>
                                     </tr>
                                     </tbody>
                                 </table>
@@ -251,9 +256,7 @@
                                         </td>
                                         <td>
                                             <br>
-                                            <button class="btn btn-primary"
-                                                    (click)="goToDisscussion(contract.contract_id)">Discussion
-                                            </button>
+                                            
                                             <button (click)="rModalShow(contract.contract_id)" class="btn btn-info"><i
                                                     class="fa fa-star-half-o"> Review</i></button>
 

@@ -52,6 +52,7 @@ export class MyContract implements OnInit {
 
     redo_request = '';
     inEdit = false;
+    hasRedoRequestMsg = false;
 
     public freelancerMilestones = [
         {
@@ -158,8 +159,11 @@ export class MyContract implements OnInit {
                         _service.listStreamKeyItems(this.contractStatusStream, this.project_id).then(element => {
                             this.contract.status = JSON.parse(this._service.Hex2String((element[element.length - 1]).data.toString()));
 
-                            this.redo_request = this.contract.status.milestone_state;
                             this.primary_balance = this.contract.amount;
+                            this.redo_request = this.contract.status.milestone_state;
+
+                            if(this.redo_request != null)
+                                this.hasRedoRequestMsg = true;
 
                             console.log("Editing contract");
                             console.log(this.contract);
@@ -362,7 +366,7 @@ export class MyContract implements OnInit {
         this.qa_final_payment = String(sum + '%');
     }
 
-    savePreviousContractStatus() {
+    updatePreviousContractStatus() {
 
         let prevContractStatus = this.contract.status;
         prevContractStatus.status = "PreviousVersion";
@@ -376,10 +380,26 @@ export class MyContract implements OnInit {
         });
     }
 
+    updateLinkedContractStatus(key: string, newId: string) {
+
+        this._service.listStreamKeyItems(this.contractStatusStream, key).then(element => {
+            let linkedContractLastStatus = JSON.parse(this._service.Hex2String((element[element.length - 1]).data.toString()));
+            linkedContractLastStatus.contract_link = newId;
+
+            let data_hex = this._service.String2Hex(JSON.stringify(linkedContractLastStatus));
+
+            this._service.publishToStream(this.contractStatusStream, key, data_hex).then(data => {
+                console.log(data);
+                console.log(linkedContractLastStatus);
+                console.log("Linked Contract Status Updated");
+            });
+        });
+    }
+
     saveContract() {
 
         if (this.inEdit) {
-            this.savePreviousContractStatus();
+            this.updatePreviousContractStatus();
         }
 
         let key = this.contract.projectName;
@@ -417,7 +437,7 @@ export class MyContract implements OnInit {
 
         if (hasEnoughAssets) {
 
-            let newContractStatus = this.contract.status;
+            let prevContractStatus = this.contract.status;
             this.contract.status = null;
 
             this._service.publishToStream(this.contractStream, key, data_hex).then(f_data => {
@@ -426,7 +446,10 @@ export class MyContract implements OnInit {
                 console.log(f_data);
 
                 if (this.inEdit) {
-                    this.saveContractStatus(f_data, newContractStatus.contract_link);
+                    if(prevContractStatus.contract_link != null)
+                        this.updateLinkedContractStatus(prevContractStatus.contract_link, f_data);
+
+                    this.saveContractStatus(f_data, prevContractStatus.contract_link);
 
                     if (this.primary_balance < requested_amount) {
                         let lock_amount = requested_amount - this.primary_balance;
@@ -498,7 +521,9 @@ export class MyContract implements OnInit {
         /* setting the contract state attributes */
         contractStatus.contract_id = key;
         contractStatus.status = "Pending";
-        contractStatus.contract_link = link_id;
+
+        if(link_id != null)
+            contractStatus.contract_link = link_id;
 
         /* saving contract state to the blockchain */
         let contractStatusJSON = JSON.stringify(contractStatus);

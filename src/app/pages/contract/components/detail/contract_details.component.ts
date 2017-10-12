@@ -380,7 +380,7 @@ export class ContractDetails implements OnInit {
                     console.log(data);
                     console.log("Assets unlocked");
 
-                    if (this.hasLinkedContract == true) {
+                    if (this.hasLinkedContract) {
                         this.contract.status = this.changeContractStatus(this.contract.contract_id, this.contract.status.contract_link, "Cancelled");
 
                     } else {
@@ -391,7 +391,7 @@ export class ContractDetails implements OnInit {
                     let payment1 = this.contract.amount;
                     locked_amount_usd = locked_amount_usd - Number(payment1);
 
-                    if (this.hasLinkedContract == true) {
+                    if (this.hasLinkedContract) {
 
                         this.linkedContract.status = this.changeContractStatus(this.contract.status.contract_link, this.contract.contract_id, "Cancelled");
                         console.log("Linked Contract Cancelled");
@@ -422,15 +422,12 @@ export class ContractDetails implements OnInit {
 
         this._service.listStreamKeyItems(this.projectStream, this.contract.projectName).then(p => {
 
+
             if (p[p.length - 1] != undefined) {
                 let project_id = p[p.length - 1].txid;
 
-                if (this.hasLinkedContract == false) {
-                    this.contract.status = this.changeContractStatus(this.contract.contract_id, null, "Active");
-                    this.updateProjectStatus(project_id, "Closed");
-
-                } else {
-
+                if (this.hasLinkedContract) {
+                    console.log("OK");
                     if (this.linkedContract.status.status == "Pending") {
                         this.contract.status = this.changeContractStatus(this.contract.contract_id, this.contract.status.contract_link, "Confirmed");
 
@@ -439,6 +436,10 @@ export class ContractDetails implements OnInit {
                         this.linkedContract.status = this.changeContractStatus(this.contract.status.contract_link, this.contract.contract_id, "Active");
                         this.updateProjectStatus(project_id, "Closed");
                     }
+
+                } else {
+                    this.contract.status = this.changeContractStatus(this.contract.contract_id, null, "Active");
+                    this.updateProjectStatus(project_id, "Closed");
                 }
             }
         });
@@ -459,6 +460,8 @@ export class ContractDetails implements OnInit {
             this.contract.status = this.changeContractStatus(this.contract.contract_id, this.contract.status.contract_link, "RedoPending");
         else
             this.contract.status = this.changeContractStatus(this.contract.contract_id, null, "RedoPending");
+
+        $('#requestBtn').hide();
     }
 
     /* Client redo a contract*/
