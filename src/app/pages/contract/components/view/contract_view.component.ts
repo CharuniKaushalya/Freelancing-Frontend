@@ -129,7 +129,6 @@ export class ContractView implements OnInit {
 
     cancelContract(id: string): void {
 
-
         let contract = this.getSelectedContract(id);
         let locked_amount_usd = 0;
 
@@ -160,6 +159,7 @@ export class ContractView implements OnInit {
 
                     let payment1 = contract.amount;
                     locked_amount_usd = locked_amount_usd - Number(payment1);
+                    console.log("payment1 = "+payment1);
 
                     if (contract.status.contract_link != null) {
                         this._service.listStreamKeyItems(this.contractStatusStream, contract.status.contract_link).then(element => {
@@ -168,21 +168,45 @@ export class ContractView implements OnInit {
                             this.changeStateOfLinkedContract(linked_contract_status, "Cancelled");
                             let linked_contract = this.getSelectedContract(linked_contract_status.contract_id);
 
+                            console.log("Linked contract");
+                            console.log(linked_contract);
+
                             if (linked_contract != undefined) {
                                 this.pending_contracts = this.pending_contracts.filter(function (cnt) {
                                     return cnt.contract_id !== linked_contract_status.contract_id;
                                 });
                                 this.cancelled_contracts.push(linked_contract);
+
+                                console.log("Linked Contract Cancelled");
+
+                                let payment2 = linked_contract.amount;
+                                locked_amount_usd = locked_amount_usd - Number(payment2);
+                                console.log("payment2 = "+payment2);
+
+                                this._service.lockAssetsFrom(contract.client.address, contract.asset, locked_amount_usd.toString()).then(data => {
+                                    console.log("Assets Locked");
+                                    console.log(data);
+                                });
+
+                            } else {
+                                this._service.gettxoutdata(contract.status.contract_link).then(largedata => {
+                                    linked_contract = JSON.parse(this._service.Hex2String(largedata.toString()));
+
+                                    console.log("Linked Contract Cancelled");
+
+                                    let payment2 = linked_contract.amount;
+                                    locked_amount_usd = locked_amount_usd - Number(payment2);
+                                    console.log("payment2 = "+payment2);
+
+                                    console.log("Linked contract");
+                                    console.log(linked_contract);
+
+                                    this._service.lockAssetsFrom(contract.client.address, contract.asset, locked_amount_usd.toString()).then(data => {
+                                        console.log("Assets Locked");
+                                        console.log(data);
+                                    });
+                                });
                             }
-                            console.log("Linked Contract Cancelled");
-
-                            let payment2 = linked_contract.amount;
-                            locked_amount_usd = locked_amount_usd - Number(payment2);
-
-                            this._service.lockAssetsFrom(contract.client.address, contract.asset, locked_amount_usd.toString()).then(data => {
-                                console.log("Assets Locked");
-                                console.log(data);
-                            });
                         });
                         if (this.userType == "Client")
                             $('#myModal').modal('show');
