@@ -366,8 +366,4 @@ export class ContractView implements OnInit {
         this._router.navigate(link);
     }
 
-    goToDisscussion(id: string) {
-        let link = ['/pages/chat/chat_view', id];
-        this._router.navigate(link);
-    }
 }

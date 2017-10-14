@@ -11,15 +11,15 @@
                         <div class="text-warning pull-right d-inline-block">
                             <button *ngIf="hasLinkedContract && contract.type=='Freelancer'" class="btn btn-primary float-sm-right" type="button"
                                     (click)="goToDiscussion(contract.client.address, contract.freelancer.address, linkedContract.freelancer.address)">
-                                Discussion
+                                <i class="fa fa-comments"></i> Discussion
                             </button>
                             <button *ngIf="hasLinkedContract && contract.type=='QA'" class="btn btn-primary float-sm-right" type="button"
                                     (click)="goToDiscussion(contract.client.address, linkedContract.freelancer.address, contract.freelancer.address)">
-                                Discussion
+                                <i class="fa fa-comments"></i> Discussion
                             </button>
                             <button *ngIf="!hasLinkedContract" class="btn btn-primary float-sm-right" type="button"
                                     (click)="contact(contract.client.address, contract.freelancer.address)">
-                                Discussion
+                                <i class="fa fa-comments"></i> Discussion
                             </button>
                         </div>
                     </li>
@@ -52,7 +52,7 @@
                                     <button *ngIf="userType != 'Client'" class="btn btn-primary  btn-sm float-sm-right"
                                             style="width: 110px"
                                             type="button" (click)="contact(contract.client.address, contract.freelancer.address)">
-                                        Contact
+                                        <i class="fa fa-comment"></i> Contact
                                     </button>
                                 </td>
                             </tr>
@@ -65,7 +65,7 @@
                                     <button *ngIf="userType == 'Client'" class="btn btn-primary  btn-sm float-sm-right"
                                             style="width: 110px"
                                             type="button" (click)="contact(contract.client.address, contract.freelancer.address)">
-                                        Contact
+                                        <i class="fa fa-comment"></i> Contact
                                     </button>
                                 </td>
                             </tr>
@@ -80,15 +80,15 @@
                                     <br>{{linkedContract.freelancer.username}}
                                     <button *ngIf="userType == 'Client'" class="btn btn-primary  btn-sm float-sm-right" style="width: 110px"
                                             type="button" (click)="contact(linkedContract.client.address, linkedContract.freelancer.address)">
-                                        Contact
+                                        <i class="fa fa-comment"></i> Contact
                                     </button>
                                     <button *ngIf="userType == 'Freelancer'" class="btn btn-primary  btn-sm float-sm-right" style="width: 110px"
                                             type="button" (click)="contact(contract.freelancer.address, linkedContract.freelancer.address)">
-                                        Contact
+                                        <i class="fa fa-comment"></i> Contact
                                     </button>
                                     <button *ngIf="userType == 'QA'" class="btn btn-primary  btn-sm float-sm-right" style="width: 110px"
                                             type="button" (click)="contact(linkedContract.freelancer.address, contract.freelancer.address)">
-                                        Contact
+                                        <i class="fa fa-comment"></i> Contact
                                     </button>
                                 </td>
                             </tr>

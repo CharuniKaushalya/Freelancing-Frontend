@@ -281,4 +281,38 @@ export class Profile implements OnInit {
 
         });
     }
+
+    goToChat(id: string, type: string) {
+
+        let userType = localStorage.getItem('userType');
+        let userAddress = localStorage.getItem('address');
+
+        if(userType == 'Client') {
+            if(type == 'Freelancer') {
+                id = userAddress + id;
+
+            } else if(type == 'QA') {
+                id = userAddress + id;
+            }
+
+        } else if(userType == 'Freelancer') {
+            if(type == 'Client') {
+                id = id + userAddress;
+
+            } else if(type == 'QA') {
+                id = userAddress + id;
+            }
+
+        } else if(userType == 'QA') {
+            if(type == 'Client') {
+                id = id + userAddress;
+
+            } else if(type == 'Freelancer') {
+                id = id + userAddress;
+            }
+        }
+
+        let link = ['/pages/chat/chat_view', id];
+        this._router.navigate(link);
+    }
 }

@@ -17,6 +17,7 @@
 
 .author {
   font-size: 12px;
+  color: #737373;
 }
 .send-message {
   color: #ffffff;
@@ -73,7 +74,7 @@ p {
 
 .me {
   display: inherit;
-  margin: 5px 45px 5px 20px;
+  margin: 5px 200px 5px 20px;
 }
 
 .me::before {
@@ -83,7 +84,7 @@ p {
 
 .you {
   display: inherit;
-  margin: 5px 20px 5px 45px;
+  margin: 5px 20px 5px 200px;
 }
 
 .you::before {
@@ -99,7 +100,6 @@ p {
 .highlight {
   padding: 9px 14px;
   margin-bottom: 14px;
-  background-color: #f7f7f9;
   border: 1px solid #e1e1e8;
   border-radius: 4px;
 }

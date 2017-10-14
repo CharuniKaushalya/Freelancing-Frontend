@@ -1,59 +1,60 @@
 <ul class="al-msg-center clearfix">
-  <li *ngIf="userType=='Client'" class="list-group-item list-group-item-info">{{userType}} Dashboard</li>
-  <li *ngIf="userType=='Freelancer'" class="list-group-item list-group-item-success">{{userType}} Dashboard</li>
-  <li *ngIf="userType=='QA'" class="list-group-item list-group-item-danger">{{userType}} Dashboard</li>
-  <li *ngIf="userType=='Consultant'" class="list-group-item list-group-item-warning">{{userType}} Dashboard</li>
-  <li class="dropdown">
-    <a href class="dropdown-toggle" id="msg-dd1" data-toggle="dropdown" aria-expanded="false">
-      <i class="fa fa-bell-o"></i><span>{{ notifications.length }}</span>
+    <li *ngIf="userType=='Client'" class="list-group-item list-group-item-info">{{userType}} Dashboard</li>
+    <li *ngIf="userType=='Freelancer'" class="list-group-item list-group-item-success">{{userType}} Dashboard</li>
+    <li *ngIf="userType=='QA'" class="list-group-item list-group-item-danger">{{userType}} Dashboard</li>
+    <li *ngIf="userType=='Consultant'" class="list-group-item list-group-item-warning">{{userType}} Dashboard</li>
+    <li class="dropdown">
+        <a href class="dropdown-toggle" id="msg-dd1" data-toggle="dropdown" aria-expanded="false">
+            <i class="fa fa-bell-o"></i><span>{{ notifications.length }}</span>
 
-      <div class="notification-ring"></div>
-    </a>
-
-    <div class="top-dropdown-menu dropdown-menu" aria-labelledby="msg-dd1">
-      <i class="dropdown-arr"></i>
-
-      <div class="header clearfix">
-        <strong>Notifications</strong>
-        <a href>Mark All as Read</a>
-        <a href>Settings</a>
-      </div>
-      <div class="msg-list">
-        <a *ngFor="let msg of notifications" href class="clearfix">
-          <div class="img-area"><img [ngClass]="{'photo-msg-item': !msg.image}"
-                                     src="{{ ( msg.image ||  (msg.name | baProfilePicture)) }}"></div>
-          <div class="msg-area">
-            <div>{{ msg.text }}</div>
-            <span>{{ msg.time }}</span>
-          </div>
+            <div class="notification-ring"></div>
         </a>
-      </div>
-      <a href>See all notifications</a>
-    </div>
-  </li>
-  <li class="dropdown">
-    <a href class="msg dropdown-toggle" id="msg-dd2" data-toggle="dropdown" aria-expanded="false">
-      <i class="fa fa-envelope-o"></i><span>{{ messages.length }}</span>
-      <div class="notification-ring"></div>
-    </a>
-    <div class="top-dropdown-menu dropdown-menu" aria-labelledby="msg-dd2">
-      <i class="dropdown-arr"></i>
-      <div class="header clearfix">
-        <strong>Messages</strong>
-        <a href>Mark All as Read</a>
-        <a href>Settings</a>
-      </div>
-      <div class="msg-list">
-        <a *ngFor="let msg of messages" href class="clearfix">
-          <div class="img-area"><img [ngClass]="{'photo-msg-item': !msg.image}"
-                                     src="{{ ( msg.image ||  (msg.name | baProfilePicture)) }}"></div>
-          <div class="msg-area">
-            <div>{{ msg.text }}</div>
-            <span>{{ msg.time }}</span>
-          </div>
+
+        <div class="top-dropdown-menu dropdown-menu" aria-labelledby="msg-dd1">
+            <i class="dropdown-arr"></i>
+
+            <div class="header clearfix">
+                <strong>Notifications</strong>
+                <a href>Mark All as Read</a>
+                <a href>Settings</a>
+            </div>
+            <div class="msg-list">
+                <a *ngFor="let msg of notifications" href class="clearfix">
+                    <div class="img-area"><img [ngClass]="{'photo-msg-item': !msg.image}"
+                                               src="{{ ( msg.image ||  (msg.name | baProfilePicture)) }}"></div>
+                    <div class="msg-area">
+                        <div>{{ msg.text }}</div>
+                        <span>{{ msg.time }}</span>
+                    </div>
+                </a>
+            </div>
+            <a href>See all notifications</a>
+        </div>
+    </li>
+    <li class="dropdown">
+        <a href class="msg dropdown-toggle" id="msg-dd2" data-toggle="dropdown" aria-expanded="false">
+            <i class="fa fa-envelope-o"></i><span>{{ messages.length }}</span>
+            <div class="notification-ring"></div>
         </a>
-      </div>
-      <a href>See all messages</a>
-    </div>
-  </li>
+        <div class="top-dropdown-menu dropdown-menu" aria-labelledby="msg-dd2">
+            <i class="dropdown-arr"></i>
+            <div class="header clearfix">
+                <strong>Messages</strong>
+                <a href>Mark All as Read</a>
+                <a href>Settings</a>
+            </div>
+            <div class="msg-list">
+                <a *ngFor="let msg of messages" class="clearfix" (click)="goToChat(msg.id)" role="button">
+                    <div>
+                        <div style="font-size: larger"><i class="fa fa-user"></i> {{ msg.displayName }}</div>
+                    </div>
+                    <div class="msg-area">
+                        <div>{{ msg.message }}</div>
+                        <span>{{ msg.timestamp | date:"MM/dd/yy hh:mm a" }}</span>
+                    </div>
+                </a>
+            </div>
+            <a href>See all messages</a>
+        </div>
+    </li>
 </ul>

@@ -11,7 +11,7 @@ const routes: Routes = [
     children: [
       
       
-      { path: 'chat_view/:contract_id', component: ChatView }
+      { path: 'chat_view/:chat_id', component: ChatView }
 
     ]
   }

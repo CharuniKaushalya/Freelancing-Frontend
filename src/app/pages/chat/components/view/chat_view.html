@@ -1,34 +1,46 @@
 <div class="container">
-  <div class="row">
-    <div class="col-md-8 col-md-offset-2">
-      <div #scrollMe class="bs-example" id="messages">
-        <div *ngFor="let message of messages | async">
-
-
-         
-           <div *ngIf="message.contract_id ==  contract_id">
-            <div class="bubble" [class.you]="isYou(message.email)" [class.me]="isMe(message.email)">
-                  <p>{{ message.message }} </p>
-                  
-              <div class="author">
-              {{ message.displayName }} | {{ message.timestamp | date:"MM/dd/yy hh:mm a" }}
-              </div>
+    <div class="row">
+        <div class="col-md-12">
+            <div class="card-title d-inline-block" *ngIf="isDiscussion">
+                <b>Discussion:</b> &emsp;
             </div>
-            
-          </div>
-         
+            <div *ngFor="let user of users" class="d-inline-block card-title" style="text-transform: none !important;">
+                <i class="fa fa-user"></i> <a (click)="goToUser(user.user_id)" role="button">
+                {{user.name}} ({{user.type}}) </a>&emsp;
+            </div>
+            <br>
+        </div>
+        <div class="col-md-10 col-md-offset-2">
+            <div #scrollMe class="bs-example" id="messages">
+                <div *ngFor="let message of messages | async">
+                    <div>
+                        <div class="bubble" [class.you]="isYou(message.email)" [class.me]="isMe(message.email)">
+                            <p>{{ message.message }} </p>
 
-         </div>
+                            <div class="author">
+                                {{ message.displayName }} | {{ message.timestamp | date:"MM/dd/yy hh:mm a" }}
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
 
-      </div>
-
-     <figure class="highlight">
-        <input type="textarea" class="message-text" [(ngModel)]="newMessage" (keyup.enter)="sendMessage()">
-        <a class="send-message" (click)="sendMessage()">SEND</a>
-              
-      </figure>
-
+            <figure class="highlight">
+                <textarea [(ngModel)]="newMessage" (keyup.enter)="sendMessage()" class="form-control"
+                          style="height: 40px" id="msgBox"></textarea>
+                <br>
+                <button class="btn btn-primary btn-sm float-sm-right" style="width: 110px" type="button"
+                        (click)="sendMessage()">
+                    SEND
+                </button>
+                <br><br>
+            </figure>
+            <br>
+            <div>
+                <button class="btn btn-primary" (click)="goBack()">Back</button>
+            </div>
+            <br><br><br>
+        </div>
     </div>
-  </div>
 </div>
 
