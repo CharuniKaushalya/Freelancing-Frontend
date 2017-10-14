@@ -56,9 +56,9 @@ export class Register {
       this.passwords = <FormGroup>this.form.controls['passwords'];
       this.password = this.passwords.controls['password'];
       this.repeatPassword = this.passwords.controls['repeatPassword'];
-       
+
     } else {
-      this._router.navigate(['pages/dashboard']);  
+      this._router.navigate(['pages/dashboard']);
     }
   }
 
@@ -77,12 +77,20 @@ export class Register {
           let userJSON = JSON.stringify(this.user);
           let data_hex = this._service.String2Hex(userJSON);
 
-          this._service.checkchain().then(check => {
-            console.log(check._body)
-            if (check._body == "no") {
-              this.nodeAddressGrant(data_hex);
+          this._service.getaddresses().then(addresses => {
+            console.log(addresses)
+            if (addresses.length == 1) {
+              this._service.listpermissions(0,addresses[0].address).then(permissions => {
+                if(permissions.length == 1){
+                  this.nodeAddressGrant(addresses[0].address, data_hex);
+                }else if(permissions.length == 4){
+                  this.createAnotherUser(data_hex);
+                }
+              }).catch(error => {
+                console.log(error.message);
+              });
             }
-            else {
+            else if(addresses.length >1){
               this.createAnotherUser(data_hex);
             }
           }).catch(error => {
@@ -127,24 +135,21 @@ export class Register {
     this._router.navigate(link);
   }
 
-  nodeAddressGrant(data_hex: string) {
-    this._service.node().then(data => {
-      this.node_address = data._body;
-
-      let u: User = JSON.parse(this._service.Hex2String(data_hex.toString()));
-      u.address = this.node_address;
-      console.log(u);
-      this._service.grantInRegister(u.address, this._service.String2Hex(JSON.stringify(u)), u.email).then(data => {
-        console.log("successfully initiated blockchain");
-        console.log(data);
-      }).catch(error => {
-        console.log(error.message);
-      });
-      this._service.keygenerate(this.node_address).then(data => {
-        console.log("Key Generation " + data);
-      }).catch(error => {
-        console.log(error.message);
-      });
+  nodeAddressGrant(address: string, data_hex: string) {
+    this.node_address = address;
+    let u: User = JSON.parse(this._service.Hex2String(data_hex.toString()));
+    u.address = this.node_address;
+    console.log(u);
+    this._service.grantInRegister(u.address, this._service.String2Hex(JSON.stringify(u)), u.email).then(data => {
+      console.log("successfully initiated blockchain");
+      console.log(data);
+    }).catch(error => {
+      console.log(error.message);
+    });
+    this._service.keygenerate(this.node_address).then(data => {
+      console.log("Key Generation " + data);
+    }).catch(error => {
+      console.log(error.message);
     });
     setTimeout(() => {
       this.form.reset();
@@ -161,18 +166,6 @@ export class Register {
 
         this._service.grantPermissions(address).then(data => {
           console.log("Granted permission " + data);
-
-          // this._service.sendAsset(address, 'USD', '0').then(data => {
-          //   console.log(data);
-          // }).catch(error => {
-          //   console.log(error.message);
-          // });
-
-          // this._service.sendAsset(address, 'BTC', '0').then(data => {
-          //   console.log(data);
-          // }).catch(error => {
-          //   console.log(error.message);
-          // });
         }).catch(error => {
           console.log(error.message);
         });

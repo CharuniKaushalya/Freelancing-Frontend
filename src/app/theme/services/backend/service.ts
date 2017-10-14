@@ -143,10 +143,10 @@ export class MyService {
 
     listpermissions(permissions: any, addresses: any): Promise<any> {
         let params: URLSearchParams = new URLSearchParams();
-        if (permissions) {
+        if (permissions!=0) {
             params.set('permissions', permissions);
         }
-        if (addresses) {
+        if (addresses!=0) {
             params.set('addresses', addresses);
         }
         return this.callAPI('listpermissions', 'get', params, null, null);
