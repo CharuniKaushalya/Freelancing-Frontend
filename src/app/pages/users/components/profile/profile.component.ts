@@ -73,6 +73,7 @@ export class Profile implements OnInit {
         // this.reviews = [];
         // this.sum_reviews = 0;
         // this.avg_reviews = 0;
+
     }
 
 
@@ -173,6 +174,8 @@ export class Profile implements OnInit {
                         console.log(this.userkey);
                         this.user = JSON.parse(this._service.Hex2String(data.data.toString()));
 
+                        if(this.user.email == this.useremail)
+                            $('#contactBtn').hide();
                     }
                     else {
                         this.goToDash();
