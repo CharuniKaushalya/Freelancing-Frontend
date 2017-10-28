@@ -78,11 +78,17 @@ export class Register {
           let data_hex = this._service.String2Hex(userJSON);
 
           this._service.getaddresses().then(addresses => {
-            console.log(addresses)
+            console.log(addresses.length)
             if (addresses.length == 1) {
               this._service.listpermissions(0,addresses[0].address).then(permissions => {
                 if(permissions.length == 1){
-                  this.nodeAddressGrant(addresses[0].address, data_hex);
+                  this._service.stopchain().then(stop =>{
+                    console.log(stop);
+                    this.nodeAddressGrant(addresses[0].address, data_hex);
+                  }).catch(error => {
+                    console.log(error.message);
+                  });
+                  
                 }else if(permissions.length == 4){
                   this.createAnotherUser(data_hex);
                 }
@@ -146,11 +152,18 @@ export class Register {
     }).catch(error => {
       console.log(error.message);
     });
-    this._service.keygenerate(this.node_address).then(data => {
-      console.log("Key Generation " + data);
-    }).catch(error => {
-      console.log(error.message);
-    });
+    setTimeout(() => {
+      this._service.startchain().then(start=>{
+        console.log(start);
+        this._service.keygenerate(this.node_address).then(data => {
+          console.log("Key Generation " + data);
+        }).catch(error => {
+          console.log(error.message);
+        });
+      }).catch(error => {
+        console.log(error.message);
+      });
+    }, 2000);
     setTimeout(() => {
       this.form.reset();
       this.authService.signOut();

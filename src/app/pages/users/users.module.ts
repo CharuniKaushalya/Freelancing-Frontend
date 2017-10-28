@@ -13,6 +13,7 @@ import { Wallet } from './components/wallet/wallet.component';
 import { MyUsers } from './components/users/user.component';
 import { SkillModal } from './components/skill-modal/skill-modal.component';
 import { EducationModal } from './components/edu-modal/edu-modal.component';
+import { CountryPickerComponent } from './components/edu-modal/country-picker.component';
 import { PortfolioModal } from './components/proj-modal/proj-modal.component';
 import { WorkModal } from './components/work-modal/work-modal.component';
 import { PaymentModal } from './components/payment-modal/payment.component';
@@ -40,6 +41,7 @@ import {RatingModule} from "ng2-rating";
     Wallet,
     SkillModal,
     EducationModal,
+    CountryPickerComponent,
     PortfolioModal,
     WorkModal,
     MyUsers,
@@ -47,7 +49,7 @@ import {RatingModule} from "ng2-rating";
   ],
   entryComponents: [
     SkillModal,
-    EducationModal,
+    EducationModal,    
     PortfolioModal,
     WorkModal,
     PaymentModal
