@@ -1,6 +1,7 @@
 import {Component, EventEmitter, Input, OnInit, Output} from '@angular/core';
 import {MyService} from "../../../../theme/services/backend/service";
 import {Router, ActivatedRoute, Params} from '@angular/router';
+import {AF} from '../../../../providers/af';
 
 import {Contract} from "../../../../theme/models/contract";
 import {ContractStatus} from "../../../../theme/models/contractStatus";
@@ -30,7 +31,7 @@ export class ContractDetails implements OnInit {
     userType = '';
     redo_msg;
 
-    constructor(private _service: MyService, private _route: ActivatedRoute, private _router: Router) {
+    constructor(private _service: MyService, private _route: ActivatedRoute, private _router: Router, public afService: AF) {
         this.userType = localStorage.getItem("userType");
 
         this._route.params.forEach((params: Params) => {
@@ -174,6 +175,8 @@ export class ContractDetails implements OnInit {
     stateBtnClicked(nextState: string) {
         this.contract.status.milestone_state = nextState;
 
+        this.sendNotification(nextState);
+
         if (nextState == 'Completed' && this.contract.milestones + 1 != this.contract.status.current_milestone) {
             this.contract.milestoneValues[this.contract.status.current_milestone - 1].state = this.getStateName(nextState);
 
@@ -193,14 +196,56 @@ export class ContractDetails implements OnInit {
             }
         }
 
-        if (nextState == 'Completed') {
-
-        }
-
         this.saveContractStatus();
 
         if (this.hasLinkedContract)
             this.saveLinkedContractStatus();
+    }
+
+    sendNotification(nextState: string) {
+
+        let msg = '';
+        let project = this.contract.projectName;
+
+        if(nextState == 'Working') {
+            if(this.contract.milestones == 0) {
+                msg = "Work started";
+
+            } else if(this.contract.milestones + 1 == this.contract.status.current_milestone) {
+                msg = "Started working on final task";
+
+            } else {
+                msg = "Started working on milestone " + this.contract.status.current_milestone;
+            }
+
+        } else if(nextState == 'Reviewing') {
+            if(this.contract.milestones == 0) {
+                msg = "Start reviewing";
+
+            } else if(this.contract.milestones + 1 == this.contract.status.current_milestone) {
+                msg = "Start reviewing final task";
+
+            } else {
+                msg = "Start reviewing milestone " + this.contract.status.current_milestone;
+            }
+
+        } else if(nextState == 'Completed') {
+            if(this.contract.milestones == 0) {
+                msg = "Project completed";
+
+            } else if(this.contract.milestones + 1 == this.contract.status.current_milestone) {
+                msg = "Project completed";
+
+            } else {
+                msg = "Milestone " + this.contract.status.current_milestone + " completed";
+            }
+        }
+
+        this.afService.sendNotification(msg, project, this.contract.client.address);
+
+        if(nextState != 'Working' && this.hasLinkedContract) {
+            this.afService.sendNotification(msg, project, this.linkedContract.freelancer.address);
+        }
     }
 
     saveContractStatus() {
@@ -441,7 +486,7 @@ export class ContractDetails implements OnInit {
                 let project_id = p[p.length - 1].txid;
 
                 if (this.hasLinkedContract) {
-                    console.log("OK");
+
                     if (this.linkedContract.status.status == "Pending") {
                         this.contract.status = this.changeContractStatus(this.contract.contract_id, this.contract.status.contract_link, "Confirmed");
 

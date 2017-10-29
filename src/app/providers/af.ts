@@ -8,6 +8,7 @@ import {FirebaseObjectFactoryOpts} from "angularfire2/database-deprecated/interf
 @Injectable()
 export class AF {
     public messages: FirebaseListObservable<any[]>;
+    public notifications: FirebaseListObservable<any[]>;
     public users: FirebaseListObservable<any[]>;
     public displayName: string;
     public email: string;
@@ -27,6 +28,7 @@ export class AF {
         });
         this.messages = af.list('messages');
         this.users = af.list('users');
+        this.notifications = af.list('notifications');
     }
 
     getMessages(chat_id: string): FirebaseListObservable<any[]>{
@@ -34,6 +36,13 @@ export class AF {
 
         msgList = this.af.list('messages/'+chat_id);
         return msgList;
+    }
+
+    getNotifications(notification_id: string): FirebaseListObservable<any[]>{
+        let notificationsList: FirebaseListObservable<any[]>;
+
+        notificationsList = this.af.list('notifications/'+notification_id);
+        return notificationsList;
     }
 
     // getFist(): FirebaseListObservable<any[]> {
@@ -60,5 +69,20 @@ export class AF {
             timestamp: Date.now()
         };
         list.push(message);
+    }
+
+    sendNotification(text, project, notification_id) {
+
+        let list = this.af.list('notifications/'+notification_id);
+        let user_email = localStorage.getItem("email");
+
+        let notification = {
+            message: text,
+            project: project,
+            user: user_email,
+            email: this.email,
+            timestamp: Date.now()
+        };
+        list.push(notification);
     }
 }

@@ -14,15 +14,16 @@ import {Router} from '@angular/router';
 })
 export class BaMsgCenter {
 
-    public notifications: Array<Object>;
+    public notifications = [];
     public messages = [];
     private auth: any;
     userStream: string = "Users";
     userType: string = "";
-    subscribed = true;
+    msg_subscribed = true;
+    notification_subscribed = true;
 
     constructor(private _baMsgCenterService: BaMsgCenterService, public authService: AuthService, private _service: MyService, public afService: AF, private _router: Router) {
-        this.notifications = this._baMsgCenterService.getNotifications();
+        // this.notifications = this._baMsgCenterService.getNotifications();
         // this.messages = this._baMsgCenterService.getMessages();
 
         this.authService.getAuth().authState.subscribe(user => {
@@ -48,7 +49,7 @@ export class BaMsgCenter {
                                     let msgList = this.afService.getMessages(allMessages[i].$key);
 
                                     msgList.subscribe(msgs => {
-                                        if(this.subscribed) {
+                                        if (this.msg_subscribed) {
                                             let last = msgs[msgs.length - 1];
 
                                             if (last.email != userEmail) {
@@ -64,9 +65,36 @@ export class BaMsgCenter {
                                                     console.log(last);
 
                                                     if (i == allMessages.length - 1) {
-                                                        this.subscribed = false;
+                                                        this.msg_subscribed = false;
                                                     }
                                                 });
+                                            }
+                                        }
+                                    });
+                                }
+                            }
+                        });
+
+                        this.afService.notifications.subscribe(allNotifications => {
+                            for (let i = 0; i < allNotifications.length; i++) {
+                                if (allNotifications[i].$key == userAddress) {
+
+                                    let msgList = this.afService.getNotifications(allNotifications[i].$key);
+
+                                    msgList.subscribe(msgs => {
+                                        if (this.notification_subscribed) {
+                                            let last = msgs[msgs.length - 1];
+
+                                            if (last.email != userEmail) {
+
+                                                last.id = allNotifications[i].$key;
+
+                                                this.notifications.push(last);
+                                                console.log(last);
+
+                                                if (i == allNotifications.length - 1) {
+                                                    this.notification_subscribed = false;
+                                                }
                                             }
                                         }
                                     });
