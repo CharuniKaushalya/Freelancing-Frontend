@@ -82,7 +82,12 @@
         <div class="col-sm-12">
             <ba-card cardTitle="Set Contract Rules" baCardClass="with-scroll table-panel">
                 <div class="col-sm-12">
-                    <form class="form-horizontal">
+                    <form class="form-horizontal" [formGroup]="form" (ngSubmit)="onSubmit(form.value)">
+                        <div *ngIf="error" class="alert alert-danger alert-dismissable col-sm-11">
+                            <a href="#" class="close" data-dismiss="alert" aria-label="close"
+                               style="font-size: 15px">×</a>
+                            <strong>ERROR: </strong> {{error_msg}}
+                        </div>
                         <div class="form-group">
                             <label class="control-label col-sm-5 d-inline-block" for="redo">
                                 Maximum no. of redo's a client can apply for:
@@ -97,91 +102,109 @@
                                 </select>
                             </div>
                         </div>
-                        <div class="form-group">
+                        <div class="form-group"
+                             [ngClass]="{'has-error': ((!freelancer_rf_payment.valid && freelancer_rf_payment.touched) || (contractRulesModel.freelancer_rf_payment_percentage > 60) || (contractRulesModel.freelancer_rf_payment_percentage < 40)), 'has-success': (freelancer_rf_payment.valid && freelancer_rf_payment.touched)}">
                             <label class="control-label col-sm-5 d-inline-block" for="freelancer_rf_payment">Freelancer
                                 payment reduce percentage when all redo's fail:</label>
                             <div class="col-sm-6 d-inline-block">
-                                <input [(ngModel)]="contractRulesModel.freelancer_rf_payment_percentage"
-                                       [ngModelOptions]="{standalone: true}"
-                                       class="form-control" type="number"
+                                <input [formControl]="freelancer_rf_payment"
+                                       [(ngModel)]="contractRulesModel.freelancer_rf_payment_percentage"
+                                       type="number" class="form-control" min="40" max="60"
                                        name="freelancer_rf_payment" id="freelancer_rf_payment">
                             </div>
                         </div>
-                        <div class="form-group">
+                        <div class="form-group"
+                             [ngClass]="{'has-error': ((!freelancer_pay_reduce.valid && freelancer_pay_reduce.touched) || (contractRulesModel.freelancer_pay_reduce_percentage > 8) || (contractRulesModel.freelancer_pay_reduce_percentage < 2)), 'has-success': (freelancer_pay_reduce.valid && freelancer_pay_reduce.touched)}">
                             <label class="control-label col-sm-5 d-inline-block" for="freelancer_rf_payment">Freelancer
                                 payment reduce percentage when fail to meet a deadline:</label>
                             <div class="col-sm-6 d-inline-block">
-                                <input [(ngModel)]="contractRulesModel.freelancer_pay_reduce_percentage"
-                                       [ngModelOptions]="{standalone: true}"
-                                       class="form-control" type="number"
+                                <input [formControl]="freelancer_pay_reduce"
+                                       [(ngModel)]="contractRulesModel.freelancer_pay_reduce_percentage"
+                                       type="number" class="form-control" min="2" max="8"
                                        name="freelancer_pay_reduce" id="freelancer_pay_reduce">
                             </div>
                         </div>
-                        <div class="form-group">
-                            <label class="control-label col-sm-5 d-inline-block" for="freelancer_rf_payment">QA
+                        <div class="form-group"
+                             [ngClass]="{'has-error': ((!qa_pay_reduce.valid && qa_pay_reduce.touched) || (contractRulesModel.qa_pay_reduce_percentage > 8) || (contractRulesModel.qa_pay_reduce_percentage < 2)), 'has-success': (qa_pay_reduce.valid && qa_pay_reduce.touched)}">
+                            <label class="control-label col-sm-5 d-inline-block" for="qa_pay_reduce">QA
                                 payment reduce percentage when fail to meet a deadline:</label>
                             <div class="col-sm-6 d-inline-block">
-                                <input [(ngModel)]="contractRulesModel.qa_pay_reduce_percentage"
-                                       [ngModelOptions]="{standalone: true}"
-                                       class="form-control" type="number" name="qa_pay_reduce" id="qa_pay_reduce">
+                                <input [formControl]="qa_pay_reduce"
+                                       [(ngModel)]="contractRulesModel.qa_pay_reduce_percentage"
+                                       class="form-control" type="number" name="qa_pay_reduce" id="qa_pay_reduce"
+                                       min="2" max="8">
                             </div>
                         </div>
-                        <div class="form-group">
-                            <label class="control-label col-sm-5 d-inline-block" for="freelancer_rf_payment">Projects
-                                value boundary:</label>
+                        <div class="form-group"
+                             [ngClass]="{'has-error': ((!project_worth_mark.valid && project_worth_mark.touched) || (contractRulesModel.project_worth_mark > 800) || (contractRulesModel.project_worth_mark < 200)), 'has-success': (project_worth_mark.valid && project_worth_mark.touched)}">
+                            <label class="control-label col-sm-5 d-inline-block" for="project_worth_mark">Projects
+                                value boundary ($):</label>
                             <div class="col-sm-6 d-inline-block">
-                                <input [(ngModel)]="contractRulesModel.project_worth_mark"
-                                       [ngModelOptions]="{standalone: true}" class="form-control" type="number"
-                                       name="project_worth_mark1" id="project_worth_mark1">
+                                <input [formControl]="project_worth_mark"
+                                       [(ngModel)]="contractRulesModel.project_worth_mark"
+                                       class="form-control" type="number" name="project_worth_mark"
+                                       id="project_worth_mark" min="200" max="800">
                             </div>
                         </div>
-                        <div class="form-group">
-                            <label class="control-label col-sm-5 d-inline-block" for="freelancer_rf_payment">Days to
-                                wait before cancelling a high value freelancer contract:</label>
+                        <div class="form-group"
+                             [ngClass]="{'has-error': ((!freelancer_contract_cancel_high.valid && freelancer_contract_cancel_high.touched) || (contractRulesModel.freelancer_contract_cancel_days_high > 20) || (contractRulesModel.freelancer_contract_cancel_days_high < 5)), 'has-success': (freelancer_contract_cancel_high.valid && freelancer_contract_cancel_high.touched)}">
+                            <label class="control-label col-sm-5 d-inline-block" for="freelancer_contract_cancel_high">Days
+                                to wait before cancelling a high value freelancer contract:</label>
                             <div class="col-sm-6 d-inline-block">
-                                <input [(ngModel)]="contractRulesModel.freelancer_contract_cancel_days_high"
-                                       [ngModelOptions]="{standalone: true}" class="form-control" type="number"
-                                       name="freelancer_contract_cancel_high" id="freelancer_contract_cancel_high">
+                                <input [formControl]="freelancer_contract_cancel_high"
+                                       [(ngModel)]="contractRulesModel.freelancer_contract_cancel_days_high"
+                                       class="form-control" type="number" name="freelancer_contract_cancel_high"
+                                       id="freelancer_contract_cancel_high" min="5" max="20">
                             </div>
                         </div>
-                        <div class="form-group">
-                            <label class="control-label col-sm-5 d-inline-block" for="freelancer_rf_payment">Days to
-                                wait before cancelling a low value freelancer contract:</label>
+                        <div class="form-group"
+                             [ngClass]="{'has-error': ((!freelancer_contract_cancel_low.valid && freelancer_contract_cancel_low.touched) || (contractRulesModel.freelancer_contract_cancel_days_low > 10) || (contractRulesModel.freelancer_contract_cancel_days_low < 2)), 'has-success': (freelancer_contract_cancel_low.valid && freelancer_contract_cancel_low.touched)}">
+                            <label class="control-label col-sm-5 d-inline-block" for="freelancer_contract_cancel_low">Days
+                                to wait before cancelling a low value freelancer contract:</label>
                             <div class="col-sm-6 d-inline-block">
-                                <input [(ngModel)]="contractRulesModel.freelancer_contract_cancel_days_low"
-                                       [ngModelOptions]="{standalone: true}" class="form-control" type="number"
-                                       name="freelancer_contract_cancel_low" id="freelancer_contract_cancel_low">
+                                <input [formControl]="freelancer_contract_cancel_low"
+                                       [(ngModel)]="contractRulesModel.freelancer_contract_cancel_days_low"
+                                       class="form-control" type="number" name="freelancer_contract_cancel_low"
+                                       id="freelancer_contract_cancel_low" min="2" max="10">
                             </div>
                         </div>
-                        <div class="form-group">
-                            <label class="control-label col-sm-5 d-inline-block" for="freelancer_rf_payment">Days to
+                        <div class="form-group"
+                             [ngClass]="{'has-error': ((!qa_contract_cancel_high.valid && qa_contract_cancel_high.touched) || (contractRulesModel.qa_contract_cancel_days_high > 10) || (contractRulesModel.qa_contract_cancel_days_high < 2)), 'has-success': (qa_contract_cancel_high.valid && qa_contract_cancel_high.touched)}">
+                            <label class="control-label col-sm-5 d-inline-block" for="qa_contract_cancel_high">Days to
                                 wait before cancelling a high value QA contract:</label>
                             <div class="col-sm-6 d-inline-block">
-                                <input [(ngModel)]="contractRulesModel.qa_contract_cancel_days_high"
-                                       [ngModelOptions]="{standalone: true}"
-                                       class="form-control" type="number"
-                                       name="qa_contract_cancel_high" id="qa_contract_cancel_high">
+                                <input [formControl]="qa_contract_cancel_high"
+                                       [(ngModel)]="contractRulesModel.qa_contract_cancel_days_high"
+                                       class="form-control" type="number" name="qa_contract_cancel_high"
+                                       id="qa_contract_cancel_high" min="2" max="10">
                             </div>
                         </div>
-                        <div class="form-group">
-                            <label class="control-label col-sm-5 d-inline-block" for="freelancer_rf_payment">Days to
+                        <div class="form-group"
+                             [ngClass]="{'has-error': ((!qa_contract_cancel_low.valid && qa_contract_cancel_low.touched) || (contractRulesModel.qa_contract_cancel_days_low > 7) || (contractRulesModel.qa_contract_cancel_days_low < 1)), 'has-success': (qa_contract_cancel_low.valid && qa_contract_cancel_low.touched)}">
+                            <label class="control-label col-sm-5 d-inline-block" for="qa_contract_cancel_low">Days to
                                 wait before cancelling a low value QA contract:</label>
                             <div class="col-sm-6 d-inline-block">
-                                <input [(ngModel)]="contractRulesModel.qa_contract_cancel_days_low"
-                                       [ngModelOptions]="{standalone: true}"
-                                       class="form-control" type="number"
-                                       name="qa_contract_cancel_low" id="qa_contract_cancel_low">
+                                <input [formControl]="qa_contract_cancel_low"
+                                       [(ngModel)]="contractRulesModel.qa_contract_cancel_days_low"
+                                       class="form-control" type="number" name="qa_contract_cancel_low"
+                                       id="qa_contract_cancel_low" min="1" max="7">
                             </div>
                         </div>
+                        <br>
+                        <div class="form-group">
+                            <button [disabled]="!form.valid" type="submit" class="btn btn-primary float-right">Save
+                                Rules
+                            </button>
+                        </div>
+                        <br>
                     </form>
+                    <div>
+                        <button class="btn btn-primary d-inline-block" (click)="resetDefaults()">Reset to Defaults
+                        </button>
+                    </div>
+                    <br>
                 </div>
             </ba-card>
-            <br><br>
-        </div>
-        <div class="col-sm-12">
-            <div class="form-group">
-                <button class="btn btn-primary float-right" (click)="saveRules()">Save Rules</button>
-            </div>
             <br><br><br><br>
         </div>
     </div>
