@@ -1,9 +1,87 @@
-<div class="container">
-  <br><br><br><br>
-  <h1 class="text-primary">Blockwork Home</h1>
-  <hr>
-  <button type="button" style="margin:5px;" class="btn btn-primary btn-lg pull-right" routerLink="/login">Sign In</button>
-  <button type="button" style="margin:5px;" class="btn btn-info btn-lg pull-right" routerLink="/register">Sign Up</button>
-  <button type="button"  style="margin:10px;" class="btn btn-default btn-lg" routerLink="/pages/dashboard">Dashboard</button>  
-</div>
 <router-outlet></router-outlet>
+
+
+<div class="landing-page">   
+  
+<div class="page-wrapper">
+  
+  <!-- ******Header****** -->
+  <header class="header text-center">
+      <div class="container">
+          <div class="branding">
+              <h1 class="logo">
+                  <span aria-hidden="true" class="icon_documents_alt icon"></span>
+                  <span class="text-highlight">Block</span><span class="text-bold">Work</span>
+              </h1>
+          </div><!--//branding-->
+          <div class="tagline">
+              <p>Distributed Freelancing Platform on Multichain</p>
+          </div><!--//tagline-->
+         
+          <div class="social-container">
+              <button type="button" style="margin-left: 5px;" class="btn btn-primary " routerLink="/login">Sign In</button>
+              <button type="button" style="margin-left: 5px;" class="btn btn-info " routerLink="/register">Sign Up</button>
+              <button type="button"   style="color:white;margin-left: 5px;" class="btn btn-default " routerLink="/pages/dashboard">Dashboard</button>  
+    
+        </div><!--//social-container-->
+      </div><!--//container-->
+  </header><!--//header-->
+  
+  <section class="cards-section text-center">
+      <div class="container">
+          <h2 class="title">Getting started is easy!</h2>
+          <div class="intro">
+              <p>Welcome to Blockwork. BlockWork is a distributed freelancing platform that enables freelancers to connect with clients directly. The importance of this system is, it removes the use of a third-party involvement. So, freelancers or their clients don’t need to pay an extra fee to a third-party organization. This is possible because the proposed system runs on a blockchain.
+                </p>
+              <div class="cta-container">
+                  <a class="btn btn-primary btn-cta" href="http://themes.3rdwavemedia.com/" target="_blank"><i class="fa fa-cloud-download"></i> Download Now</a>
+              </div><!--//cta-container-->
+          </div><!--//intro-->
+          <div id="cards-wrapper" class="cards-wrapper row">
+              <div class="item item-pink col-md-4 col-sm-6 col-xs-6">
+                  <div class="item-inner">
+                      <div class="icon-holder">
+                          <i class="icon fa fa-paper-plane"></i>
+                      </div><!--//icon-holder-->
+                      <h3 class="title">Quick Start</h3>
+                      <p class="intro">Demo example, how it works, Documentation</p>
+                      <a class="link" routerLink="/documentation"><span></span></a>
+                  </div><!--//item-inner-->
+              </div><!--//item-->
+              <div class="item item-primary col-md-4 col-sm-6 col-xs-6">
+                  <div class="item-inner">
+                      <div class="icon-holder">
+                          <i class="icon fa fa-group"></i>
+                      </div><!--//icon-holder-->
+                      <h3 class="title">FAQ</h3>
+                      <p class="intro">FQA page. Detail about Blockwork team. </p>
+                      <a class="link" routerLink="/documentation"><span></span></a>
+                  </div><!--//item-inner-->
+              </div><!--//item-->
+              <div class="item item-orange col-md-4 col-sm-6 col-xs-6">
+                  <div class="item-inner">
+                      <div class="icon-holder">
+                          <i class="icon fa fa-puzzle-piece"></i>
+                      </div><!--//icon-holder-->
+                      <h3 class="title">Features</h3>
+                      <p class="intro">Solutions for traditional freelencing problems</p>
+                      <a class="link" routerLink="/documentation"><span></span></a>
+                  </div><!--//item-inner-->
+              </div><!--//item-->
+
+              
+          </div><!--//cards-->
+          
+      </div><!--//container-->
+  </section><!--//cards-section-->
+</div><!--//page-wrapper-->
+
+<footer class="footer text-center">
+  <div class="container">
+      <!--/* This template is released under the Creative Commons Attribution 3.0 License. Please keep the attribution link below when using for your own project. Thank you for your support. :) If you'd like to use the template without the attribution, you can check out other license options via our website: themes.3rdwavemedia.com */-->
+      <small class="copyright">© <a href="http://blockerwork.com/" target="_blank">blockkwork</a> team | all rights reserved </small>
+      
+  </div><!--//container-->
+</footer><!--//footer-->
+
+</div>

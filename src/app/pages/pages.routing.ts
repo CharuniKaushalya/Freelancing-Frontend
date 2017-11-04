@@ -18,6 +18,10 @@ export const routes: Routes = [
     path: 'home', 
     loadChildren: './home/home.module#HomeModule'
   },
+  { 
+    path: 'documentation', 
+    loadChildren: './docs/docs.module#DocumentationModule'
+  },
   {
     path: 'pages',
     component: Pages,
