@@ -676,4 +676,8 @@ export class MyContract implements OnInit {
             console.log("Contract Status Saved");
         });
     }
+
+    showRules(): void {
+        this._router.navigate(['/pages/contract/contract_rules']);
+    }
 }
