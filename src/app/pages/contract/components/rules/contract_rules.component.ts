@@ -15,7 +15,7 @@ export class ContractRules implements OnInit {
 
     contractRulesStream: string = "ContractRules";
     contractRulesModel = new ContractRulesModel();
-    redos = [3, 4, 5];
+    redos = [2, 3, 4, 5];
     userType = '';
 
     error = false;

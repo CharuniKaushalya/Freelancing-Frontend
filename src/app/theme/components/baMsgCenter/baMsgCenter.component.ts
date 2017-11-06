@@ -62,7 +62,6 @@ export class BaMsgCenter {
                                                     if (allMessages[i].$key.length > 76)
                                                         last.displayName = sender.name + ' (Discussion)';
                                                     this.messages.push(last);
-                                                    console.log(last);
 
                                                     if (i == allMessages.length - 1) {
                                                         this.msg_subscribed = false;
@@ -90,7 +89,6 @@ export class BaMsgCenter {
                                                 last.id = allNotifications[i].$key;
 
                                                 this.notifications.push(last);
-                                                console.log(last);
 
                                                 if (i == allNotifications.length - 1) {
                                                     this.notification_subscribed = false;
