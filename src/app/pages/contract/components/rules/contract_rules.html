@@ -79,7 +79,7 @@
             </ba-card>
             <br><br>
         </div>
-        <div class="col-sm-12">
+        <div *ngIf="userType=='Client'" class="col-sm-12">
             <ba-card cardTitle="Set Contract Rules" baCardClass="with-scroll table-panel">
                 <div class="col-sm-12">
                     <form class="form-horizontal" [formGroup]="form" (ngSubmit)="onSubmit(form.value)">
@@ -205,6 +205,10 @@
                     <br>
                 </div>
             </ba-card>
+            <br>
+            <div>
+                <button class="btn btn-primary" (click)="goBack()">Back</button>
+            </div>
             <br><br><br><br>
         </div>
     </div>

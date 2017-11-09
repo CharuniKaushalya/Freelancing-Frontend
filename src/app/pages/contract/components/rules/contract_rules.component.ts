@@ -15,7 +15,8 @@ export class ContractRules implements OnInit {
 
     contractRulesStream: string = "ContractRules";
     contractRulesModel = new ContractRulesModel();
-    redos = [3, 4, 5];
+    redos = [2, 3, 4, 5];
+    userType = '';
 
     error = false;
     error_msg = '';
@@ -31,6 +32,8 @@ export class ContractRules implements OnInit {
     public qa_contract_cancel_low: AbstractControl;
 
     constructor(private _router: Router, private _service: MyService, fb: FormBuilder) {
+
+        this.userType = localStorage.getItem("userType");
 
         _service.listStreamItems(this.contractRulesStream).then(data => {
             this.contractRulesModel = JSON.parse(this._service.Hex2String(data[data.length - 1].data));
@@ -138,5 +141,9 @@ export class ContractRules implements OnInit {
 
         this.error = false;
         this.error_msg = '';
+    }
+
+    goBack() {
+        window.history.back();
     }
 }

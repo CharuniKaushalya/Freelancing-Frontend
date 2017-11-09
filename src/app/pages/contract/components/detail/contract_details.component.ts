@@ -23,7 +23,10 @@ export class ContractDetails implements OnInit {
     hasMilestones = false;
     isCompleted = true;
     hasLinkedContract = false;
+    max_redos = 3;
+    cancel_payment_percentage;
 
+    contractRulesStream: string = "ContractRules";
     contractStatusStream: string = "ContractStatus";
     projectStream: string = "projects";
     projectStatusStream: string = "ProjectStatus";
@@ -33,6 +36,11 @@ export class ContractDetails implements OnInit {
 
     constructor(private _service: MyService, private _route: ActivatedRoute, private _router: Router, public afService: AF) {
         this.userType = localStorage.getItem("userType");
+
+        _service.listStreamItems(this.contractRulesStream).then(data => {
+            let contractRulesModel = JSON.parse(this._service.Hex2String(data[data.length - 1].data));
+            this.max_redos = contractRulesModel.redo;
+        });
 
         this._route.params.forEach((params: Params) => {
 
@@ -173,33 +181,46 @@ export class ContractDetails implements OnInit {
     }
 
     stateBtnClicked(nextState: string) {
-        this.contract.status.milestone_state = nextState;
 
-        this.sendNotification(nextState);
-
-        if (nextState == 'Completed' && this.contract.milestones + 1 != this.contract.status.current_milestone) {
-            this.contract.milestoneValues[this.contract.status.current_milestone - 1].state = this.getStateName(nextState);
-
-            this.contract.status.current_milestone += 1;
-            this.contract.status.milestone_state = 'Uncompleted';
-
-            this.contract.milestoneValues[this.contract.status.current_milestone - 1].state = this.getStateName('Uncompleted');
-
-            this.pay(false);
+        if (nextState == 'QA_Failed' && this.max_redos == this.contract.status.redo) {
+            $('#myModal2').modal('show');
 
         } else {
-            this.contract.milestoneValues[this.contract.status.current_milestone - 1].state = this.getStateName(nextState);
 
-            if (nextState == 'Completed' && this.contract.milestones + 1 == this.contract.status.current_milestone) {
-                this.contract.status.status = "Completed";
-                this.pay(true);
+            if (nextState == 'QA_Failed') {
+                nextState = 'Working';
+                this.contract.status.redo = this.contract.status.redo + 1;
             }
+
+            this.contract.status.milestone_state = nextState;
+
+            this.sendNotification(nextState);
+
+            if (nextState == 'Completed' && this.contract.milestones + 1 != this.contract.status.current_milestone) {
+                this.contract.milestoneValues[this.contract.status.current_milestone - 1].state = this.getStateName(nextState);
+
+                this.contract.status.current_milestone += 1;
+                this.contract.status.milestone_state = 'Uncompleted';
+                this.contract.status.redo = 0;
+
+                this.contract.milestoneValues[this.contract.status.current_milestone - 1].state = this.getStateName('Uncompleted');
+
+                this.pay(false);
+
+            } else {
+                this.contract.milestoneValues[this.contract.status.current_milestone - 1].state = this.getStateName(nextState);
+
+                if (nextState == 'Completed' && this.contract.milestones + 1 == this.contract.status.current_milestone) {
+                    this.contract.status.status = "Completed";
+                    this.pay(true);
+                }
+            }
+
+            this.saveContractStatus();
+
+            if (this.hasLinkedContract)
+                this.saveLinkedContractStatus();
         }
-
-        this.saveContractStatus();
-
-        if (this.hasLinkedContract)
-            this.saveLinkedContractStatus();
     }
 
     sendNotification(nextState: string) {
@@ -207,33 +228,33 @@ export class ContractDetails implements OnInit {
         let msg = '';
         let project = this.contract.projectName;
 
-        if(nextState == 'Working') {
-            if(this.contract.milestones == 0) {
+        if (nextState == 'Working') {
+            if (this.contract.milestones == 0) {
                 msg = "Work started";
 
-            } else if(this.contract.milestones + 1 == this.contract.status.current_milestone) {
+            } else if (this.contract.milestones + 1 == this.contract.status.current_milestone) {
                 msg = "Started working on final task";
 
             } else {
                 msg = "Started working on milestone " + this.contract.status.current_milestone;
             }
 
-        } else if(nextState == 'Reviewing') {
-            if(this.contract.milestones == 0) {
+        } else if (nextState == 'Reviewing') {
+            if (this.contract.milestones == 0) {
                 msg = "Start reviewing";
 
-            } else if(this.contract.milestones + 1 == this.contract.status.current_milestone) {
+            } else if (this.contract.milestones + 1 == this.contract.status.current_milestone) {
                 msg = "Start reviewing final task";
 
             } else {
                 msg = "Start reviewing milestone " + this.contract.status.current_milestone;
             }
 
-        } else if(nextState == 'Completed') {
-            if(this.contract.milestones == 0) {
+        } else if (nextState == 'Completed') {
+            if (this.contract.milestones == 0) {
                 msg = "Project completed";
 
-            } else if(this.contract.milestones + 1 == this.contract.status.current_milestone) {
+            } else if (this.contract.milestones + 1 == this.contract.status.current_milestone) {
                 msg = "Project completed";
 
             } else {
@@ -243,7 +264,7 @@ export class ContractDetails implements OnInit {
 
         this.afService.sendNotification(msg, project, this.contract.client.address);
 
-        if(nextState != 'Working' && this.hasLinkedContract) {
+        if (nextState != 'Working' && this.hasLinkedContract) {
             this.afService.sendNotification(msg, project, this.linkedContract.freelancer.address);
         }
     }
@@ -274,6 +295,7 @@ export class ContractDetails implements OnInit {
         linkedContractStatus.current_milestone = this.contract.status.current_milestone;
         linkedContractStatus.milestone_state = this.contract.status.milestone_state;
         linkedContractStatus.status = this.contract.status.status;
+        linkedContractStatus.redo = this.contract.status.redo;
 
         /* saving contract state to the blockchain */
         let linkedContractStatusJSON = JSON.stringify(linkedContractStatus);
@@ -381,6 +403,7 @@ export class ContractDetails implements OnInit {
         if (state == "Active") {
             contractStatus.current_milestone = 1;
             contractStatus.milestone_state = "Uncompleted";
+            contractStatus.redo = 0;
         }
 
         if (state == "RedoPending") {
@@ -477,10 +500,101 @@ export class ContractDetails implements OnInit {
         });
     }
 
+    cancelConformation(): void {
+        if (this.userType == "QA") {
+            $('#myModal3').modal('show');
+
+        } else {
+            this.cancel_payment_percentage = 50;
+            this.cancelActiveContract();
+        }
+    }
+
+    cancelActiveContract(): void {
+        console.log(this.cancel_payment_percentage);
+        // let cs = this.linkedContract.status;
+        // cs.contract_id = this.contract.status.contract_id;
+        // cs.contract_link = this.contract.status.contract_link;
+        //
+        // let contractStatusJSON = JSON.stringify(cs);
+        // console.log(contractStatusJSON);
+        //
+        // let data_hex = this._service.String2Hex(contractStatusJSON);
+        //
+        // this._service.publishToStream(this.contractStatusStream, cs.contract_id, data_hex).then(data => {
+        //     console.log("Contract status saved");
+        //     console.log(data);
+        // });
+
+        if (this.cancel_payment_percentage <= 100 || this.cancel_payment_percentage >= 0) {
+            let locked_amount_usd = 0;
+            let finalStep = false;
+
+            if (this.contract.milestones + 1 == this.contract.status.current_milestone)
+                finalStep = true;
+            else
+                this.contract.status.current_milestone += 1;
+
+            this._service.getAddressBalances(this.contract.client.address, 'True').then(total_balances => {
+
+                if (total_balances.length == 1) {
+                    locked_amount_usd = total_balances[0].qty;
+                }
+
+                this._service.getAddressBalances(this.contract.client.address, 'False').then(unlocked_balances => {
+
+                    if (unlocked_balances.length == 1) {
+                        locked_amount_usd = locked_amount_usd - unlocked_balances[0].qty;
+                    }
+
+                    console.log("Locked USD = " + locked_amount_usd);
+
+                    this._service.unlockAllAssets().then(data => {
+                        console.log(data);
+                        console.log("Assets unlocked");
+
+                        if (this.hasLinkedContract) {
+
+                            let payment1 = this.getMilestonePayment(this.contract, finalStep);
+
+                            this._service.sendAssetFrom(this.contract.client.address, this.contract.freelancer.address, this.contract.asset, payment1.toString()).then(data => {
+
+                                console.log(data);
+                                console.log("Paid " + this.contract.type + " -" + payment1);
+
+                                let payment2 = Math.round((this.getMilestonePayment(this.linkedContract, finalStep)) * this.cancel_payment_percentage / 100);
+
+                                this._service.sendAssetFrom(this.linkedContract.client.address, this.linkedContract.freelancer.address, this.linkedContract.asset, payment2.toString()).then(data => {
+
+                                    console.log(data);
+                                    console.log("Paid " + this.linkedContract.type + " -" + payment2);
+                                    this.linkedContract.status = this.changeContractStatus(this.contract.status.contract_link, this.contract.contract_id, "Cancelled");
+                                    this.contract.status = this.changeContractStatus(this.contract.contract_id, this.contract.status.contract_link, "Cancelled");
+                                });
+                            });
+
+                        } else {
+                            let payment1 = Math.round((this.getMilestonePayment(this.contract, finalStep)) * this.cancel_payment_percentage / 100);
+
+                            this._service.sendAssetFrom(this.contract.client.address, this.contract.freelancer.address, this.contract.asset, payment1.toString()).then(data => {
+
+                                console.log(data);
+                                console.log("Paid " + this.contract.type + " " + payment1);
+                                this.contract.status = this.changeContractStatus(this.contract.contract_id, null, "Cancelled");
+                            });
+                        }
+                    });
+                });
+            });
+
+        } else {
+            console.log("Error")
+        }
+    }
+
     confirmContract(): void {
 
         this._service.listStreamKeyItems(this.projectStream, this.contract.projectName).then(p => {
-
 
             if (p[p.length - 1] != undefined) {
                 let project_id = p[p.length - 1].txid;
@@ -515,7 +629,7 @@ export class ContractDetails implements OnInit {
 
     /* Request a redo from a client */
     requestRedo(): void {
-        if(this.hasLinkedContract == true)
+        if (this.hasLinkedContract == true)
             this.contract.status = this.changeContractStatus(this.contract.contract_id, this.contract.status.contract_link, "RedoPending");
         else
             this.contract.status = this.changeContractStatus(this.contract.contract_id, null, "RedoPending");
@@ -526,7 +640,7 @@ export class ContractDetails implements OnInit {
     /* Client redo a contract*/
     redoContract(): void {
         console.log('Go to create contract');
-        let bid = this.contract.contract_id.toString()+"/0";
+        let bid = this.contract.contract_id.toString() + "/0";
         let link = ['/pages/contract/mycontract', bid, 0];
         this._router.navigate(link);
     }

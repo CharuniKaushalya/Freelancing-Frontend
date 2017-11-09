@@ -9,11 +9,13 @@
                             <h3 class="card-title">My Contract</h3>
                         </div>
                         <div class="text-warning pull-right d-inline-block">
-                            <button *ngIf="hasLinkedContract && contract.type=='Freelancer'" class="btn btn-primary float-sm-right" type="button"
+                            <button *ngIf="hasLinkedContract && contract.type=='Freelancer'"
+                                    class="btn btn-primary float-sm-right" type="button"
                                     (click)="goToDiscussion(contract.client.address, contract.freelancer.address, linkedContract.freelancer.address)">
                                 <i class="fa fa-comments"></i> Discussion
                             </button>
-                            <button *ngIf="hasLinkedContract && contract.type=='QA'" class="btn btn-primary float-sm-right" type="button"
+                            <button *ngIf="hasLinkedContract && contract.type=='QA'"
+                                    class="btn btn-primary float-sm-right" type="button"
                                     (click)="goToDiscussion(contract.client.address, linkedContract.freelancer.address, contract.freelancer.address)">
                                 <i class="fa fa-comments"></i> Discussion
                             </button>
@@ -51,7 +53,8 @@
                                     <br>{{contract.client.username}}
                                     <button *ngIf="userType != 'Client'" class="btn btn-primary  btn-sm float-sm-right"
                                             style="width: 110px"
-                                            type="button" (click)="contact(contract.client.address, contract.freelancer.address)">
+                                            type="button"
+                                            (click)="contact(contract.client.address, contract.freelancer.address)">
                                         <i class="fa fa-comment"></i> Contact
                                     </button>
                                 </td>
@@ -64,7 +67,8 @@
                                     <br>{{contract.freelancer.username}}
                                     <button *ngIf="userType == 'Client'" class="btn btn-primary  btn-sm float-sm-right"
                                             style="width: 110px"
-                                            type="button" (click)="contact(contract.client.address, contract.freelancer.address)">
+                                            type="button"
+                                            (click)="contact(contract.client.address, contract.freelancer.address)">
                                         <i class="fa fa-comment"></i> Contact
                                     </button>
                                 </td>
@@ -78,16 +82,22 @@
                                 </td>
                                 <td>
                                     <br>{{linkedContract.freelancer.username}}
-                                    <button *ngIf="userType == 'Client'" class="btn btn-primary  btn-sm float-sm-right" style="width: 110px"
-                                            type="button" (click)="contact(linkedContract.client.address, linkedContract.freelancer.address)">
+                                    <button *ngIf="userType == 'Client'" class="btn btn-primary  btn-sm float-sm-right"
+                                            style="width: 110px"
+                                            type="button"
+                                            (click)="contact(linkedContract.client.address, linkedContract.freelancer.address)">
                                         <i class="fa fa-comment"></i> Contact
                                     </button>
-                                    <button *ngIf="userType == 'Freelancer'" class="btn btn-primary  btn-sm float-sm-right" style="width: 110px"
-                                            type="button" (click)="contact(contract.freelancer.address, linkedContract.freelancer.address)">
+                                    <button *ngIf="userType == 'Freelancer'"
+                                            class="btn btn-primary  btn-sm float-sm-right" style="width: 110px"
+                                            type="button"
+                                            (click)="contact(contract.freelancer.address, linkedContract.freelancer.address)">
                                         <i class="fa fa-comment"></i> Contact
                                     </button>
-                                    <button *ngIf="userType == 'QA'" class="btn btn-primary  btn-sm float-sm-right" style="width: 110px"
-                                            type="button" (click)="contact(linkedContract.freelancer.address, contract.freelancer.address)">
+                                    <button *ngIf="userType == 'QA'" class="btn btn-primary  btn-sm float-sm-right"
+                                            style="width: 110px"
+                                            type="button"
+                                            (click)="contact(linkedContract.freelancer.address, contract.freelancer.address)">
                                         <i class="fa fa-comment"></i> Contact
                                     </button>
                                 </td>
@@ -173,7 +183,7 @@
                                                 <br>
                                                 <button class="btn btn-primary  btn-sm float-sm-right"
                                                         style="width: 110px"
-                                                        type="button" (click)="stateBtnClicked('Working')">
+                                                        type="button" (click)="stateBtnClicked('QA_Failed')">
                                                     QA Failed
                                                 </button>
                                             </td>
@@ -182,7 +192,7 @@
                                                 <br>
                                                 <button class="btn btn-primary  btn-sm float-sm-right"
                                                         style="width: 110px"
-                                                        type="button" (click)="stateBtnClicked('Completed')">
+                                                        type="button" (click)="stateBtnClicked('QA_Failed')">
                                                     QA Successful
                                                 </button>
                                                 <br>
@@ -283,6 +293,11 @@
                     </li>
                 </ul>
             </ba-card>
+            <!--<button class="btn btn-primary  btn-sm float-sm-right"-->
+                    <!--style="width: 110px"-->
+                    <!--type="button" (click)="cancelActiveContract()">-->
+                <!--Cancel-->
+            <!--</button>-->
             <button class="btn btn-primary" (click)="goBack()">Back</button>
             <br><br><br><br>
         </div>
@@ -297,6 +312,49 @@
                     </div>
                     <div class="modal-footer">
                         <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Modal2 -->
+        <div class="modal fade" id="myModal2" role="dialog">
+            <div class="modal-dialog modal-mm">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h3 style="color: #209e91">Cancel Conformation</h3>
+                    </div>
+                    <div class="modal-body">
+                        <h5>Only {{max_redos}} redos is allowed. This will cancel the contract. Are you sure you want to
+                            proceed ?</h5>
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-default" data-dismiss="modal"
+                                (click)="cancelConformation()">Yes
+                        </button>
+                        <button type="button" class="btn btn-default" data-dismiss="modal">No</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Modal3 -->
+        <div class="modal fade" id="myModal3" role="dialog">
+            <div class="modal-dialog modal-mm">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h3 style="color: #209e91">Finally...</h3>
+                    </div>
+                    <div class="modal-body">
+                        <h5>Please enter a percentage of the work completed by the freelancer.</h5>
+                        <input [(ngModel)]="cancel_payment_percentage" class="form-control col-sm-9" type="number"
+                               name="cancel_payment_percentage" id="cancel_payment_percentage" min="0" max="100">
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-default" data-dismiss="modal"
+                                (click)="cancelActiveContract()">Ok
+                        </button>
+                        <button type="button" class="btn btn-default" data-dismiss="modal">No</button>
                     </div>
                 </div>
             </div>
