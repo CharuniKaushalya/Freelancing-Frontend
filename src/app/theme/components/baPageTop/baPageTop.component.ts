@@ -50,30 +50,30 @@ export class BaPageTop {
               let array = null;
               localStorage.setItem("userType", user.type);
               this.userType = user.type;
-              switch(this.userType) { 
-                case 'Consultant': {  
-                   this.color = '#f0ad4e';
-                   break; 
-                } 
-                case 'Client': { 
-                   this.color = '#40babd';
-                   break; 
-                } 
-                case 'QA': { 
-                  this.color = '#75c181';
-                  break; 
-               } 
-                default: { 
-                   //statements; 
-                   break; 
-                } 
-             }
+             //  switch(this.userType) {
+             //    case 'Consultant': {
+             //       this.color = '#f0ad4e';
+             //       break;
+             //    }
+             //    case 'Client': {
+             //       this.color = '#40babd';
+             //       break;
+             //    }
+             //    case 'QA': {
+             //      this.color = '#75c181';
+             //      break;
+             //   }
+             //    default: {
+             //       //statements;
+             //       break;
+             //    }
+             // }
           }
         });
-       
+
         console.log("Logged in");
         console.log(this.user_email);
-        
+
 
       }
     });
@@ -83,7 +83,7 @@ export class BaPageTop {
   }
 
   logout() {
-    
+
       this.authService.signOut();
 
     this._router.navigate(['login']);
