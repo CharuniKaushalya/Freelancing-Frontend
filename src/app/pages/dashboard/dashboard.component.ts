@@ -20,10 +20,11 @@ export class Dashboard implements OnInit {
     bidStream: string = "bid";
     projects: Project[] = [];
     projctUtypeStream: string = "project_user_type";
-    usertype = '';
+    usertype = 'Client';
     address = '';
 
     constructor(private _router: Router, private _service: MyService, private modalService: NgbModal) {
+
         this.usertype = localStorage.getItem("userType");
         this.address = localStorage.getItem("address");
 
@@ -69,6 +70,8 @@ export class Dashboard implements OnInit {
     }
 
     ngOnInit() {
+        console.log(localStorage.getItem("userType"));
+        // this.usertype = 'Client';
     }
 
     // bidModalShow(project_id): void {
