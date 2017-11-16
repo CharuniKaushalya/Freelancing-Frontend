@@ -33,6 +33,7 @@ export class ProjectDetails implements OnInit {
 
     fBid;
     qaBid;
+    myBid;
 
     isClient;
     message:string;
@@ -52,14 +53,19 @@ export class ProjectDetails implements OnInit {
                     console.log(error.message);
                 });
 
-                let bid_key = project_id + "/" + localStorage.getItem("email");
+                let my_bid_key = project_id + "/" + localStorage.getItem("email");
+
                 let bid_data: BidValues;
                 _service.listStreamItems(this.bidStream).then(data => {
                     data.forEach(element => {
                         let bid_key = element.key;
 
-                        if (project_id == bid_key.split("/")[0]) {
+                        if (bid_key == my_bid_key ){
+                            this.myBid = JSON.parse(this._service.Hex2String(element.data.toString()));
+                            console.log(this.myBid)
+                        }
 
+                        if (project_id == bid_key.split("/")[0]) {
                             let bid: Bid;
                             let client : string ="";
                             let bid_data: BidValues;

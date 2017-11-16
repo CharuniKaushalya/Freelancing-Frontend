@@ -1,6 +1,5 @@
 <div class="container">
     <div class="row">
-
         <div class="col-sm-12">
             <ba-card cardTitle="{{project?.projectName}}" baCardClass="with-scroll table-panel">
                 <p> {{project?.description}}</p>
@@ -22,11 +21,14 @@
                     <button class="btn btn-default btn-md" style="cursor:default;">
                     Freelancer Budget - From {{project?.budget?.min}} to {{project?.budget?.max}} {{project?.budget?.type}}
                     </button>
-                    <button class="btn btn-info btn-md" style="cursor:default;">{{freelancer_bids?.length}} Freelancer Bids</button>
+                    <div *ngIf="isClient">
+                        <button class="btn btn-info btn-md" style="cursor:default;">{{freelancer_bids?.length}} Freelancer Bids</button>
+                    </div>
 
-                    <div *ngIf="freelancer_bids?.length!=0">
+                    <div *ngIf="freelancer_bids?.length!=0 && isClient">
                         <button class="btn btn-success btn-md" style="cursor:default;">Average Bid - {{freelancer_bidsum/freelancer_bids?.length}}{{project?.budget?.type}}</button>
                     </div>
+
                 </div>
                 <div *ngIf="freelancer_bids?.length!=0 && isClient">
                     <ba-card cardTitle="Current Freelancer Bids" baCardClass="with-scroll table-panel">
@@ -103,11 +105,13 @@
                         <button class="btn btn-default btn-md " style="cursor:default;">
                             QA Budget - Not Specified</button>
                     </div>
-
-                    <button class="btn btn-info btn-md " style="cursor:default;">{{qa_bids?.length}} QA Bids</button>
-                    <div *ngIf="qa_bids?.length!=0">
+                    <div *ngIf="isClient">
+                        <button class="btn btn-info btn-md " style="cursor:default;">{{qa_bids?.length}} QA Bids</button>
+                    </div>
+                    <div *ngIf="qa_bids?.length!=0 && isClient">
                         <button class="btn btn-success btn-md" style="cursor:default;">Average Bid - {{qa_bidsum/qa_bids?.length}}{{project?.qabudget?.type}}</button>
                     </div>
+
                 </div>
                 <div *ngIf="qa_bids?.length!=0 && isClient">
                     <ba-card cardTitle="Current QA Bids" baCardClass="with-scroll table-panel">
@@ -173,8 +177,13 @@
                     </ba-card>
                 </div>
 
-                <br>
-                <br>
+                <br><br>
+                <div *ngIf="!isClient">
+                    <h4>Your Bid </h4>
+                    
+                </div>
+
+                <br><br>
                 <div *ngIf="isClient">
                     <button (click)="goToContract()" type="button" class="btn btn-primary btn-lg pull-right"><i class="fa fa-edit"></i>  Create Contract</button>
                 </div>
