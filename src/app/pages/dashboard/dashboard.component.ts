@@ -20,17 +20,23 @@ export class Dashboard implements OnInit {
     bidStream: string = "bid";
     projects: Project[] = [];
     projctUtypeStream: string = "project_user_type";
+    usertype = 'Client';
+    address = '';
 
     constructor(private _router: Router, private _service: MyService, private modalService: NgbModal) {
+
+        this.usertype = localStorage.getItem("userType");
+        this.address = localStorage.getItem("address");
+
         if (localStorage.getItem("email") == "" || localStorage.getItem("email") == undefined) {
             this._router.navigate(['login']);
         } else {
-            if(localStorage.getItem("userType") == "Client" ){
-                this._router.navigate(['pages/work/posted_projects']);
-            }else{
-                this._router.navigate(['pages/work/my_projects']);
-            }
-            console.log(localStorage.getItem("userType"));
+            // if(localStorage.getItem("userType") == "Client" ){
+            //     this._router.navigate(['pages/work/posted_projects']);
+            // }else{
+            //     this._router.navigate(['pages/work/my_projects']);
+            // }
+            console.log(this.usertype);
             // _service.listStreamItems(this.projctsStream).then(data => {
             //     data.forEach(element => {
             //         let project: Project;
@@ -64,6 +70,8 @@ export class Dashboard implements OnInit {
     }
 
     ngOnInit() {
+        console.log(localStorage.getItem("userType"));
+        // this.usertype = 'Client';
     }
 
     // bidModalShow(project_id): void {
@@ -77,4 +85,20 @@ export class Dashboard implements OnInit {
         this._router.navigate(link);
     }
 
+    goToProjects() {
+        if(this.usertype == "Client" ){
+            this._router.navigate(['pages/work/posted_projects']);
+        }else{
+            this._router.navigate(['pages/work/my_projects']);
+        }
+    }
+
+    goToContracts() {
+        this._router.navigate(['pages/contract/contract_view']);
+    }
+
+    goToWallet() {
+        let link = ['/pages/users/wallet', this.address];
+        this._router.navigate(link);
+    }
 }

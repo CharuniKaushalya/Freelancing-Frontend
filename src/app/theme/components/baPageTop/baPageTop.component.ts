@@ -22,6 +22,9 @@ export class BaPageTop {
   user_displayName: string;
   user_email: string;
   private auth: any;
+  userStream: string = "Users";
+  userType: string = "";
+  color: string = "";
 
   constructor(private _state: GlobalState, private _service: MyService, public authService: AuthService,private _router: Router) {
     this._state.subscribe('menu.isCollapsed', (isCollapsed) => {
@@ -41,10 +44,36 @@ export class BaPageTop {
         this.isLoggedIn = true;
         this.user_displayName = this.auth.displayName;
         this.user_email = this.auth.email;
-       
+        this._service.listStreamKeyItems(this.userStream, this.auth.email).then(data => {
+          if (data[data.length - 1]) {
+              let user = JSON.parse(this._service.Hex2String(data[data.length - 1].data.toString()));
+              let array = null;
+              localStorage.setItem("userType", user.type);
+              this.userType = user.type;
+             //  switch(this.userType) {
+             //    case 'Consultant': {
+             //       this.color = '#f0ad4e';
+             //       break;
+             //    }
+             //    case 'Client': {
+             //       this.color = '#40babd';
+             //       break;
+             //    }
+             //    case 'QA': {
+             //      this.color = '#75c181';
+             //      break;
+             //   }
+             //    default: {
+             //       //statements;
+             //       break;
+             //    }
+             // }
+          }
+        });
+
         console.log("Logged in");
         console.log(this.user_email);
-        
+
 
       }
     });
@@ -54,7 +83,7 @@ export class BaPageTop {
   }
 
   logout() {
-    
+
       this.authService.signOut();
 
     this._router.navigate(['login']);

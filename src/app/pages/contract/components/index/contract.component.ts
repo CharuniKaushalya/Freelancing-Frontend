@@ -2,6 +2,7 @@ import {Component, EventEmitter, Input, OnInit, Output} from '@angular/core';
 import {MyService} from "../../../../theme/services/backend/service";
 import {Router, ActivatedRoute, Params} from '@angular/router';
 import {NgbModal} from '@ng-bootstrap/ng-bootstrap';
+import {FormGroup, AbstractControl, FormBuilder, Validators} from '@angular/forms';
 
 import 'rxjs/add/operator/filter';
 import 'rxjs/add/operator/debounceTime';
@@ -54,10 +55,31 @@ export class MyContract implements OnInit {
     inEdit = false;
     hasRedoRequestMsg = false;
 
+    error = false;
+    error_msg = '';
+    today = '';
+
+    public form: FormGroup;
+    public projectName: AbstractControl;
+    public contract_type: AbstractControl;
+    public freelancer: AbstractControl;
+    public deadline: AbstractControl;
+    public amount: AbstractControl;
+    public asset: AbstractControl;
+    public description: AbstractControl;
+
+    public qa_projectName: AbstractControl;
+    public qa_contract_type: AbstractControl;
+    public qa_freelancer: AbstractControl;
+    public qa_deadline: AbstractControl;
+    public qa_amount: AbstractControl;
+    public qa_asset: AbstractControl;
+    public qa_description: AbstractControl;
+
     public freelancerMilestones = [
         {
             id: 1,
-            name: 'Milestone_1',
+            name: 'Milestone 1',
             value: 0,
             deadline: '',
             task: '',
@@ -65,7 +87,7 @@ export class MyContract implements OnInit {
         },
         {
             id: 2,
-            name: 'Milestone_2',
+            name: 'Milestone 2',
             value: 0,
             deadline: '',
             task: '',
@@ -73,7 +95,7 @@ export class MyContract implements OnInit {
         },
         {
             id: 3,
-            name: 'Milestone_3',
+            name: 'Milestone 3',
             value: 0,
             deadline: '',
             task: '',
@@ -81,7 +103,7 @@ export class MyContract implements OnInit {
         },
         {
             id: 4,
-            name: 'Milestone_4',
+            name: 'Milestone 4',
             value: 0,
             deadline: '',
             task: '',
@@ -89,7 +111,7 @@ export class MyContract implements OnInit {
         },
         {
             id: 5,
-            name: 'Milestone_5',
+            name: 'Milestone 5',
             value: 0,
             deadline: '',
             task: '',
@@ -100,7 +122,7 @@ export class MyContract implements OnInit {
     public qaMilestones = [
         {
             id: 1,
-            name: 'Milestone_1',
+            name: 'Milestone 1',
             value: 0,
             deadline: '',
             task: '',
@@ -108,7 +130,7 @@ export class MyContract implements OnInit {
         },
         {
             id: 2,
-            name: 'Milestone_2',
+            name: 'Milestone 2',
             value: 0,
             deadline: '',
             task: '',
@@ -116,7 +138,7 @@ export class MyContract implements OnInit {
         },
         {
             id: 3,
-            name: 'Milestone_3',
+            name: 'Milestone 3',
             value: 0,
             deadline: '',
             task: '',
@@ -124,7 +146,7 @@ export class MyContract implements OnInit {
         },
         {
             id: 4,
-            name: 'Milestone_4',
+            name: 'Milestone 4',
             value: 0,
             deadline: '',
             task: '',
@@ -132,7 +154,7 @@ export class MyContract implements OnInit {
         },
         {
             id: 5,
-            name: 'Milestone_5',
+            name: 'Milestone 5',
             value: 0,
             deadline: '',
             task: '',
@@ -140,8 +162,54 @@ export class MyContract implements OnInit {
         }
     ];
 
-    constructor(private _router: Router, private _route: ActivatedRoute, private _service: MyService, private modalService: NgbModal) {
+    constructor(private _router: Router, private _route: ActivatedRoute, private _service: MyService, fb: FormBuilder) {
+
         this._route.params.forEach((params: Params) => {
+
+            if (params['qaBid'] != 0) {
+                this.form = fb.group({
+                    'projectName': ['', Validators.compose([Validators.required])],
+                    'contract_type': ['', Validators.compose([Validators.required])],
+                    'freelancer': ['', Validators.compose([Validators.required])],
+                    'deadline': ['', Validators.compose([Validators.required])],
+                    'amount': ['', Validators.compose([Validators.required])],
+                    'asset': ['', Validators.compose([Validators.required])],
+                    'description': ['', Validators.compose([Validators.required])],
+                    'qa_projectName': ['', Validators.compose([Validators.required])],
+                    'qa_contract_type': ['', Validators.compose([Validators.required])],
+                    'qa_freelancer': ['', Validators.compose([Validators.required])],
+                    'qa_deadline': ['', Validators.compose([Validators.required])],
+                    'qa_amount': ['', Validators.compose([Validators.required])],
+                    'qa_asset': ['', Validators.compose([Validators.required])],
+                    'qa_description': ['', Validators.compose([Validators.required])]
+                });
+            } else {
+                this.form = fb.group({
+                    'projectName': ['', Validators.compose([Validators.required])],
+                    'contract_type': ['', Validators.compose([Validators.required])],
+                    'freelancer': ['', Validators.compose([Validators.required])],
+                    'deadline': ['', Validators.compose([Validators.required])],
+                    'amount': ['', Validators.compose([Validators.required])],
+                    'asset': ['', Validators.compose([Validators.required])],
+                    'description': ['', Validators.compose([Validators.required])]
+                });
+            }
+
+            this.projectName = this.form.controls['projectName'];
+            this.contract_type = this.form.controls['contract_type'];
+            this.freelancer = this.form.controls['freelancer'];
+            this.deadline = this.form.controls['deadline'];
+            this.amount = this.form.controls['amount'];
+            this.asset = this.form.controls['asset'];
+            this.description = this.form.controls['description'];
+            this.qa_projectName = this.form.controls['qa_projectName'];
+            this.qa_contract_type = this.form.controls['qa_contract_type'];
+            this.qa_freelancer = this.form.controls['qa_freelancer'];
+            this.qa_deadline = this.form.controls['qa_deadline'];
+            this.qa_amount = this.form.controls['qa_amount'];
+            this.qa_asset = this.form.controls['qa_asset'];
+            this.qa_description = this.form.controls['qa_description'];
+
             if (params['fBid'] !== undefined) {
                 let fBid = params['fBid'];
 
@@ -162,7 +230,7 @@ export class MyContract implements OnInit {
                             this.primary_balance = this.contract.amount;
                             this.redo_request = this.contract.status.milestone_state;
 
-                            if(this.redo_request != null)
+                            if (this.redo_request != null)
                                 this.hasRedoRequestMsg = true;
 
                             console.log("Editing contract");
@@ -249,7 +317,27 @@ export class MyContract implements OnInit {
         this.getAvailableBalance();
     }
 
+    getDate(): void {
+        let todayDate = new Date();
+        let dd = todayDate.getDate();
+        let mm = todayDate.getMonth() + 1; //January is 0!
+        let yyyy = todayDate.getFullYear();
+
+        let sdd = dd.toString();
+        let smm = mm.toString();
+
+        if (dd < 10) {
+            sdd = '0' + dd.toString();
+        }
+        if (mm < 10) {
+            smm = '0' + mm.toString();
+        }
+        this.today = yyyy + '-' + smm + '-' + sdd;
+        console.log(this.today);
+    }
+
     ngOnInit() {
+        this.getDate();
     }
 
     setMilestones(): void {
@@ -396,122 +484,174 @@ export class MyContract implements OnInit {
         });
     }
 
-    saveContract() {
+    validate(): void {
 
-        if (this.inEdit) {
-            this.updatePreviousContractStatus();
+        this.error = false;
+
+        for (let i = 0; i < this.contract.milestones; i++) {
+            if (this.freelancerMilestones[i].value == 0) {
+                this.error = true;
+                this.error_msg = "Please add a payment percentage to the Freelancer milestone " + this.freelancerMilestones[i].id;
+                break;
+            }
+            if (this.freelancerMilestones[i].deadline.length == 0) {
+                this.error = true;
+                this.error_msg = "Please add a deadline to Freelancer milestone " + this.freelancerMilestones[i].id;
+                break;
+
+            } else if (Date.parse(this.contract.deadline) < Date.parse(this.freelancerMilestones[i].deadline)) {
+                this.error = true;
+                this.error_msg = "Milestone " + this.freelancerMilestones[i].id + " deadline should be lesser than Freelancer contract deadline";
+                break;
+            }
         }
 
-        let key = this.contract.projectName;
-        this.contract.milestoneValues = this.freelancerMilestones.filter(function (attr) {
-            delete attr.edit;
-            return true;
-        }).slice(0, this.contract.milestones);
-
-        let contractJSON = JSON.stringify(this.contract);
-        let data_hex = this._service.String2Hex(contractJSON);
-
-        let qa_data_hex;
         if (this.hasQA) {
-            this.qa_contract.milestoneValues = this.qaMilestones.filter(function (attr) {
+            for (let i = 0; i < this.qa_contract.milestones; i++) {
+                if (this.qaMilestones[i].value == 0) {
+                    this.error = true;
+                    this.error_msg = "Please add a payment percentage to the QA milestone " + this.freelancerMilestones[i].id;
+                    break;
+                }
+                if (this.qaMilestones[i].deadline.length == 0) {
+                    this.error = true;
+                    this.error_msg = "Please add a deadline to QA milestone " + this.qaMilestones[i].id;
+                    break;
+
+                } else if (Date.parse(this.qa_contract.deadline) < Date.parse(this.qaMilestones[i].deadline)) {
+                    this.error = true;
+                    this.error_msg = "Milestone " + this.qaMilestones[i].id + " deadline should be lesser than QA contract deadline";
+                    break;
+                }
+            }
+        }
+    }
+
+    onSubmit(values: Object): void {
+
+        this.validate();
+
+        if (this.form.valid && !this.error) {
+
+            this.error_msg = '';
+
+            if (this.inEdit) {
+                this.updatePreviousContractStatus();
+            }
+
+            let key = this.contract.projectName;
+            this.contract.milestoneValues = this.freelancerMilestones.filter(function (attr) {
                 delete attr.edit;
                 return true;
-            }).slice(0, this.qa_contract.milestones);
+            }).slice(0, this.contract.milestones);
 
-            let qa_contractJSON = JSON.stringify(this.qa_contract);
-            qa_data_hex = this._service.String2Hex(qa_contractJSON);
-        }
+            let contractJSON = JSON.stringify(this.contract);
+            let data_hex = this._service.String2Hex(contractJSON);
 
-        let hasEnoughAssets = false;
-        let requested_amount = Number(this.contract.amount);
+            let qa_data_hex;
+            if (this.hasQA) {
+                this.qa_contract.milestoneValues = this.qaMilestones.filter(function (attr) {
+                    delete attr.edit;
+                    return true;
+                }).slice(0, this.qa_contract.milestones);
 
-        if (this.hasQA) {
-            requested_amount += Number(this.qa_contract.amount);
-        }
+                let qa_contractJSON = JSON.stringify(this.qa_contract);
+                qa_data_hex = this._service.String2Hex(qa_contractJSON);
+            }
 
-        if (requested_amount <= this.available_balance)
-            hasEnoughAssets = true;
+            let hasEnoughAssets = false;
+            let requested_amount = Number(this.contract.amount);
 
-        if (this.inEdit && requested_amount <= (this.available_balance + this.primary_balance))
-            hasEnoughAssets = true;
+            if (this.hasQA) {
+                requested_amount += Number(this.qa_contract.amount);
+            }
 
-        if (hasEnoughAssets) {
+            if (requested_amount <= this.available_balance)
+                hasEnoughAssets = true;
 
-            let prevContractStatus = this.contract.status;
-            this.contract.status = null;
+            if (this.inEdit && requested_amount <= (this.available_balance + this.primary_balance))
+                hasEnoughAssets = true;
 
-            this._service.publishToStream(this.contractStream, key, data_hex).then(f_data => {
-                console.log("Freelancer Contract Saved");
-                console.log(this.contract);
-                console.log(f_data);
+            if (hasEnoughAssets) {
 
-                if (this.inEdit) {
-                    if(prevContractStatus.contract_link != null)
-                        this.updateLinkedContractStatus(prevContractStatus.contract_link, f_data);
+                let prevContractStatus = this.contract.status;
+                this.contract.status = null;
 
-                    this.saveContractStatus(f_data, prevContractStatus.contract_link);
+                this._service.publishToStream(this.contractStream, key, data_hex).then(f_data => {
+                    console.log("Freelancer Contract Saved");
+                    console.log(this.contract);
+                    console.log(f_data);
 
-                    if (this.primary_balance < requested_amount) {
-                        let lock_amount = requested_amount - this.primary_balance;
+                    if (this.inEdit) {
+                        if (prevContractStatus.contract_link != null)
+                            this.updateLinkedContractStatus(prevContractStatus.contract_link, f_data);
 
-                        this._service.lockAssetsFrom(this.contract.client, this.contract.asset, lock_amount.toString()).then(data => {
-                            console.log("Assets Locked");
-                            console.log(data);
-                        });
+                        this.saveContractStatus(f_data, prevContractStatus.contract_link);
 
-                    } else if (this.primary_balance > requested_amount) {
-                        let locked_amount_usd = 0;
+                        if (this.primary_balance < requested_amount) {
+                            let lock_amount = requested_amount - this.primary_balance;
 
-                        this._service.getAddressBalances(this.contract.client, 'True').then(total_balances => {
+                            this._service.lockAssetsFrom(this.contract.client, this.contract.asset, lock_amount.toString()).then(data => {
+                                console.log("Assets Locked");
+                                console.log(data);
+                            });
 
-                            if (total_balances.length == 1)
-                                locked_amount_usd = total_balances[0].qty;
+                        } else if (this.primary_balance > requested_amount) {
+                            let locked_amount_usd = 0;
 
-                            this._service.getAddressBalances(this.contract.client, 'False').then(unlocked_balances => {
+                            this._service.getAddressBalances(this.contract.client, 'True').then(total_balances => {
 
-                                if (unlocked_balances.length == 1) {
-                                    locked_amount_usd = locked_amount_usd - unlocked_balances[0].qty;
-                                }
-                                locked_amount_usd -= this.primary_balance;
-                                locked_amount_usd += requested_amount;
+                                if (total_balances.length == 1)
+                                    locked_amount_usd = total_balances[0].qty;
 
-                                this._service.unlockAllAssets().then(data => {
-                                    console.log(data);
-                                    console.log("Assets Unlocked");
+                                this._service.getAddressBalances(this.contract.client, 'False').then(unlocked_balances => {
 
-                                    this._service.lockAssetsFrom(this.contract.client, this.contract.asset, locked_amount_usd.toString()).then(data => {
+                                    if (unlocked_balances.length == 1) {
+                                        locked_amount_usd = locked_amount_usd - unlocked_balances[0].qty;
+                                    }
+                                    locked_amount_usd -= this.primary_balance;
+                                    locked_amount_usd += requested_amount;
+
+                                    this._service.unlockAllAssets().then(data => {
                                         console.log(data);
-                                        console.log("Assets Locked = " + locked_amount_usd);
+                                        console.log("Assets Unlocked");
+
+                                        this._service.lockAssetsFrom(this.contract.client, this.contract.asset, locked_amount_usd.toString()).then(data => {
+                                            console.log(data);
+                                            console.log("Assets Locked = " + locked_amount_usd);
+                                        });
                                     });
                                 });
                             });
-                        });
-                    }
-
-                } else {
-                    if (this.hasQA) {
-                        this._service.publishToStream(this.contractStream, key, qa_data_hex).then(qa_data => {
-                            console.log("QA Contract Saved");
-                            console.log(qa_data);
-
-                            this.saveContractStatus(f_data, qa_data);
-                            this.saveContractStatus(qa_data, f_data);
-                        });
+                        }
 
                     } else {
-                        this.saveContractStatus(f_data, null);
-                    }
-                    this._service.lockAssetsFrom(this.contract.client, this.contract.asset, requested_amount.toString()).then(data => {
-                        console.log("Assets Locked");
-                        console.log(data);
-                    });
-                }
-                this._router.navigate(['/pages/contract/contract_view'])
-            });
-        } else {
-            $('#myModal').modal('show');
-        }
+                        if (this.hasQA) {
+                            this._service.publishToStream(this.contractStream, key, qa_data_hex).then(qa_data => {
+                                console.log("QA Contract Saved");
+                                console.log(qa_data);
 
+                                this.saveContractStatus(f_data, qa_data);
+                                this.saveContractStatus(qa_data, f_data);
+                            });
+
+                        } else {
+                            this.saveContractStatus(f_data, null);
+                        }
+                        this._service.lockAssetsFrom(this.contract.client, this.contract.asset, requested_amount.toString()).then(data => {
+                            console.log("Assets Locked");
+                            console.log(data);
+                        });
+                    }
+                    this._router.navigate(['/pages/contract/contract_view'])
+                });
+            } else {
+                $('#myModal').modal('show');
+            }
+
+        } else {
+            console.log("Error");
+        }
     }
 
     saveContractStatus(key_id: string, link_id: string) {
@@ -522,7 +662,7 @@ export class MyContract implements OnInit {
         contractStatus.contract_id = key;
         contractStatus.status = "Pending";
 
-        if(link_id != null)
+        if (link_id != null)
             contractStatus.contract_link = link_id;
 
         /* saving contract state to the blockchain */
@@ -535,5 +675,9 @@ export class MyContract implements OnInit {
             console.log(data);
             console.log("Contract Status Saved");
         });
+    }
+
+    showRules(): void {
+        this._router.navigate(['/pages/contract/contract_rules']);
     }
 }

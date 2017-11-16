@@ -226,6 +226,7 @@ export class ContractView implements OnInit {
 
         contract.status.status = "Active";
         contract.status.current_milestone = 1;
+        contract.status.redo = 0;
         contract.status.milestone_state = "Uncompleted";
 
         contract.status.current_milestone_name =
@@ -283,6 +284,7 @@ export class ContractView implements OnInit {
 
         if (state == "Active") {
             contractStatus.current_milestone = 1;
+            contractStatus.redo = 0;
             contractStatus.milestone_state = "Uncompleted";
         }
 
@@ -321,6 +323,7 @@ export class ContractView implements OnInit {
         if (state == "Active") {
             contractStatus.status = state;
             contractStatus.current_milestone = 1;
+            contractStatus.redo = 0;
             contractStatus.milestone_state = "Uncompleted";
 
         } else {

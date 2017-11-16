@@ -80,9 +80,9 @@ export class AF {
             message: text,
             project: project,
             user: user_email,
-            email: this.email,
             timestamp: Date.now()
         };
+        console.log(notification);
         list.push(notification);
     }
 }

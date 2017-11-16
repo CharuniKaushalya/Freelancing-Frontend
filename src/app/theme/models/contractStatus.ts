@@ -7,4 +7,5 @@ export class ContractStatus {
     public current_milestone: number;
     public milestone_state: string; /* Valid States => Uncompleted, Working, Reviewing, Completed */
     public contract_link: any;
+    public redo: number;
 }
