@@ -25,14 +25,18 @@ export class ProjectDetails implements OnInit {
 
     freelancer_bids: Bid[] = [];
     qa_bids: Bid[] = [];
+    consultant_bids: Bid[] = [];
     public freelancer_bidsum: number = 0;
     public qa_bidsum: number = 0;
+    public consultant_bidsum: number = 0;
 
     selectFreelnacer = false;
     selectQA = false;
+    selectConsultant = false;
 
     fBid;
     qaBid;
+    cBid;
     myBid;
 
     isClient;
@@ -70,7 +74,7 @@ export class ProjectDetails implements OnInit {
                             let client : string ="";
                             let bid_data: BidValues;
                             bid = JSON.parse(this._service.Hex2String(element.data.toString()));
-                            console.log(bid);
+
                             this._service.listStreamKeyItems("Users", this.project.user).then(data => {
                                 if(data[data.length-1]){
                                   let user: User = JSON.parse(this._service.Hex2String(data[data.length-1].data.toString()));
@@ -87,7 +91,7 @@ export class ProjectDetails implements OnInit {
                                             user = JSON.parse(this._service.Hex2String(data[data.length-1].data.toString()));
                                             bid.user_type = user.type;
                                             bid.user_name = user.name;
-                                            bid.user_id = data[0].txid;
+                                            bid.user_id = data[data.length-1].txid;
                                             if(bid.signature){
                                                 this._service.verify(user.address, bid.signature,JSON.stringify(bid_data)).then(data => {
                                                     if(data.verified){
@@ -105,6 +109,10 @@ export class ProjectDetails implements OnInit {
                                                 this.qa_bidsum += bid.bid_amount;
                                                 this.qa_bids.push(bid);
                                             }
+                                            else if (user.type == "Consultant") {
+                                                this.consultant_bidsum += bid.bid_amount;
+                                                this.consultant_bids.push(bid);
+                                            }
                                         }).catch(error => {
                                             console.log(error.message);
                                         });
@@ -112,12 +120,12 @@ export class ProjectDetails implements OnInit {
                                         console.log(error.message);
                                     });
                                 }
-                                 
+
                                 }
                               }).catch(error => {
                                 console.log(error.message);
                             });
-                            
+
                         }
                     });
                     console.log(this.freelancer_bidsum);
@@ -157,11 +165,17 @@ export class ProjectDetails implements OnInit {
                 this.message = "Are you sure want to proceed without a QA?";
                 $('#modal2').modal('show');
             }else{
-                console.log(this.fBid)  //key of freelancer bid ----> project_id/user_email
-                console.log(this.qaBid) // key of QA bid------> project_id/user_email
+                console.log(this.fBid);     //key of freelancer bid ----> project_id/user_email
+                console.log(this.qaBid);    // key of QA bid------> project_id/user_email
                 let link = ['/pages/contract/mycontract', this.fBid, this.qaBid];
                 this._router.navigate(link);
             }
+        }
+
+        if(this.fBid == undefined && this.qaBid == undefined && this.cBid != undefined) {
+            this.qaBid = 0;
+            let link = ['/pages/contract/mycontract', this.cBid, this.qaBid];
+            this._router.navigate(link);
         }
     }
 
@@ -171,5 +185,13 @@ export class ProjectDetails implements OnInit {
         this._router.navigate(link);
     }
 
+    contact(txid: string): void {
 
+        this._service.getstreamitem(this.userstream, txid).then(data => {
+            let user = JSON.parse(this._service.Hex2String(data.data.toString()));
+            let id = localStorage.getItem("address") + user.address;
+            let link = ['/pages/chat/chat_view', id];
+            this._router.navigate(link);
+        });
+    }
 }

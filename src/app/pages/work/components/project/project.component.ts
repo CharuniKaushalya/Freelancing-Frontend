@@ -26,7 +26,7 @@ export class MyProjects implements OnInit {
     projctsStream: string = "projects";
     bidStream: string = "bid";
     projects: Project[] = [];
-    sprojects: Project[] = [];    
+    sprojects: Project[] = [];
     projctUtypeStream: string = "project_user_type";
     projectStatusStream: string = "ProjectStatus";
     today: number = Date.now();
@@ -52,18 +52,18 @@ export class MyProjects implements OnInit {
                 let skill = JSON.parse(this._service.Hex2String(element.data.toString()));
                 skill.forEach(element => {
                     this.skills.push(element);
-                    
+
                 });
             });
             _service.listStreamItems(this.projctsStream).then(data => {
                 data.forEach(element => {
                     let project: Project;
                     _service.gettxoutdata(element.txid).then(largedata => {
-    
+
                         project = JSON.parse(this._service.Hex2String(largedata.toString()));
-    
+
                         _service.listStreamKeyItems(this.projectStatusStream, element.txid).then(pstatus => {
-    
+
                             if (pstatus[pstatus.length - 1] != undefined) {
                                 let projectStatus: ProjectStatus = JSON.parse(this._service.Hex2String(pstatus[pstatus.length - 1].data.toString()));
                                 if (projectStatus.status == "Open") {
@@ -78,7 +78,7 @@ export class MyProjects implements OnInit {
                                                     this.datePipe.transform(putype.deadline, 'yyyy-MM-dd') >= this.datePipe.transform(this.today, 'yyyy-MM-dd')) {
                                                     this.projects.push(project);
                                                     this.sprojects.push(project);
-                                                    this.performSearch(); 
+                                                    this.performSearch();
                                                 }
                                             }
                                         });
@@ -88,7 +88,7 @@ export class MyProjects implements OnInit {
                                 }
                             }
                         });
-    
+
                     }).catch(error => {
                         console.log(error.message);
                     });
@@ -99,7 +99,7 @@ export class MyProjects implements OnInit {
 
         }).catch(error => {
             console.log(error.message);
-        });      
+        });
     }
 
     ngOnInit() {
