@@ -13,11 +13,11 @@ export class privilegeService {
         data: [
           {
             type: 'my_projects',
-            title: 'general.menu.my_projects'
+            title: 'My Projects'
           },
           {
             type: 'my_work',
-            title: 'general.menu.my_work'
+            title: 'My Work'
           }
         ]
       },
@@ -28,7 +28,7 @@ export class privilegeService {
         data: [
           {
             type: 'contract_view',
-            title: 'general.menu.contract_view'
+            title: 'My Contract'
           }
         ]
       }
@@ -41,11 +41,11 @@ export class privilegeService {
         data: [
           {
             type: 'my_projects',
-            title: 'general.menu.my_projects'
+            title: 'My Project'
           },
           {
             type: 'my_work',
-            title: 'general.menu.my_work'
+            title: 'My work'
           }
         ]
       },
@@ -56,7 +56,7 @@ export class privilegeService {
         data: [
           {
             type: 'contract_view',
-            title: 'general.menu.contract_view'
+            title: 'My Contract'
           }
         ]
       }
@@ -69,11 +69,11 @@ export class privilegeService {
         data: [
           {
             type: 'my_projects',
-            title: 'general.menu.my_projects'
+            title: 'My Projects'
           },
           {
             type: 'my_work',
-            title: 'general.menu.my_work'
+            title: 'My Work'
           }
         ]
       },
@@ -84,7 +84,7 @@ export class privilegeService {
         data: [
           {
             type: 'contract_view',
-            title: 'general.menu.contract_view'
+            title: 'My Contacts'
           }
         ]
       }
@@ -120,11 +120,11 @@ export class privilegeService {
           },
           {
             type: 'project_new',
-            title: 'general.menu.project_new'
+            title: 'Project New'
           },
           {
             type: 'my_work',
-            title: 'general.menu.my_work'
+            title: 'My Work'
           }
         ]
       },
@@ -135,15 +135,15 @@ export class privilegeService {
         data: [
           {
             type: 'mycontract',
-            title: 'general.menu.mycontract'
+            title: 'Create Contract'
           },
           {
             type: 'contract_view',
-            title: 'general.menu.contract_view'
+            title: 'My Contract'
           },
           {
             type: 'contract_rules',
-            title: 'general.menu.contract_rules'
+            title: 'Contract Rules'
           }
         ]
       }
