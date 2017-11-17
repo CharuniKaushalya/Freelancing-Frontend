@@ -176,6 +176,9 @@ export class ContractDetails implements OnInit {
             case 'Completed':
                 stateName = 'Completed';
                 break;
+            case 'QA_Completed':
+                stateName = 'Waiting for Client Conformation';
+                break;
         }
         return stateName;
     }
