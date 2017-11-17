@@ -661,6 +661,12 @@ export class ContractDetails implements OnInit {
         this._router.navigate(link);
     }
 
+    goToRules() {
+        console.log('Go to rules');
+        let link = ['/pages/contract/contract_rules'];
+        this._router.navigate(link);
+    }
+
     goBack() {
         console.log('Back called');
         let link = ['/pages/contract/contract_view'];
