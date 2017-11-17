@@ -180,7 +180,7 @@
                                                 <br>
                                                 <button class="btn btn-primary  btn-sm float-sm-right"
                                                         style="width: 110px"
-                                                        type="button" (click)="stateBtnClicked('Completed')">
+                                                        type="button" (click)="stateBtnClicked('QA_Completed')">
                                                     QA Successful
                                                 </button>
                                                 <br>
@@ -203,6 +203,21 @@
                                                         style="width: 110px"
                                                         type="button" (click)="stateBtnClicked('QA_Failed')">
                                                     QA Failed
+                                                </button>
+                                            </td>
+                                            <td colspan=5
+                                                *ngIf="contract.status.milestone_state=='QA_Completed' && userType=='Client' && hasLinkedContract">
+                                                <br>
+                                                <button class="btn btn-primary  btn-sm float-sm-right"
+                                                        style="width: 110px"
+                                                        type="button" (click)="stateBtnClicked('Completed')">
+                                                    Accept Work
+                                                </button>
+                                                <br>
+                                                <button class="btn btn-primary  btn-sm float-sm-right"
+                                                        style="width: 110px"
+                                                        type="button" (click)="stateBtnClicked('Reject_Work')">
+                                                    Reject Work
                                                 </button>
                                             </td>
                                         </tr>

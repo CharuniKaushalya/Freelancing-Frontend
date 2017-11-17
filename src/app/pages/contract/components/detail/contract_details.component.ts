@@ -185,6 +185,10 @@ export class ContractDetails implements OnInit {
         if (nextState == 'QA_Failed' && this.max_redos == this.contract.status.redo) {
             $('#myModal2').modal('show');
 
+        } else if(nextState == 'Reject_Work') {
+            this.cancel_payment_percentage = 100;
+            this.cancelActiveContract();
+
         } else {
 
             if (nextState == 'QA_Failed') {
