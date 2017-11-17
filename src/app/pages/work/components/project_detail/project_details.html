@@ -17,6 +17,7 @@
                     </div>
                 </div>
                 <br><br>
+
                 <div class="row">
                     <button class="btn btn-default btn-md" style="cursor:default;">
                     Freelancer Budget - From {{project?.budget?.min}} to {{project?.budget?.max}} {{project?.budget?.type}}
@@ -78,14 +79,14 @@
                                         </a>
                                         <p>{{bid.user_email}}</p>
                                     </td>
-                                    <td><br>{{bid.bid_amount}}
+                                    <td><br>{{bid.bid_amount}} USD
                                     </td>
                                     <td><br>{{bid.deliver_time}} Days
                                     </td>
                                     <td>
                                         <br>
                                         <div class="row">
-                                            <br><button (click)="contact_fumction()" type="button" class="btn btn-primary  btn-sm"><i class="fa fa-phone"></i>  Contact</button>
+                                            <br><button (click)="contact(bid.user_id)" type="button" class="btn btn-primary  btn-sm"><i class="fa fa-phone"></i>  Contact</button>
                                         </div>
                                     </td>
                                 </tr>
@@ -95,6 +96,7 @@
 
                 </div>
                 <br><br>
+
                 <div class="row">
                     <div *ngIf="project?.qabudget">
                         <button class="btn btn-default btn-md " style="cursor:default;">
@@ -161,14 +163,14 @@
                                         </a>
                                         <p>{{bid.user_email}}</p>
                                     </td>
-                                    <td><br>{{bid.bid_amount}}
+                                    <td><br>{{bid.bid_amount}} USD
                                     </td>
                                     <td><br>{{bid.deliver_time}} Days
                                     </td>
                                     <td>
                                         <br>
                                         <div class="row">
-                                            <button (click)="contact_fumction()" type="button" class="btn btn-primary  btn-sm"><i class="fa fa-phone"></i>  Contact</button>
+                                            <button (click)="contact(bid.user_id)" type="button" class="btn btn-primary  btn-sm"><i class="fa fa-phone"></i>  Contact</button>
                                         </div>
                                     </td>
                                 </tr>
@@ -176,11 +178,87 @@
                         </table>
                     </ba-card>
                 </div>
+                <br><br>
+
+                <div *ngIf="consultant_bids?.length!=0 && isClient" class="row">
+                    <button class="btn btn-default btn-md" style="cursor:default;">
+                        Consultant Budget - From {{project?.budget?.min}} to {{project?.budget?.max}} {{project?.budget?.type}}
+                    </button>
+                    <button class="btn btn-info btn-md" style="cursor:default;">{{consultant_bids?.length}} Consultant Bids</button>
+
+                    <div *ngIf="consultant_bids?.length!=0">
+                        <button class="btn btn-success btn-md" style="cursor:default;">Average Bid - {{consultant_bidsum/consultant_bids?.length}}{{project?.budget?.type}}</button>
+                    </div>
+                </div>
+                <div *ngIf="consultant_bids?.length!=0 && isClient">
+                    <ba-card cardTitle="Current Consultant Bids" baCardClass="with-scroll table-panel">
+                        <table class="table table-condensed">
+                            <thead>
+                            <tr>
+                                <th>
+                                    <div *ngIf="!selectConsultant">
+                                        <a style="cursor:pointer" (click)="selectConsultant=true">
+                                            <h4>Select Consultant</h4>
+                                        </a>
+                                    </div>
+                                    <div *ngIf="selectConsultant">
+                                        <a style="cursor:pointer" (click)="selectConsultant=false;cBid=null">
+                                            <h4>Deselect Consultant</h4>
+                                        </a>
+                                    </div>
+                                </th>
+                                <th>
+                                    <h4>User</h4>
+                                </th>
+                                <th>
+                                    <h4>Amount</h4>
+                                </th>
+                                <th>
+                                    <h4>Delivery Time</h4>
+                                </th>
+                                <th>
+                                    <h4>Actions</h4>
+                                </th>
+                            </tr>
+                            </thead>
+                            <tbody>
+                            <tr *ngFor="let bid of consultant_bids">
+                                <td>
+                                    <br>
+                                    <div *ngIf="selectConsultant==false">
+                                        <font size="5" color="#209e91"><i class="fa fa-product-hunt"></i></font>
+                                    </div>
+                                    <div *ngIf="selectConsultant==true">
+                                        <input name='selectConsultantGroup' type='radio' [id]='cBid' [value]='bid.bid_id' [(ngModel)]='cBid' />
+                                    </div>
+                                </td>
+                                <td><br>
+                                    <a style="cursor:pointer" (click)="goToUser(bid.user_id)">
+                                        <h3>{{bid.user_name}}</h3>
+                                    </a>
+                                    <p>{{bid.user_email}}</p>
+                                </td>
+                                <td><br>{{bid.bid_amount}} USD
+                                </td>
+                                <td><br>{{bid.deliver_time}} Days
+                                </td>
+                                <td>
+                                    <br>
+                                    <div class="row">
+                                        <button (click)="contact(bid.user_id)" type="button" class="btn btn-primary  btn-sm"><i class="fa fa-phone"></i>  Contact</button>
+                                    </div>
+                                </td>
+                            </tr>
+                            </tbody>
+                        </table>
+                    </ba-card>
+                </div>
+                <br><br>
 
                 <br><br>
                 <div *ngIf="!isClient">
                     <h4>Your Bid </h4>
-                    
+
                 </div>
 
                 <br><br>
@@ -209,8 +287,11 @@
                         <div class="modal-header"></div>
                         <div class="modal-body">
                             <h4 class="text-center">{{message}}</h4>
-                            <button type="button" class="btn btn-success pull-right" data-dismiss="modal" (click)="setYesQaBid()">Yes</button>
-                            <button type="button" class="btn btn-danger pull-right" data-dismiss="modal">No</button>
+                            <br>
+                            <div class="pull-right">
+                                <button type="button" class="btn btn-primary" data-dismiss="modal" (click)="setYesQaBid()">Yes</button>
+                                <button type="button" class="btn btn-primary" data-dismiss="modal">No</button>
+                            </div>
                         </div>
                         <div class="modal-footer">
                             <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>

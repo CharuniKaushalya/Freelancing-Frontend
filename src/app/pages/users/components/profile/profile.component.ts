@@ -78,7 +78,7 @@ export class Profile implements OnInit {
 
 
     ngOnInit() {
-        
+
         this._route.params.forEach((params: Params) => {
             if (params['user_id'] !== undefined) {
                 let user_id = params['user_id'];
@@ -89,7 +89,7 @@ export class Profile implements OnInit {
                                 let r: Review;
                                 this._service.gettxoutdata(element.txid).then(largedata => {
                                     r = JSON.parse(this._service.Hex2String(largedata.toString()));
-                                    
+
                                     if (r.to == data.key) {
 
                                         this._service.listStreamKeyItems(this.userStream, r.from).then(rkdata => {
@@ -173,6 +173,7 @@ export class Profile implements OnInit {
                         this.userkey = data.key;
                         console.log(this.userkey);
                         this.user = JSON.parse(this._service.Hex2String(data.data.toString()));
+                        console.log(this.user);
 
                         if(this.user.email == this.useremail)
                             $('#contactBtn').hide();
@@ -296,6 +297,9 @@ export class Profile implements OnInit {
 
             } else if(type == 'QA') {
                 id = userAddress + id;
+
+            } else if(type == 'Consultant') {
+                id = userAddress + id;
             }
 
         } else if(userType == 'Freelancer') {
@@ -304,6 +308,9 @@ export class Profile implements OnInit {
 
             } else if(type == 'QA') {
                 id = userAddress + id;
+
+            } else if(type == 'Consultant') {
+                id = userAddress + id;
             }
 
         } else if(userType == 'QA') {
@@ -311,6 +318,20 @@ export class Profile implements OnInit {
                 id = id + userAddress;
 
             } else if(type == 'Freelancer') {
+                id = id + userAddress;
+
+            } else if(type == 'Consultant') {
+                id = userAddress + id;
+            }
+
+        } else if(userType == 'Consultant') {
+            if(type == 'Client') {
+                id = id + userAddress;
+
+            } else if(type == 'Freelancer') {
+                id = id + userAddress;
+
+            } else if(type == 'QA') {
                 id = id + userAddress;
             }
         }
