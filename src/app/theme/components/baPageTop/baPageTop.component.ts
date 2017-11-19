@@ -50,24 +50,24 @@ export class BaPageTop {
               let array = null;
               localStorage.setItem("userType", user.type);
               this.userType = user.type;
-             //  switch(this.userType) {
-             //    case 'Consultant': {
-             //       this.color = '#f0ad4e';
-             //       break;
-             //    }
-             //    case 'Client': {
-             //       this.color = '#40babd';
-             //       break;
-             //    }
-             //    case 'QA': {
-             //      this.color = '#75c181';
-             //      break;
-             //   }
-             //    default: {
-             //       //statements;
-             //       break;
-             //    }
-             // }
+              switch(this.userType) {
+                case 'Consultant': {
+                   this.color = '#f0ad4e';
+                   break;
+                }
+                case 'Freelancer': {
+                   this.color = '#58BBED';
+                   break;
+                }
+                case 'QA': {
+                  this.color = 'rgba(247, 121, 108, 1)';
+                  break;
+               }
+                default: {
+                   //statements;
+                   break;
+                }
+             }
           }
         });
 
