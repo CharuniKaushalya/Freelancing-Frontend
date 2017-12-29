@@ -1,10 +1,10 @@
-<div class="page-top clearfix" baScrollPosition maxHeight="50" (scrollChange)="scrolledChanged($event)" [ngStyle]="{ 'background-color': color }"
+<div class="page-top clearfix" baScrollPosition maxHeight="50" (scrollChange)="scrolledChanged($event)"
      [ngClass]="{scrolled: isScrolled}">
   <a routerLink="/pages/dashboard" class="al-logo clearfix"><span>Block</span>Worker</a>
   <a href (click)="toggleMenu()" class="collapse-menu-link ion-navicon"></a>
 
   <div class="search" style="text-align:center;margin-left:370px;">
-      <h2 style="color:white">{{userType}} Dashboard</h2>
+      <!--<h2 style="color:white">{{userType}} Dashboard</h2>-->
   </div> 
 
   <div class="user-profile clearfix">
