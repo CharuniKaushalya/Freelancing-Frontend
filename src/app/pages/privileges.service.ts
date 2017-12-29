@@ -17,7 +17,7 @@ export class privilegeService {
           },
           {
             type: 'my_work',
-            title: 'My Work'
+            title: 'My Bids'
           }
         ]
       },
@@ -45,7 +45,7 @@ export class privilegeService {
           },
           {
             type: 'my_work',
-            title: 'My work'
+            title: 'My Bids'
           }
         ]
       },
@@ -73,7 +73,7 @@ export class privilegeService {
           },
           {
             type: 'my_work',
-            title: 'My Work'
+            title: 'My Bids'
           }
         ]
       },
@@ -121,10 +121,6 @@ export class privilegeService {
           {
             type: 'project_new',
             title: 'Project New'
-          },
-          {
-            type: 'my_work',
-            title: 'My Work'
           }
         ]
       },
@@ -134,12 +130,8 @@ export class privilegeService {
         icon: 'fa fa-balance-scale',
         data: [
           {
-            type: 'mycontract',
-            title: 'Create Contract'
-          },
-          {
             type: 'contract_view',
-            title: 'My Contract'
+            title: 'My Contracts'
           },
           {
             type: 'contract_rules',
