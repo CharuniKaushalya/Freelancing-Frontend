@@ -28,6 +28,8 @@ export class ReviewModelComponent implements OnInit {
     public rate: AbstractControl;
     public description: AbstractControl;
 
+    skillsStream = "user-skill";
+    skills = [];
     public contract: Contract;
 
     public submitted: boolean = false;
@@ -56,10 +58,10 @@ export class ReviewModelComponent implements OnInit {
             if (this.contract.client_email == localStorage.getItem("email")) {
                 this.review.from = this.contract.client_email;
                 this.review.to = this.contract.freelancer_email;
+                this.loadSkills(this.contract.freelancer_email);
             } else if (this.contract.freelancer_email == localStorage.getItem("email")) {
                 this.review.from = this.contract.freelancer_email;
                 this.review.to = this.contract.client_email;
-
             }
         }).catch(error => {
             console.log(error.message);
@@ -68,6 +70,21 @@ export class ReviewModelComponent implements OnInit {
 
     closeModal() {
         this.activeModal.close();
+    }
+
+    showAdvancedReview(): void {
+        $('#divAdvance').show();
+    }
+
+    loadSkills(userkey: string) {
+        this._service.listStreamKeyItems(this.skillsStream, userkey).then(data => {
+            console.log(data);
+            let skill = JSON.parse(this._service.Hex2String(data[data.length - 1].data.toString()));
+            skill.forEach(element => {
+                console.log(element);
+                this.skills.push(element);
+            });
+        });
     }
 
     public onSubmit(values: Object): void {

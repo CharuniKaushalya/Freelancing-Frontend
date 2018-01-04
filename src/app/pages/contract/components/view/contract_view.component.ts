@@ -357,7 +357,7 @@ export class ContractView implements OnInit {
             } else {
                 console.log("not reviewd");
                 const activeModal = this.modalService.open(ReviewModelComponent, { size: 'lg' });
-                activeModal.componentInstance.modalHeader = 'Make a review about your work experience!!';
+                activeModal.componentInstance.modalHeader = 'Make a review about your work experience...';
                 activeModal.componentInstance.key = contract_id;
             }
         });

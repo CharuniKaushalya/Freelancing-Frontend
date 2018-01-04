@@ -69,7 +69,8 @@
                                                         (click)="cancelContract(contract.contract_id)">Cancel
                                                 </button>
                                             </div>
-                                            <div *ngIf="userType == 'Client' && contract.status.status == 'RedoPending'">
+                                            <div
+                                                *ngIf="userType == 'Client' && contract.status.status == 'RedoPending'">
                                                 <button class="btn btn-primary"
                                                         (click)="cancelContract(contract.contract_id)">Cancel
                                                 </button>
@@ -85,7 +86,8 @@
                                                 </div>
                                                 conformation
                                             </div>
-                                            <div *ngIf="userType == 'Freelancer' && contract.status.status == 'Pending'">
+                                            <div
+                                                *ngIf="userType == 'Freelancer' && contract.status.status == 'Pending'">
                                                 <button class="btn btn-primary"
                                                         (click)="confirmContract(contract.contract_id)">Confirm
                                                 </button>
@@ -93,7 +95,8 @@
                                                         (click)="cancelContract(contract.contract_id)">Cancel
                                                 </button>
                                             </div>
-                                            <div *ngIf="userType == 'Freelancer' && contract.status.status == 'RedoPending'">
+                                            <div
+                                                *ngIf="userType == 'Freelancer' && contract.status.status == 'RedoPending'">
                                                 <button class="btn btn-primary"
                                                         (click)="confirmContract(contract.contract_id)">Confirm
                                                 </button>
@@ -101,7 +104,8 @@
                                                         (click)="cancelContract(contract.contract_id)">Cancel
                                                 </button>
                                             </div>
-                                            <div *ngIf="userType == 'Freelancer' && contract.status.status == 'Confirmed'">
+                                            <div
+                                                *ngIf="userType == 'Freelancer' && contract.status.status == 'Confirmed'">
                                                 Waiting for
                                                 <div class="d-inline-block" *ngIf="contract.type == 'Freelancer'">QA
                                                 </div>
@@ -251,10 +255,8 @@
                                         </td>
                                         <td>
                                             <br>
-
-                                            <button (click)="rModalShow(contract.contract_id)" class="btn btn-info"><i
-                                                    class="fa fa-star-half-o"> Review</i></button>
-
+                                            <button (click)="rModalShow(contract.contract_id)" class="btn btn-primary">
+                                                <i class="fa fa-star-half-o"> Review</i></button>
                                         </td>
                                     </tr>
                                     </tbody>
