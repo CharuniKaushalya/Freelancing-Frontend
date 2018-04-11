@@ -28,15 +28,22 @@
                               id="inputdescription" placeholder="Write your review here.."></textarea>
                 </div>
                 <div class="form-group">
-                    <a class="float-right" style="cursor:pointer; color: #63bbb2" (click)="showAdvancedReview()"><p>Show Advanced Review</p></a>
+                    <a *ngIf="advanceReview" class="float-right" style="cursor:pointer; color: #63bbb2"
+                       (click)="showAdvancedReview()"><p>Show
+                        Advanced Review</p></a>
+                    <a *ngIf="!advanceReview" class="float-right" style="cursor:pointer; color: #63bbb2"
+                       (click)="hideAdvancedReview()"><p>Hide
+                        Advanced Review</p></a>
                     <br>
                 </div>
                 <div class="form-group" id="divAdvance" style="display: none">
                     <div *ngFor="let skill of skills">
-                        <ul class="">{{skill}}</ul>
-                        <rating class="float-right" [(ngModel)]="review.rate" [formControl]="rate" [max]="5" [required]="true"
-                                [float]="true" [titles]="['one', 'two', 'three', 'four', 'five']">
-                        </rating>
+                        <div class="col-sm-3 d-inline-block">{{skill}}</div>
+                        <div class="col-sm-8 d-inline-block">
+                            <rating class="float-right" (click)="rateChange(skill, rate.value)" [formControl]="rate" [max]="5"
+                                    [float]="true" [titles]="['one', 'two', 'three', 'four', 'five']">
+                            </rating>
+                        </div>
                         <hr>
                     </div>
                 </div>

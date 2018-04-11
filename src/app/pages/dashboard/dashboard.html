@@ -4,16 +4,16 @@
         <div class="col-sm-12">
             <section class="cards-section text-center">
                 <div class="container">
-                    <div id="cards-wrapper1" class="cards-wrapper row">
+                    <div id="cards-wrapper1" class="row"> <!--cards-wrapper-->
                         <div class="item item-green col-md-4 col-sm-6 col-xs-6" (click)="goToProjects()" role="button">
                             <div class="item-inner">
                                 <div class="icon-holder">
                                     <i class="icon fa fa-globe"></i>
                                 </div><!--//icon-holder-->
                                 <h3 class="title">Projects</h3>
-                                <p *ngIf="usertype=='Client'" class="intro">Work. All your recent posted projects.</p>
+                                <p *ngIf="usertype=='Client'" class="intro">Published work. All your recent posted projects.</p>
                                 <a *ngIf="usertype=='Client'" class="link"><span></span></a>
-                                <p *ngIf="usertype=='Consultant' || usertype=='Freelancer' || usertype=='QA'" class="intro">Work. All the projects available to you.</p>
+                                <p *ngIf="usertype=='Consultant' || usertype=='Freelancer' || usertype=='QA'" class="intro">Find work. All the new projects available to you.</p>
                                 <a *ngIf="usertype=='Consultant' || usertype=='Freelancer' || usertype=='QA'" class="link"><span></span></a>
                             </div><!--//item-inner-->
                         </div><!--//item-->
@@ -33,7 +33,7 @@
                                     <i class="icon fa fa-google-wallet"></i>
                                 </div><!--//icon-holder-->
                                 <h3 class="title">Wallet</h3>
-                                <p class="intro">You can find all your transactions here.</p>
+                                <p class="intro">Your transactions. You can find all your transactions here.</p>
                                 <a class="link"><span></span></a>
                             </div><!--//item-inner-->
                         </div><!--//item-->
@@ -41,14 +41,14 @@
                 </div><!--//container-->
                 <br>
                 <div class="container">
-                    <div id="cards-wrapper2" class="cards-wrapper row">
+                    <div id="cards-wrapper2" class="row">
                         <div class="item item-pink col-md-4 col-sm-6 col-xs-6">
                             <div class="item-inner">
                                 <div class="icon-holder">
                                     <i class="icon fa fa-paper-plane"></i>
                                 </div><!--//icon-holder-->
                                 <h3 class="title">Quick Start</h3>
-                                <p class="intro">Demo example, how it works, Documentation</p>
+                                <p class="intro">Demo example, how it works, Documentation.</p>
                                 <a class="link" routerLink="/documentation"><span></span></a>
                             </div><!--//item-inner-->
                         </div><!--//item-->
@@ -58,7 +58,7 @@
                                     <i class="icon fa fa-group"></i>
                                 </div><!--//icon-holder-->
                                 <h3 class="title">FAQ</h3>
-                                <p class="intro">FQA page. Detail about Blockwork team. </p>
+                                <p class="intro">FQA page. A detailed guide about BlockWork. </p>
                                 <a class="link" routerLink="/documentation"><span></span></a>
                             </div><!--//item-inner-->
                         </div><!--//item-->
@@ -68,7 +68,7 @@
                                     <i class="icon fa fa-puzzle-piece"></i>
                                 </div><!--//icon-holder-->
                                 <h3 class="title">Features</h3>
-                                <p class="intro">Solutions for traditional freelencing problems</p>
+                                <p class="intro">Solutions for traditional freelancing problems</p>
                                 <a class="link" routerLink="/documentation"><span></span></a>
                             </div><!--//item-inner-->
                         </div><!--//item-->

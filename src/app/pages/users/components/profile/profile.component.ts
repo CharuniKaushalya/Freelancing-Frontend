@@ -101,14 +101,24 @@ export class Profile implements OnInit {
                                                     rcopy.description=r.description;
                                                     rcopy.from=r.from;
                                                     rcopy.to=r.to;
+
                                                     this._service.verify(user.address, r.signature,JSON.stringify(rcopy)).then(data => {
                                                         if(data.verified){
                                                             console.log("Data Verified : " , data.verified);
                                                             user.user_id = rkdata[rkdata.length - 1].txid;
                                                             r.from = user;
                                                             r.time = element.blocktime;
+
+                                                            if(r.skills) {
+                                                                r["hasAdvanceReview"] = true;
+
+                                                            } else {
+                                                                r["hasAdvanceReview"] = false;
+                                                            }
+
                                                             this.sum_reviews += r.rate;
                                                             this.reviews.push(r);
+                                                            console.log(r);
                                                             this.avg_reviews = this.sum_reviews / this.reviews.length;
                                                         }
                                                     }).catch(error => {

@@ -1,15 +1,17 @@
 <div class="widgets">
     <div class="row">
         <div class="col-md-3">
-            <img class="profile-image border-radius: 50%;img-responsive pull-left" style="margin-left: 50px; width: 200px;height: 200px;border-radius: 50%;"
-                src="assets/img/theme/no-photo.png" alt="James Lee" />
+            <img class="profile-image border-radius: 50%;img-responsive pull-left"
+                 style="margin-left: 50px; width: 200px;height: 200px;border-radius: 50%;"
+                 src="assets/img/theme/no-photo.png" alt="James Lee"/>
         </div>
         <div class="col-md-8">
             <h1>{{user?.name}}</h1>
             <h2>Web App Developer</h2>
             <p>Member since September, 2015</p>
             <p>
-                <rating [(ngModel)]="avg_reviews" [readonly]="true" [disabled]="ture" [float]="true" [titles]="['one', 'two', 'three', 'four', 'five']"></rating>
+                <rating [(ngModel)]="avg_reviews" [readonly]="true" [disabled]="ture" [float]="true"
+                        [titles]="['one', 'two', 'three', 'four', 'five']"></rating>
                 {{avg_reviews}} ({{reviews.length}} Reviews)
             </p>
             <ul class="list-inline">
@@ -20,7 +22,8 @@
                 <li class="list-inline-item"><a href="#"><i class="fa fa-hacker-news"></i></a></li>
 
             </ul>
-            <a id="contactBtn" class="btn btn-success btn-xm pull-right" role="button" target="_blank" (click)="goToChat(user.address, user.type)" style="color: white">
+            <a id="contactBtn" class="btn btn-success btn-xm pull-right" role="button" target="_blank"
+               (click)="goToChat(user.address, user.type)" style="color: white">
                 Contact Me</a>
         </div>
         <br/><br/>
@@ -48,14 +51,16 @@
                         <ba-card baCardClass="with-scroll">
                             PORTFOLIO
                             <div class="pull-right" *ngIf="user?.email == useremail">
-                                <div class="text-primary pull-right"><a (click)="projModalShow()"><i class="fa fa-cog"></i> Add New</a></div>
+                                <div class="text-primary pull-right"><a (click)="projModalShow()"><i
+                                    class="fa fa-cog"></i> Add New</a></div>
                             </div>
                             <hr>
 
                             <div *ngFor="let portfolio of portfolios">
                                 <div class="row">
                                     <div class="col-md-4">
-                                        <img src="assets/img/app/project/project-3.png" alt="project name" class="img-thumbnail" width="304" height="236" />
+                                        <img src="assets/img/app/project/project-3.png" alt="project name"
+                                             class="img-thumbnail" width="304" height="236"/>
                                     </div>
                                     <div class="col-md-8">
                                         <h4 class="title"><a href="#" target="_blank">{{portfolio.title}}</a></h4>
@@ -66,14 +71,19 @@
                             </div>
                             <div class="row">
                                 <div class="col-md-4">
-                                    <img src="assets/img/app/project/project-2.png" alt="project name" class="img-thumbnail" width="304" height="236" />
+                                    <img src="assets/img/app/project/project-2.png" alt="project name"
+                                         class="img-thumbnail" width="304" height="236"/>
                                 </div>
                                 <div class="col-md-8">
-                                    <h4 class="title"><a href="#" target="_blank">Delta - Designed for Mobile Apps</a></h4>
-                                    <p>You can put one of your secondary projects here. Suspendisse in tellus dolor. Vivamus
-                                        a tortor eu turpis pharetra consequat quis non metus. Aliquam aliquam, orci eu suscipit
+                                    <h4 class="title"><a href="#" target="_blank">Delta - Designed for Mobile Apps</a>
+                                    </h4>
+                                    <p>You can put one of your secondary projects here. Suspendisse in tellus dolor.
+                                        Vivamus
+                                        a tortor eu turpis pharetra consequat quis non metus. Aliquam aliquam, orci eu
+                                        suscipit
                                         pellentesque, mauris dui tincidunt enim, eget iaculis ante dolor non turpis.</p>
-                                    <p><a class="more-link" href="#" target="_blank"><i class="fa fa-external-link"></i> Find out more</a></p>
+                                    <p><a class="more-link" href="#" target="_blank"><i class="fa fa-external-link"></i>
+                                        Find out more</a></p>
                                 </div>
                             </div>
                         </ba-card>
@@ -84,14 +94,17 @@
                         <ba-card baCardClass="with-scroll">
                             <ul class="list-unstyled">
                                 <li>WORK EXPERIENCE
-                                    <div class="text-primary pull-right" *ngIf="user?.email == useremail"><a (click)="workModalShow()"><i class="fa fa-cog"></i> Add New</a></div>
+                                    <div class="text-primary pull-right" *ngIf="user?.email == useremail"><a
+                                        (click)="workModalShow()"><i class="fa fa-cog"></i> Add New</a></div>
                                 </li>
                                 <hr>
                                 <div *ngFor="let employment of employments">
                                     <li>
-                                        <h4 class="title">{{employment.title}} ({{employment.role}}) - <span class="place"><a href="#">{{employment.company}}, {{employment.city}}, {{employment.country}}</a>
+                                        <h4 class="title">{{employment.title}} ({{employment.role}}) - <span
+                                            class="place"><a href="#">{{employment.company}}, {{employment.city}}, {{employment.country}}</a>
                     </span> <br/>
-                                            <span class="year">({{employment.from_month}}, {{employment.from_year}} - {{employment.to_month}}), {{employment.to_year}}</span></h4>
+                                            <span class="year">({{employment.from_month}}, {{employment.from_year}} - {{employment.to_month}}), {{employment.to_year}}</span>
+                                        </h4>
                                         <div class="">
                                             <p>{{employment.description}}</p>
                                         </div>
@@ -111,15 +124,16 @@
                     <aside class="info aside section">
                         <ba-card cardTitle="Basic Information" baCardClass="with-scroll">
                             <ul class="list-unstyled">
-                                <li><i class="fa fa-map-marker"></i><span class="sr-only"> Name:</span> {{user?.name}}</li>
+                                <li><i class="fa fa-map-marker"></i><span class="sr-only"> Name:</span> {{user?.name}}
+                                </li>
                                 <hr>
-                                <li><i class="fa fa-envelope-o"></i><span class="sr-only"> Email:</span><a href="#">   {{user?.email}}</a></li>
+                                <li><i class="fa fa-envelope-o"></i><span class="sr-only"> Email:</span><a href="#">
+                                    {{user?.email}}</a></li>
                                 <hr>
                             </ul>
                         </ba-card>
                     </aside>
                     <!--//aside-->
-
 
 
                     <aside class="skills aside section">
@@ -128,7 +142,8 @@
 
                             <ul class="list-unstyled">
                                 <li>SKILLS
-                                    <div class="text-primary pull-right" *ngIf="user?.email == useremail"><a (click)="smModalShow()"><i class="fa fa-cog"></i> Add New</a></div>
+                                    <div class="text-primary pull-right" *ngIf="user?.email == useremail"><a
+                                        (click)="smModalShow()"><i class="fa fa-cog"></i> Add New</a></div>
                                 </li>
                                 <hr>
                                 <div *ngFor="let skill of skills">
@@ -147,13 +162,16 @@
 
                             <ul class="list-unstyled">
                                 <li>EDUCATION
-                                    <div class="text-primary pull-right" *ngIf="user?.email == useremail"><a (click)="eduModalShow()"><i class="fa fa-cog"></i> Add New</a></div>
+                                    <div class="text-primary pull-right" *ngIf="user?.email == useremail"><a
+                                        (click)="eduModalShow()"><i class="fa fa-cog"></i> Add New</a></div>
                                 </li>
                                 <hr>
                                 <div *ngFor="let education of educations">
                                     <li>
-                                        <h5 class="title"><i class="lnr lnr-graduation-hat"></i><a href="#"> {{education.title}} {{education.degree}}</a></h5>
-                                        <h6 class="university">{{education.university_name}}, {{education.country}} - <span class="year">({{education.grad_year}})</span></h6>
+                                        <h5 class="title"><i class="lnr lnr-graduation-hat"></i><a href="#">
+                                            {{education.title}} {{education.degree}}</a></h5>
+                                        <h6 class="university">{{education.university_name}}, {{education.country}} -
+                                            <span class="year">({{education.grad_year}})</span></h6>
                                     </li>
                                     <hr>
                                 </div>
@@ -193,7 +211,8 @@
                     <ul class="list-unstyled">
                         <li>REVIEWS
                             <div class="text-warning pull-right">
-                                <rating [(ngModel)]="avg_reviews" [readonly]="true" [disabled]="ture" [float]="true" [titles]="['one', 'two', 'three', 'four', 'five']"></rating>
+                                <rating [(ngModel)]="avg_reviews" [readonly]="true" [disabled]="ture" [float]="true"
+                                        [titles]="['one', 'two', 'three', 'four', 'five']"></rating>
                                 {{avg_reviews}} ({{reviews.length}} Reviews)
                             </div>
                         </li>
@@ -205,12 +224,29 @@
                                 </span>
                                 <span>{{ review.time | date }} </span>
                                 <span class="pull-right">
-                                    <rating [(ngModel)]="review.rate" [readonly]="true" [disabled]="ture" [float]="true" [titles]="['one', 'two', 'three', 'four', 'five']"></rating>
+                                    <rating [(ngModel)]="review.rate" [readonly]="true" [disabled]="ture" [float]="true"
+                                            [titles]="['one', 'two', 'three', 'four', 'five']"></rating>
                                 </span>
                             </h4>
                             <div class="">
                                 <p>{{review.description}} </p>
-                            </div><hr>
+                                <div *ngIf="review.hasAdvanceReview">
+                                    <a class="float-right" style="cursor:pointer; color: #63bbb2" (click)="showAdvancedReview()">Show Advanced Review</a>
+                                    <!--<div class="form-group" id="divAdvance" style="display: none">-->
+                                        <!--<div *ngFor="let skill of skills">-->
+                                            <!--<div class="col-sm-3 d-inline-block">{{skill}}</div>-->
+                                            <!--<div class="col-sm-8 d-inline-block">-->
+                                                <!--<rating class="float-right" [formControl]="rate" [max]="5"-->
+                                                        <!--[float]="true" [titles]="['one', 'two', 'three', 'four', 'five']">-->
+                                                <!--</rating>-->
+                                            <!--</div>-->
+                                            <!--<hr>-->
+                                        <!--</div>-->
+                                    <!--</div>-->
+                                    <br>
+                                </div>
+                            </div>
+                            <hr>
                         </li>
                     </ul>
                 </ba-card>

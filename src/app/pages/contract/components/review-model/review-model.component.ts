@@ -30,12 +30,15 @@ export class ReviewModelComponent implements OnInit {
 
     skillsStream = "user-skill";
     skills = [];
+    skill_rates = {};
     public contract: Contract;
 
     public submitted: boolean = false;
 
     @Input() review: Review;
     reviewStream: string = "user-reviews"; isDisabled: boolean = false;
+
+    advanceReview = true;
 
     constructor(private activeModal: NgbActiveModal, fb: FormBuilder, public authService: AuthService,
         private _service: MyService, private _router: Router) {
@@ -73,7 +76,17 @@ export class ReviewModelComponent implements OnInit {
     }
 
     showAdvancedReview(): void {
+        this.advanceReview = false;
         $('#divAdvance').show();
+    }
+
+    hideAdvancedReview(): void {
+        this.advanceReview = true;
+        $('#divAdvance').hide();
+    }
+
+    rateChange(skill: string, rate:number): void {
+        this.skill_rates[skill] = rate;
     }
 
     loadSkills(userkey: string) {
@@ -83,6 +96,7 @@ export class ReviewModelComponent implements OnInit {
             skill.forEach(element => {
                 console.log(element);
                 this.skills.push(element);
+                this.skill_rates[element] = 0;
             });
         });
     }
@@ -96,6 +110,9 @@ export class ReviewModelComponent implements OnInit {
             this._service.sign(localStorage.getItem("address"), JSON.stringify(this.review)).then(data => {
                 if (data.sign) {
                     this.review.signature = data.sign;
+                }
+                if(!this.advanceReview) {
+                    this.review.skills = JSON.stringify(this.skill_rates);
                 }
                 console.log(this.review);
                 let rJSON = JSON.stringify(this.review);
