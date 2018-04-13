@@ -111,6 +111,8 @@ export class Profile implements OnInit {
 
                                                             if(r.skills) {
                                                                 r["hasAdvanceReview"] = true;
+                                                                r["showAdvanceReview"] = false;
+                                                                r.skills = this.getRatedSkills(r.skills);
 
                                                             } else {
                                                                 r["hasAdvanceReview"] = false;
@@ -119,7 +121,8 @@ export class Profile implements OnInit {
                                                             this.sum_reviews += r.rate;
                                                             this.reviews.push(r);
                                                             console.log(r);
-                                                            this.avg_reviews = this.sum_reviews / this.reviews.length;
+                                                            let avg = (this.sum_reviews / this.reviews.length).toFixed(2);
+                                                            this.avg_reviews = Number(avg);
                                                         }
                                                     }).catch(error => {
                                                         console.log(error.message);
@@ -250,6 +253,31 @@ export class Profile implements OnInit {
                 this.loadWork(this.userkey);
             });
         // .then((r) => { console.log(r);  }, (error) => { console.log("eeee"); });
+    }
+
+    showAdvancedReview(index: number): void {
+        this.reviews[index]["showAdvanceReview"] = true;
+    }
+
+    hideAdvancedReview(index: number): void {
+        this.reviews[index]["showAdvanceReview"] = false;
+    }
+
+    getRatedSkills(skillsStr: string): any {
+        let skillRates = [];
+        let obj = JSON.parse(skillsStr);
+
+        Object.keys(obj).forEach(key => {
+
+            if (obj[key] != 0) {
+                let skill_rate = {
+                    name: key,
+                    rate: obj[key]
+                };
+                skillRates.push(skill_rate);
+            }
+        });
+        return skillRates;
     }
 
     goToDash() {

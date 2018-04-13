@@ -217,7 +217,7 @@
                             </div>
                         </li>
                         <hr>
-                        <li *ngFor="let review of reviews">
+                        <li *ngFor="let review of reviews; let i = index">
                             <h4 class="title">
                                 <span class="text-warning">
                                     <a style="cursor:pointer" (click)="gotoReviewer(review.from.user_id)">{{review?.from?.name}} </a>
@@ -231,18 +231,24 @@
                             <div class="">
                                 <p>{{review.description}} </p>
                                 <div *ngIf="review.hasAdvanceReview">
-                                    <a class="float-right" style="cursor:pointer; color: #63bbb2" (click)="showAdvancedReview()">Show Advanced Review</a>
-                                    <!--<div class="form-group" id="divAdvance" style="display: none">-->
-                                        <!--<div *ngFor="let skill of skills">-->
-                                            <!--<div class="col-sm-3 d-inline-block">{{skill}}</div>-->
-                                            <!--<div class="col-sm-8 d-inline-block">-->
-                                                <!--<rating class="float-right" [formControl]="rate" [max]="5"-->
-                                                        <!--[float]="true" [titles]="['one', 'two', 'three', 'four', 'five']">-->
-                                                <!--</rating>-->
-                                            <!--</div>-->
-                                            <!--<hr>-->
-                                        <!--</div>-->
-                                    <!--</div>-->
+                                    <a *ngIf="!review.showAdvanceReview" class="float-right"
+                                       style="cursor:pointer; color: #63bbb2; font-size: 13px"
+                                       (click)="showAdvancedReview(i)">Show Advanced Review</a>
+                                    <a *ngIf="review.showAdvanceReview" class="float-right"
+                                       style="cursor:pointer; color: #63bbb2; font-size: 13px"
+                                       (click)="hideAdvancedReview(i)">Hide Advanced Review</a>
+
+                                    <div *ngIf="review.showAdvanceReview">
+                                        <div *ngFor="let skill of review.skills">
+                                            <div class="col-sm-2 d-inline-block">{{skill.name}}</div>
+                                            <div class="col-sm-7 d-inline-block">
+                                                <rating [(ngModel)]="skill.rate" [readonly]="true" [disabled]="ture"
+                                                        [float]="true"
+                                                        [titles]="['one', 'two', 'three', 'four', 'five']"></rating>
+                                            </div>
+                                            <hr>
+                                        </div>
+                                    </div>
                                     <br>
                                 </div>
                             </div>
