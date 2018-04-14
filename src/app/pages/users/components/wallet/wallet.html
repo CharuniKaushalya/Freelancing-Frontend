@@ -1,12 +1,12 @@
 <div class="container">
     <div class="row">
-        
+
 
         <div class="col-sm-12">
             <div class="col-sm-12">
                     <div class="alert alert-danger">
-                            <p><strong>*</strong>   If you get funds from your PayPal account, it can take 2 to 3 minutes to be processed. <strong>Please refresh you borwer and check.</strong>  If the wrong email address is used, the funds go unclaimed and will be returned to the sender after 15 days.  If your account is not verified, PayPal can hold the funds up to 21 days. 
- 
+                            <p><strong>*</strong>   If you get funds from your PayPal account, it can take 2 to 3 minutes to be processed. <strong>Please refresh you borwer and check.</strong>  If the wrong email address is used, the funds go unclaimed and will be returned to the sender after 15 days.  If your account is not verified, PayPal can hold the funds up to 21 days.
+
                             </p>
                         </div>
                 <ba-card cardTitle="Wallet" baCardClass="with-scroll table-panel">
@@ -53,6 +53,47 @@
                                 <br>
                                 <button type="button" class="btn btn-danger  btn-sm"
                                         (click)="transferModalShow()">Transfer Fund</button>
+                            </td>
+                        </tr>
+                        </tbody>
+                    </table>
+                </ba-card>
+                <br>
+                <ba-card cardTitle="Transactions" baCardClass="with-scroll table-panel">
+                    <table class="table table-condensed">
+                        <thead>
+                        <tr>
+                            <th></th>
+                            <th>Asset</th>
+                            <th>Amount</th>
+                            <th>Transcation Type</th>
+                            <th>To/From Address</th>
+                            <th>Date</th>
+                            <th></th>
+                        </tr>
+                        </thead>
+                        <tbody>
+                        <tr *ngFor="let transaction of transactions">
+                            <td *ngIf="transaction.type == 'Paid'" style="color: red">
+                                <i class="fa fa-exchange"></i>
+                            </td>
+                            <td *ngIf="transaction.type == 'Received'" style="color: green">
+                                <i class="fa fa-exchange"></i>
+                            </td>
+                            <td>
+                                {{transaction.asset}}
+                            </td>
+                            <td>
+                                {{transaction.amount}}
+                            </td>
+                            <td>
+                                {{transaction.type}}
+                            </td>
+                            <td>
+                                {{transaction.address}}
+                            </td>
+                            <td>
+                                {{transaction.time}}
                             </td>
                         </tr>
                         </tbody>

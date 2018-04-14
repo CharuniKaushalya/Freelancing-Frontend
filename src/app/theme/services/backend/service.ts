@@ -25,7 +25,7 @@ export class MyService {
     //     let myAddress: string;
     //     this.getaddresses().then(data => {
     //         myAddress = data[0].address;
-    //         return myAddress;     
+    //         return myAddress;
     //     });
     // }
 
@@ -112,8 +112,8 @@ export class MyService {
 
     moneyTrasfer(email:string, amount:string) {
         let params: URLSearchParams = new URLSearchParams();
-        params.set('amount', amount); 
-        params.set('email', email);                       
+        params.set('amount', amount);
+        params.set('email', email);
         return this.http.get(this.moneyTransferUrl, { search: params }).toPromise()
                     .then(response =>response.json())
                     .catch((error: Error) => console.log(error));
@@ -122,8 +122,8 @@ export class MyService {
     grantInRegister(node: string,user:string,email:string) {
         let params: URLSearchParams = new URLSearchParams();
         params.set('node', node);
-        params.set('user', user); 
-        params.set('email', email);                       
+        params.set('user', user);
+        params.set('email', email);
         return this.http.get(this.adminUrl, { search: params }).toPromise()
                     .then(response => response)
                     .catch((error: Error) => console.log(error));
@@ -271,6 +271,18 @@ export class MyService {
         params.set('qty', qty);
         return this.callAPI('sendassetfrom', 'get', params, null, null);
     }
+
+    listAddressTransactions(address: string) {
+        let params: URLSearchParams = new URLSearchParams();
+        params.set('address', address);
+        return this.callAPI('listaddresstransactions', 'get', params, null, null);
+    }
+
+    listWalletTransactions() {
+        let params: URLSearchParams = new URLSearchParams();
+        return this.callAPI('listwallettransactions', 'get', params, null, null);
+    }
+
     callAPI(url: string, httpMethod: string, params: URLSearchParams, headers: Headers, body: string): Promise<any> {
         switch (httpMethod) {
 

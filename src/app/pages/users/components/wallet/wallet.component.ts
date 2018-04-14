@@ -19,6 +19,8 @@ export class Wallet implements OnInit {
     user_id: string = "";
     user = new User();
 
+    transactions = [];
+
     assets = [
         {
             asset_name: 'USD',
@@ -35,10 +37,10 @@ export class Wallet implements OnInit {
     ];
 
     constructor(private _router: Router, private _route: ActivatedRoute, private _service: MyService, private modalService: NgbModal) {
+
         this._service.listStreamKeyItems(this.userStream, localStorage.getItem('email')).then(data => {
             this.user = JSON.parse(this._service.Hex2String(data[data.length - 1].data.toString()));
             this._service.getAddressBalances(this.user.address, 'False').then(unlocked_balances => {
-
 
                 if (unlocked_balances.length == 1) {
                     console.log();
@@ -53,6 +55,32 @@ export class Wallet implements OnInit {
                 }).catch(error => {
                     console.log(error.message);
                 });
+
+                this._service.listAddressTransactions(this.user.address).then(data => {
+                    data.forEach(element => {
+
+                        if(element.balance.assets.length == 1){
+                            let type = "Paid";
+                            if(element.balance.assets[0].qty > 0) {
+                                type = "Received";
+                            }
+
+                            let time = (new Date(element.time*1000)).toString().substring(4,16);
+
+                            let trans = {
+                                asset: element.balance.assets[0].name,
+                                amount: Math.abs(element.balance.assets[0].qty),
+                                type: type,
+                                address: element.addresses[0],
+                                time: time
+                            };
+                            this.transactions.push(trans);
+                        }
+                    });
+                }).catch(error => {
+                    console.log(error.message);
+                });
+
             }).catch(error => {
                 console.log(error.message);
             });

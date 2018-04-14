@@ -120,8 +120,8 @@ export class Profile implements OnInit {
 
                                                             this.sum_reviews += r.rate;
                                                             this.reviews.push(r);
-                                                            console.log(r);
-                                                            let avg = (this.sum_reviews / this.reviews.length).toFixed(2);
+                                                            // console.log(r);
+                                                            let avg = (this.sum_reviews / this.reviews.length).toFixed(1);
                                                             this.avg_reviews = Number(avg);
                                                         }
                                                     }).catch(error => {
